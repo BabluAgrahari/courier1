@@ -35,6 +35,16 @@
                             </div>
 
                             <div class="form-group col-md-3">
+                                <label>Channel</label>
+                                <select name="payment_channel" class="form-control form-control-sm" id="payment_channel">
+                                    <option value="">All</option>
+                                    <?php foreach ($payment_channel as $channel) { ?>
+                                        <option <?= (!empty($filter['payment_channel']) && $filter['payment_channel'] == $channel->name) ? "selected" : "" ?> value="<?= $channel->name ?>"><?= $channel->name ?></option>;
+                                    <?php } ?>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-3">
                                 <label>Outlet</label>
                                 <select class="form-control form-control-sm" name="outlet_id">
                                     <option value="">All</option>
@@ -82,7 +92,7 @@
                     @endforeach
                 </tbody>
             </table>
-             {{ $credits->appends(request()->toArray())->links() }}
+            {{ $credits->appends(request()->toArray())->links() }}
         </div>
     </div>
 

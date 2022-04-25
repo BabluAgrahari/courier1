@@ -79,6 +79,7 @@ class Controller extends BaseController
 
         curl_close($curl);
         $response = json_decode($response);
+        // print_r($response);die;
         $data = ['blance' => mSign($response[0]->Balance)];
         die(json_encode($data));
     }

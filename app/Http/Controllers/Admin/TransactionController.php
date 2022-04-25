@@ -123,9 +123,10 @@ class TransactionController extends Controller
             $retailer_id      = $transaction->retailer_id;
             $transaction_fees = $transaction->transaction_fees;
             $amount           = $transaction->amount;
+            $bank_details     = $transaction->payment_channel;
             addTopupAmount($retailer_id, $amount, $transaction_fees, 1);
             //insert data in transfer history collection
-            transferHistory($retailer_id, $amount + $transaction_fees, $receiver_name, $payment_date, $status, $payment_mode, $type, 0, 'credit');
+            transferHistory($retailer_id, $amount + $transaction_fees, $receiver_name, $payment_date, $status, $payment_mode, $type, 0, 'credit',0,$bank_details);
         }
         return response(['status' => 'success', 'msg' => 'Transaction ' . ucwords($transaction->status) . ' Successfully!']);
     }
@@ -417,9 +418,10 @@ class TransactionController extends Controller
             $retailer_id      = $transaction->retailer_id;
             $transaction_fees = $transaction->transaction_fees;
             $amount           = $transaction->amount;
+            $bank_details     = $transaction->payment_channel;
             addTopupAmount($retailer_id, $amount, $transaction_fees, 1);
             //insert data in transfer history collection
-            transferHistory($retailer_id, $amount + $transaction_fees, $receiver_name, $payment_date, $status, $payment_mode, $type, 0, 'credit');
+            transferHistory($retailer_id, $amount + $transaction_fees, $receiver_name, $payment_date, $status, $payment_mode, $type, 0, 'credit',$bank_details);
         }
         return response(['status' => 'success', 'msg' => 'Transaction Made Successfully!']);
     }

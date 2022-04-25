@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class ProfileController extends Controller
 {
@@ -64,10 +65,18 @@ class ProfileController extends Controller
         $email = new Email();
         $res = $email->composeEmail($dataM);
 
-        if ($res)
+        if ($res){
             return response(['status' => 'success', 'msg' => 'Please check your Email for reset pin.']);
-
+        }else{
+        $url = 'http://164.52.195.161/API/SendMsg.aspx?uname=20191682&pass=Cool@2020&send=WEBDUN&dest=' . $user->mobile_number . '&msg=Click Here&nbsp;&nbsp;<a href="' . url('forgot-password/' . $token) . '">' . $token . '</a> to Change Your Password';
+        $ressponse = Http::get($url);
+        if ($ressponse) {
+            return response(['status' => 'success', 'msg' => 'Please check your SMS for reset pin.']);
+        } else {
+             return response(['status' => 'error', 'msg' => 'Someting Went Wrong.']);
+        }
         return response(['status' => 'error', 'msg' => 'Someting Went Wrong.']);
+        }
     }
 
 

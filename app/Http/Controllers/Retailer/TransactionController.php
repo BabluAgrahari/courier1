@@ -66,7 +66,7 @@ class TransactionController extends Controller
 
     public function dmtStore(Request $request)
     {
-        try {
+        // try {
 
             /*start check amount available in wallet or not*/
             $amount  = $request->amount;
@@ -218,9 +218,9 @@ class TransactionController extends Controller
             /*end passbook debit functionality*/
 
             return response(['status' => 'success', 'msg' => 'Transaction Request Created Successfully!']);
-        } catch (Exception $e) {
-            return response(['status' => 'error', 'msg' => $e->getMessage()]);
-        }
+        // } catch (Exception $e) {
+        //     return response(['status' => 'error', 'msg' => $e->getMessage()]);
+        // }
     }
 
 
@@ -856,5 +856,17 @@ class TransactionController extends Controller
         } catch (Exception $e) {
             return redirect('500');
         }
+    }
+
+
+    public function beneficiaryList(Request $request)
+    {
+        $b_name = $request->term;
+        $transaction = Transaction::select('receiver_name')->where('receiver_name','LIKE',$b_name)->get();
+        $receiver = [];
+        foreach ($transaction as $trans) {
+            $receiver[] = ucfirst($trans->receiver_name);
+        }
+        echo json_encode($receiver);
     }
 }

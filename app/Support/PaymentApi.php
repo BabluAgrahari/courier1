@@ -9,7 +9,7 @@ class PaymentApi
     {
         $input = (object)$input;
         $post_data   = array(
-            'key'           => 'HsFNUzHnm2MQszwQT383c8sWS',
+            'key'           => '',
             'AccountNumber' => $input->account_number,
             'IFSC'          => $input->ifsc_code,
             'Amount'        => $input->amount,
@@ -76,7 +76,7 @@ class PaymentApi
     {
         $input = (object)$input;
         $post_data   = array(
-            'key'           => 'cGb25SnErgsFSyiLCAAba9m9',
+            'key'           => '',
             'AccountNumber' => $input->account_number,
             'IFSC'          => $input->ifsc_code,
             'Amount'        => $input->amount,
@@ -155,8 +155,8 @@ class PaymentApi
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => '{
-    "email":"parveenbinjhol70759@gmail.com",
-    "password":"Parveen@123"
+    "email":"",
+    "password":""
    }',
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json'
@@ -223,7 +223,7 @@ class PaymentApi
             if ($res['status'] == 0 || $res['status'] == 1) {
                 return $result = [
                     'response' => [
-                        'utr_number'     => $res['utr'],
+                        'utr_number'     => !empty($res['utr'])?$res['utr']:'',
                         'status'         => "success",
                         'status_id'      => $res['status_id'],
                         'report_id'      => $res['report_id'],
@@ -241,7 +241,7 @@ class PaymentApi
         if (!empty($res['status']) && $res['status'] == 2) {
             return $result = [
                 'response' => [
-                    'utr_number'     => $res['utr'],
+                    'utr_number'     => !empty($res['utr'])?$res['utr']:'',
                     'status'         => "failed",
                     'status_id'      => $res['status_id'],
                     'report_id'      => $res['report_id'],
@@ -256,7 +256,7 @@ class PaymentApi
         if (!empty($res['status']) && $res['status'] == 3) {
             return $result = [
                 'response' => [
-                    'utr_number'     => $res['utr'],
+                    'utr_number'     => !empty($res['utr'])?$res['utr']:'',
                     'status'         => "pending",
                     'status_id'      => $res['status_id'],
                     'report_id'      => $res['report_id'],
@@ -304,7 +304,7 @@ class PaymentApi
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => "{
-            'key':'HsFNUzHnm2MQszwQT383c8sWS',
+            'key':'',
             'TransactionID':'$trans_id'
             }",
             CURLOPT_HTTPHEADER => array(
@@ -368,7 +368,7 @@ class PaymentApi
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => "{
-            'key':'cGb25SnErgsFSyiLCAAba9m9',
+            'key':'',
             'TransactionID':'$trans_id'
             }",
             CURLOPT_HTTPHEADER => array(
@@ -432,8 +432,8 @@ class PaymentApi
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => '{
-    "email":"parveenbinjhol70759@gmail.com",
-    "password":"Parveen@123"
+    "email":"",
+    "password":"@123"
 }',
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json'

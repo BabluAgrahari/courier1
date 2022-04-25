@@ -62,7 +62,7 @@ class Email
         }
 
         } catch (GlobalException $e) {
-            print_r($e->getMessage());
+           return false;
         }
     }
 }

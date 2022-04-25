@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
@@ -41,8 +42,8 @@ class LoginController extends Controller
                     $user->otp = $otp;
                     if ($user->save()) {
                         $email = $user->email;
-                        $this->sendOtp($otp, $email);
-                        $data  = ['otp' => $otp, 'msg' => '<span class="text-success">Otp Sent Successfully in this ' . $email . ' !</span>'];
+                        $source = $this->sendOtp($otp, $user->mobile_number, $user->full_name, $email);
+                        $data  = ['otp' => $otp, 'msg' => '<span class="text-success">Otp Sent Successfully in this ' . $source . ' !</span>'];
                         return redirect()->intended('otp-sent')->with('message', $data);
                     }
                 } else if (Auth::user()->role == 'employee') {
@@ -78,19 +79,19 @@ class LoginController extends Controller
         $user->otp = $otp;
         $res1 = $user->save();
 
-        $res = $this->sendOtp($otp, $email);
+        $res = $this->sendOtp($otp, $user->mobile_number, $user->full_name, $user->email);
 
         if ($res && $res1) {
 
-            $data  = ['otp' => $otp, 'msg' => '<span class="text-success">Otp Sent Successfully in this ' . $email . ' !</span>'];
+            $data  = ['otp' => $otp, 'msg' => '<span class="text-success">Otp Sent Successfully in this ' . $res . ' !</span>'];
             return redirect()->intended('otp-sent')->with('message', $data);
         }
 
-        $data  = ['msg' => '<span class="text-danger">Someting went wrong, Otp not Sent Successfully in this ' . $email . ' !</span>'];
+        $data  = ['msg' => '<span class="text-danger">Someting went wrong, Otp not Sent Successfully!</span>'];
         return redirect()->intended('otp-sent')->with('message', $data);
     }
 
-    public function sendOtp($otp, $email)
+    public function sendOtp($otp, $mobile, $name, $email)
     {
         $msg = '<td>
          <h5 class="text-center">Signin - Your OTP/Verification code is</h3>
@@ -113,11 +114,19 @@ class LoginController extends Controller
         $email = new Email();
         $res = $email->composeEmail($dataM);
 
-        if (!$res)
+        if (!$res) {
+            $url = 'http://164.52.195.161/API/SendMsg.aspx?uname=20191682&pass=Cool@2020&send=WEBDUN&dest=' . $mobile . '&msg=Hi ' . $name . ', Your OTP for phone verification is ' . $otp . '.';
+            $ressponse = Http::get($url);
+            if ($ressponse) {
+                return $mobile;
+            } else {
+                return false;
+            }
             return false;
-
-        setcookie('logged_in', 'logged', time() + 10800, "/");
-        return true;
+        } else {
+            setcookie('logged_in', 'logged', time() + 10800, "/");
+            return $email;
+        }
     }
 
     public function verifyMobile(Request $request)
@@ -186,10 +195,19 @@ class LoginController extends Controller
         $email = new Email();
         $res = $email->composeEmail($dataM);
 
-        if ($res)
+        if ($res){
             return redirect()->back()->with('message', '<span class="text-success">Please check your Email for reset password.</span>');
 
+        }else{
+        $url = 'http://164.52.195.161/API/SendMsg.aspx?uname=20191682&pass=Cool@2020&send=WEBDUN&dest=' . $user->mobile_number . '&msg=Click Here&nbsp;&nbsp;<a href="' . url('forgot-password/' . $token) . '">' . $token . '</a> to Change Your Password';
+        $ressponse = Http::get($url);
+        if ($ressponse) {
+             return redirect()->back()->with('message', '<span class="text-success">Please check your SMS for reset password.</span>');
+        } else {
+            return redirect()->back()->with('message', '<span class="text-danger">Someting Went Wrong.</span>');
+        }
         return redirect()->back()->with('message', '<span class="text-danger">Someting Went Wrong.</span>');
+        }
     }
 
     public function forgotPassword($token)

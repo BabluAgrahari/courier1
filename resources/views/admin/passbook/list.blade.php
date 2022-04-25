@@ -87,11 +87,18 @@
                     </thead>
 
                     @foreach($passbook as $key=>$pb)
+                    <?php
+                    $refaund= '';
+                   if($pb->transaction_type =='refund'){
+                       $account_no = (!empty($pb->bank_details['account_number']))?'Ac No- '.$pb->bank_details['account_number']:'';
+                        $refaund = (!empty($pb->receiver_name))?$pb->receiver_name.', '.$account_no:'';
+                   }
+                    ?>
                     <tr>
                         <td>{{ ++$key }}</td>
                         <td>{{ (!empty($pb->OutletName['outlet_name']))?$pb->OutletName['outlet_name']:'-'}}</td>
                         <td>{{ date('Y-m-d H:i:s',$pb->created)}}</td>
-                        <td>{{ !empty($pb->transaction_type)?ucwords(str_replace('_',' ',$pb->transaction_type)):'-' }}</td>
+                        <td><span data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{$refaund}}">{{ !empty($pb->transaction_type)?ucwords(str_replace('_',' ',$pb->transaction_type)):'-' }}</span></td>
                         <td>{!!mSign($pb->amount)!!}</td>
                         <td>{!!(!empty($pb->fees))?mSign($pb->fees):'-' !!}</td>
                         <td>{!!mSign($pb->closing_amount)!!}</td>

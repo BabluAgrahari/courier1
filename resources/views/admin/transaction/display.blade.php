@@ -84,9 +84,9 @@
                                 <select class="form-control form-control-sm" name="status">
                                     <option value="">All</option>
                                     <option value="success" <?= (!empty($filter['status']) && $filter['status'] == 'success') ? 'selected' : '' ?>>Success</option>
-                                    <option value="pending" <?= (!empty($filter['status']) && $filter['status'] == 'pending') ? 'selected' : '' ?>>Pending</option>
+                                    <!-- <option value="pending" <?= (!empty($filter['status']) && $filter['status'] == 'pending') ? 'selected' : '' ?>>Pending</option> -->
                                     <option value="process" <?= (!empty($filter['status']) && $filter['status'] == 'process') ? 'selected' : '' ?>>Process</option>
-                                    <option value="reject" <?= (!empty($filter['status']) && $filter['status'] == 'reject') ? 'selected' : '' ?>>Reject</option>
+                                    <option value="rejected" <?= (!empty($filter['status']) && $filter['status'] == 'rejected') ? 'selected' : '' ?>>Rejected</option>
                                 </select>
                             </div>
 
@@ -338,12 +338,12 @@
         $('#approve_modal_dashboard').modal('show');
     })
 
-$(document).on('click','.utrupdate',function(){
-$('#utr').toggle();
-})
+    $(document).on('click', '.utrupdate', function() {
+        $('#utr').toggle();
+    })
 
-//check payment status
-        $(document).on('click','#update_utr',function(){
+    //check payment status
+    $(document).on('click', '#update_utr', function() {
         var id = $('#trnsaction-id').val();
         var select = $(this);
         var utr = $('#utr_no').val();
@@ -643,7 +643,7 @@ $('#utr').toggle();
     /*end bulk approve transaction*/
 
 
-//for success case functionality
+    //for success case functionality
     $(document).on('click', '.success-action', function(e) {
         e.preventDefault();
         $('#trans_id_action').val($(this).attr('_id'));
@@ -653,7 +653,7 @@ $('#utr').toggle();
 
     $(document).on('change', '#status-select-action', function() {
         let status = $('#status-select-action').val();
-         if (status == 'rejected') {
+        if (status == 'rejected') {
             $('#challel').html(``);
             $('#success_action').html(``);
         } else {
@@ -843,7 +843,7 @@ $('#utr').toggle();
                                     <option value="payunie_preet_kumar">Payunie - PREET KUMAR</option>
                                     <option value="payunie_rashid_ali">Payunie -Rashid Ali</option>
                                     <option value="pay2all">Pay2ALL - PRAVEEN</option>
-                                     <option value="odnimo">Odnimo</option>
+                                    <option value="odnimo">Odnimo</option>
                                 </select>
                             </div>
                         </div>
@@ -859,56 +859,151 @@ $('#utr').toggle();
     </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" id="preview-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Preview Transaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- for loader -->
+            <div class="cover-loader-modal d-none">
+                <div class="loader-modal"></div>
+            </div>
+
+            <div class="modal-body pl-2 pr-2">
+                <div class="d-none" id="show-pin">
+                    <input type="hidden" id="no_of_record">
+                    <input type="hidden" id="total_amount">
+                    <input type="hidden" id="api_val">
+                    <div id="preview-import-data">
+                    </div>
+
+                    <div class="form-group text-center">
+                        <button type="button" id="paied" class="btn btn-success btn-sm"><i class="fas fa-compress-arrows-alt"></i>&nbsp;Send</button>
+                        <button type="button" class="btn btn-sm btn-success" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>&nbsp;Close
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     /*start form submit functionality*/
-    $("form#approve_trans_").submit(function(e) {
+      $("form#approve_trans_").submit(function(e) {
+          e.preventDefault();
+          formData = new FormData(this);
+          var url = $(this).attr('action');
+          $.ajax({
+              data: formData,
+              type: "POST",
+              url: url,
+              dataType: 'json',
+              cache: false,
+              contentType: false,
+              processData: false,
+              beforeSend: function() {
+                  $('.cover-loader-modal').removeClass('d-none');
+                  $('.modal-body').hide();
+              },
+              success: function(res) {
+                  //hide loader
+                  $('.cover-loader-modal').addClass('d-none');
+                  $('.modal-body').show();
+
+
+                  /*Start Validation Error Message*/
+                  $('span.custom-text-danger').html('');
+                  $.each(res.validation, (index, msg) => {
+                      $(`#${index}_msg`).html(`${msg}`);
+                  })
+                  /*Start Validation Error Message*/
+
+                  if (res.status == 'preview') {
+                      $('#import-file').addClass('d-none');
+                      $('#preview-modal').addClass('modal-lg-custom');
+                    //   $('#preview-modal').removeClass('modal-dialog');
+                      $('#show-pin').removeClass('d-none');
+                      $('#preview-import-data').html(res.data.table_data);
+                      $('#no_of_record').val(res.data.no_of_record);
+                      $('#total_amount').val(res.data.total_amount);
+                      $('#api_val').val(res.api);
+                      $('#previewModal').modal('show')
+                  }
+
+                  //for reset all field
+                  if (res.status == 'success') {
+                      $('form#approve_trans_')[0].reset();
+                      setTimeout(function() {
+                          location.reload();
+                      }, 1000)
+                  }
+              }
+          });
+      });
+
+    $('#paied').click(function(e) {
         e.preventDefault();
-        formData = new FormData(this);
-        var url = $(this).attr('action');
+
+        var no_of_record = $('#no_of_record').val();
+        var total_amount = $('#total_amount').val();
+        Swal.fire({
+            title: '<h6>Number Of Record&nbsp;-<b>' + no_of_record + '</b></h6><h6>Total Amount &nbsp;&nbsp;<b> &#8377;' + total_amount + '</b></h6>',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Confirm',
+            denyButtonText: `Cancel`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                // Swal.fire('Saved!', '', 'success')
+                $('#hide-pin').hide();
+                $('#bluckAssignBtn1').modal('hide');
+                importSequence(0);
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    })
+
+    function importSequence(index) {
+        var api = $('#api_val').val();
+        var url1 = '{{ url("admin/payToApi")}}';
         $.ajax({
-            data: formData,
-            type: "POST",
-            url: url,
-            dataType: 'json',
-            cache: false,
-            contentType: false,
-            processData: false,
-            beforeSend: function() {
-                $('.cover-loader-modal').removeClass('d-none');
-                $('.modal-body').hide();
+            data: {
+                'api': api,
+                'index': index
             },
+            type: "GET",
+            url: url1,
+            dataType: 'json',
             success: function(res) {
-                //hide loader
-                $('.cover-loader-modal').addClass('d-none');
-                $('.modal-body').show();
+                if (index == 0)
+                    $('.preview-table').remove();
 
+                $('#preview-table').append(res.data);
 
-                /*Start Validation Error Message*/
-                $('span.custom-text-danger').html('');
-                $.each(res.validation, (index, msg) => {
-                    $(`#${index}_msg`).html(`${msg}`);
-                })
-                /*Start Validation Error Message*/
-
-                /*Start Status message*/
-                if (res.status == 'success' || res.status == 'error') {
-                    Swal.fire(
-                        `${res.status}!`,
-                        res.msg,
-                        `${res.status}`,
-                    )
+                if (index + 1 != res.all_row) {
+                    importSequence(res.index);
+                } else {
+                    $('#paied').remove();
                 }
-                /*End Status message*/
-
-                //for reset all field
-                if (res.status == 'success') {
-                    $('form#approve_trans_')[0].reset();
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1000)
-                }
+                $('#paied').remove();
             }
         });
+    }
+    $('#previewModal').on('hidden.bs.modal', function() {
+        location.reload();
     });
 </script>
 

@@ -215,6 +215,7 @@ Route::group(['prefix' => 'retailer', 'middleware' => 'retailer'], function () {
   Route::get('send-otp',            [RetailerTransaction::class, 'sendOtp']);
   Route::get('fee-details',         [RetailerTransaction::class, 'feeDetails']);
   Route::get('transaction-export',  [RetailerTransaction::class, 'export']);
+  Route::get('beneficiary-list',    [RetailerTransaction::class, 'beneficiaryList']);
 
   Route::resource('retailer-trans', RetailerRetailerTrans::class);
   Route::get('retailer-trans-ajax', [RetailerRetailerTrans::class, 'ajaxList']);

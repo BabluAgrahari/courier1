@@ -1,4 +1,5 @@
 @push('modal')
+
 <?php
 $bank_names = [
     'Bank of Baroda', 'Bank of India', 'Bank of Maharashtra', 'Canara Bank', 'Central Bank of India',
@@ -220,7 +221,7 @@ $bank_names = [
 
                             <div class="form-group">
                                 <label>Beneficiary Name</label>
-                                <input type="text" placeholder="Enter Beneficiary Name" id="receiver" required name="receiver_name" class="form-control form-control-sm">
+                                <input type="text" placeholder="Enter Beneficiary Name" id="receiver_name" required name="receiver_name" class="form-control form-control-sm benifacry_name">
                                 <span id="receiver_msg" class="custom-text-danger"></span>
                             </div>
 
@@ -323,7 +324,6 @@ $bank_names = [
         </div>
     </div>
 </div>
-
 
 <script>
     $('#payout_payment_channel').change(function() {
@@ -649,8 +649,6 @@ $bank_names = [
     });
     /*end focus pointer to new field (functionality)*/
 
-    // $('html').keyup(function(e) {
-    //     if (e.keyCode == 8) alert('backspace trapped')
-    // })
 </script>
+
 @endpush
