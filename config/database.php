@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'mongodb'),
 
     /*
     |--------------------------------------------------------------------------
@@ -96,7 +96,6 @@ return [
             'dsn' => env('DB_URI', 'mongodb+srv://callcenter:ZsQV4Vpihi6vVqAZ@cluster0.gcdem.mongodb.net/callcenter?retryWrites=true&w=majority'),
             'database' => 'test',
         ],
-
 
     ],
 

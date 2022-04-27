@@ -35,6 +35,14 @@
       </a>
     </li>
 
+    <li class="nav-item">
+        <a href="{{ route('address.index') }}" class="nav-link {{ (url()->full() == url('retailer/address'))? 'active':''}}">
+          <!-- <i class="fas fa-solid fa-book nav-icon text-warning"></i> -->
+          <i class="fas fa-money-bill-wave nav-icon"></i>
+          <p>Address</p>
+        </a>
+      </li>
+
 
   @if(!empty(MoneyPartnerOption()->e_collection) && MoneyPartnerOption()->e_collection ==1)
     <li class="nav-item">
