@@ -43,6 +43,14 @@
         </a>
       </li>
 
+      <li class="nav-item">
+        <a href="{{ route('order.index') }}" class="nav-link {{ (url()->full() == url('retailer/order'))? 'active':''}}">
+          <!-- <i class="fas fa-solid fa-book nav-icon text-warning"></i> -->
+          <i class="fas fa-money-bill-wave nav-icon"></i>
+          <p>Order</p>
+        </a>
+      </li>
+
 
   @if(!empty(MoneyPartnerOption()->e_collection) && MoneyPartnerOption()->e_collection ==1)
     <li class="nav-item">

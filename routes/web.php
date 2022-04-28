@@ -54,6 +54,7 @@ use App\Http\Controllers\Admin\PaymentMode\BankAccountController as AdminBankAcc
 use App\Http\Controllers\Distributor\TransactionController as DistributorTransaction;
 use App\Http\Controllers\Distributor\TopupRequestController as DistributorTopupRequest;
 use App\Http\Controllers\Retailer\AddressController;
+use App\Http\Controllers\Retailer\OrderController;
 use App\Http\Controllers\Retailer\Transaction\OfflinePayoutApiController as OfflinePayout;
 use App\Http\Controllers\Retailer\Transaction\RetailerTransController as RetailerRetailerTrans;
 
@@ -180,7 +181,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
 Route::group(['prefix' => 'retailer', 'middleware' => 'retailer'], function () {
 
-  Route::resource('address', AddressController::class);
+  Route::get('address',[AddressController::class,'index'])->name('address.index');
+  Route::get('address/create',[AddressController::class,'create'])->name('address.create');
+  Route::post('address/store',[AddressController::class,'store'])->name('address.store');
+  Route::get('address/{id}/edit',[AddressController::class,'edit'])->name('address.edit');
+  Route::put('address/update/{id}',[AddressController::class,'update'])->name('address.update');
+  Route::get('address/{id}/changeStatus',[AddressController::class,'changeStatus'])->name('address.changeStatus');
+  Route::get('address/{id}',[AddressController::class,'destroy'])->name('address.destroy');
+
+  Route::get('order',[OrderController::class,'index'])->name('order.index');
+  Route::get('order/create',[OrderController::class,'create'])->name('order.create');
+  Route::post('order/store',[OrderController::class,'store'])->name('order.store');
+  Route::get('order/{id}/edit',[OrderController::class,'edit'])->name('order.edit');
+  Route::put('order/update/{id}',[OrderController::class,'update'])->name('order.update');
+  Route::get('order/delete/{id}',[OrderController::class,'destroy'])->name('order.destroy');
 
   Route::resource('profile', RetailerProfile::class);
   Route::get('pin-password', [RetailerProfile::class, 'pinPassword']);

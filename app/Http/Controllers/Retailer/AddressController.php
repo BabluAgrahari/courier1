@@ -65,7 +65,7 @@ class AddressController extends Controller
      */
     public function show()
     {
-        //
+        return 'Hello';
     }
 
     /**
@@ -76,7 +76,9 @@ class AddressController extends Controller
      */
     public function edit($id)
     {
-        //
+        $address = Address::find($id);
+        $moduleName = $this->moduleName;
+        return view($this->view.'/_form',compact('moduleName','address'));
     }
 
     /**
@@ -88,7 +90,17 @@ class AddressController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $address = Address::find($id);
+            $address->title = $request->title;
+            $address->address = $request->address;
+            $address->pincode = $request->pincode;
+            $address->status = $request->status;
+            $address->save();
+            return redirect($this->route)->with('message','Address Updated Successfully.');
+            }catch(Exception $e) {
+            return redirect($this->route)->with('error',$e->getMessage());
+            }
     }
 
     /**
@@ -99,6 +111,18 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $address = Address::find($id)->delete();
+        return redirect($this->route)->with('message','Address Delete Succesfully.');
+    }
+
+    public function changeStatus($id) {
+        $address = Address::find($id);
+        if($address->status == 1) {
+            $address->update(['status' => 0]);
+        } else {
+            $address->update(['status' => 1]);
+        }
+
+        return redirect($this->route)->with('message','Address Status Change Succesfully.');
     }
 }

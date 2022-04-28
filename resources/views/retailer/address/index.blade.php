@@ -58,12 +58,14 @@
                                     class="badge {{ $address->status == 1 ? 'bg-success' : 'bg-danger' }} ">{{ $address->status == 1 ? 'Active' : 'Deactive' }}</span>
                             </td>
                             <td>
-                                <button class="btn btn-warning btn-xs">Edit</button>
+                                <a class="btn btn-warning btn-xs changeStatus" href="{{ route('address.edit',[$address->id]) }}">Edit</a>
                                 @if ($address->status == 1)
-                                    <button class="btn btn-danger btn-xs changeStatus">Deactive</button>
+                                    <a class="btn btn-success btn-xs changeStatus" href="{{ route('address.changeStatus',[$address->id]) }}">Deactive</a>
                                 @else
-                                    <button class="btn btn-success btn-xs changeStatus">Active</button>
+                                    <a class="btn btn-danger btn-xs changeStatus" href="{{ route('address.changeStatus',[$address->id]) }}">Active</a>
                                 @endif
+
+                                <a class="btn btn-danger btn-xs changeStatus" href="{{ route('address.destroy',[$address->id]) }}">Delete</a>
                             </td>
                         </tr>
                     @endforeach
@@ -87,8 +89,10 @@
 @push('custom-script')
     <script>
         $(document).ready(function() {
-            $('body').on('click', '.changeStatus', function() {
+            $('body').on('click', '.changeStatus', function(e) {
+                e.preventDefault();
                 var status = $(this).text();
+                var url = $(this).attr('href');
                 swal({
                         title: `${status}`,
                         text: `Are You Sure Want ${status}`,
@@ -98,7 +102,7 @@
                     })
                     .then((willDelete) => {
                         if (willDelete) {
-                            alert('This is Under Maintaince')
+                            window.location = url;
                         }
                     });
             })
