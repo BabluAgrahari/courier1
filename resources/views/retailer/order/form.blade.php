@@ -390,32 +390,189 @@
                         </div>
                     </div>
                 </div>
-            <hr>
-            <h3>Product Details</h3>
+                <hr>
+                <h3>Product Details</h3>
 
-            <div class="products">
-                <div class="form-group productFirst">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label for="order_tag">
-                                Order Tag <span class="requride_cls">*</span>
-                            </label>
-                            <input type="text" name="order_tag" class="form-control input-sm" id="order_tag"
-                                placeholder="Order Tag" value="{{ old('order_tag') }}" required>
-                            @if ($errors->has('order_tag'))
-                                <span
-                                    class="requride_cls"><strong>{{ $errors->first('order_tag') }}</strong></span>
-                            @endif
+                <div class="products">
+                    <div class="form-group productFirst">
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="product_name">
+                                    Product Name <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="product_name[]" class="form-control input-sm" id="product_name"
+                                    placeholder="Product Name" value="{{ old('product_name') }}" required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="sku">
+                                    SKU <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="sku[]" class="form-control input-sm" id="sku" placeholder="SKU"
+                                    value="{{ old('sku') }}" required>
+                            </div>
+
+
+                            <div class="col-sm-3">
+                                <label for="qty">
+                                    Quantity <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="qty[]" class="form-control input-sm" id="qty"
+                                    placeholder="Quantity" value="{{ old('qty') }}" required>
+                            </div>
+
+
+                            <div class="col-sm-3">
+                                <label for="unit_price">
+                                    Unit Price <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="unit_price[]" class="form-control input-sm" id="unit_price"
+                                    placeholder="Unit Price" value="{{ old('unit_price') }}" required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="tax_rate">
+                                    Tax Rate<span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="tax_rate[]" class="form-control input-sm" id="tax_rate"
+                                    placeholder="Tax Rate" value="{{ old('tax_rate') }}" required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="hsn">
+                                    HSN <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="hsn[]" class="form-control input-sm" id="hsn" placeholder="HSN"
+                                    value="{{ old('hsn') }}" required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="discount">
+                                    Discount (optional) <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="discount[]" class="form-control input-sm" id="discount"
+                                    placeholder="Discount" value="{{ old('discount') }}" required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="category">
+                                    Product Category <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="category[]" class="form-control input-sm" id="category"
+                                    placeholder="Product Category" value="{{ old('category') }}" required>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <button type="button" class="addMore btn btn-success">Add More.</button>
-                <button type="button" class="remove btn btn-danger">Remove</button>
-            </div>
+                <div class="form-group">
+                    <button type="button" class="addMore btn btn-success">Add More.</button>
+                </div>
 
+                <hr>
+                <h3>Payments</h3>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label>Case On Delivery</label>
+                                <input type="radio" name="payment_type" value="case">
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label>Prepaid</label>
+                                <input type="radio" name="payment_type" value="prepaid">
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label>Sub Total</label>
+                                <input type="text" name="sub_total" value="0" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <h3>Pickup Address</h3>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Select a pickup location for the Order</label>
+                                <input type="text" name="pickup_address"
+                                    placeholder="Search by location name,address,city,state,pincode"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        @foreach ($addresses as $key => $val)
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            {{ $val->title }}
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">{{ $val->address }}</p>
+                                            <p class="card-text">{{ $val->pincode }}</p>
+                                        </div>
+                                        <div class="card-footer text-muted">
+                                            <input type="radio" name="pickup_address_id" class="custom-control"
+                                                value="{{ $val->id }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <hr>
+                <h3>Package Weight</h3>
+
+                <div class="packageWeight">
+                    <div class="form-group packageFirst">
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Weight (KG)</label>
+                                <input type="text" name="weight[]" placeholder="KG" value="0" class="form-control"
+                                    required>
+                            </div>
+                            <div class="col-3">
+                                <label>Length (CM)</label>
+                                <input type="text" name="length[]" placeholder="CM" value="0" class="form-control"
+                                    required>
+                            </div>
+
+                            <div class="col-3">
+                                <label>Width (CM)</label>
+                                <input type="text" name="width[]" placeholder="CM" value="0" class="form-control"
+                                    required>
+                            </div>
+
+                            <div class="col-3">
+                                <label>Height (CM)</label>
+                                <input type="text" name="height[]" placeholder="CM" value="0" class="form-control"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group"><br>
+                    <button type="button" class="addPackage btn btn-success">Add More.</button>
+                </div>
 
 
         </div>
@@ -455,13 +612,19 @@
             })
 
             let addMore = $('.productFirst').clone().html();
-            $('body').on('click','.addMore',function(e){
+            $('body').on('click', '.addMore', function(e) {
                 e.preventDefault();
                 $('.productFirst').append(addMore);
             })
 
-            $('body').on('click','.remove',function(e){
+            $('body').on('click', '.remove', function(e) {
                 e.preventDefault();
+            })
+
+            let addPckage = $('.packageFirst').clone().html();
+            $('body').on('click', '.addPackage', function(e) {
+                e.preventDefault();
+                $('.packageWeight').append(addPckage);
             })
         });
     </script>
