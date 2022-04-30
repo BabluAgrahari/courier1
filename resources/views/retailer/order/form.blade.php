@@ -206,7 +206,7 @@
                                 </label>
                                 <input type="text" name="ship_address_1" class="form-control input-sm"
                                     id="ship_address_1" placeholder="House Building No"
-                                    value="{{ old('ship_address_1') }}" required>
+                                    value="{{ old('ship_address_1') }}">
                                 @if ($errors->has('ship_address_1'))
                                     <span
                                         class="requride_cls"><strong>{{ $errors->first('ship_address_1') }}</strong></span>
@@ -219,7 +219,7 @@
                                 </label>
                                 <input type="text" name="ship_address_2" class="form-control input-sm"
                                     id="ship_address_2" placeholder="Street Name" value="{{ old('ship_address_2') }}"
-                                    required>
+                                    >
                                 @if ($errors->has('ship_address_2'))
                                     <span
                                         class="requride_cls"><strong>{{ $errors->first('ship_address_2') }}</strong></span>
@@ -247,7 +247,7 @@
                                     City <span class="requride_cls">*</span>
                                 </label>
                                 <input type="text" name="ship_city" class="form-control input-sm" id="city"
-                                    placeholder="City" value="{{ old('ship_city') }}" required>
+                                    placeholder="City" value="{{ old('ship_city') }}" >
                                 @if ($errors->has('ship_city'))
                                     <span class="requride_cls"><strong>{{ $errors->first('city') }}</strong></span>
                                 @endif
@@ -318,7 +318,7 @@
                             <label for="order_id">
                                 Order ID <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="buyer_name" class="form-control input-sm" id="order_id"
+                            <input type="text" name="order_id" class="form-control input-sm" id="order_id"
                                 placeholder="Order ID" value="ORD-{{ random_int(00000000000, 999999999) }}" required>
                             @if ($errors->has('order_id'))
                                 <span
@@ -396,7 +396,7 @@
                 <div class="products">
                     <div class="form-group productFirst">
                         <hr>
-                        <div class="row">
+                        <div class="row form-group">
                             <div class="col-sm-3">
                                 <label for="product_name">
                                     Product Name <span class="requride_cls">*</span>
@@ -418,8 +418,8 @@
                                 <label for="qty">
                                     Quantity <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="qty[]" class="form-control input-sm" id="qty"
-                                    placeholder="Quantity" value="{{ old('qty') }}" required>
+                                <input type="number" name="qty[]" class="form-control input-sm qty calculate" id="qty"
+                                    placeholder="Quantity" value="{{ old('qty',0) }}" required>
                             </div>
 
 
@@ -427,8 +427,8 @@
                                 <label for="unit_price">
                                     Unit Price <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="unit_price[]" class="form-control input-sm" id="unit_price"
-                                    placeholder="Unit Price" value="{{ old('unit_price') }}" required>
+                                <input type="number" name="unit_price[]" class="form-control input-sm unit_price calculate" id="unit_price"
+                                    placeholder="Unit Price" value="{{ old('unit_price') }}"  required>
                             </div>
 
                             <div class="col-sm-3">
@@ -451,8 +451,8 @@
                                 <label for="discount">
                                     Discount (optional) <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="discount[]" class="form-control input-sm" id="discount"
-                                    placeholder="Discount" value="{{ old('discount') }}" required>
+                                <input type="number" name="discount[]" class="form-control input-sm discount calculate" id="discount"
+                                    placeholder="Discount" value="{{ old('discount',0) }}" required>
                             </div>
 
                             <div class="col-sm-3">
@@ -461,6 +461,14 @@
                                 </label>
                                 <input type="text" name="category[]" class="form-control input-sm" id="category"
                                     placeholder="Product Category" value="{{ old('category') }}" required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="amount">
+                                    Total Amount <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="amount[]" class="form-control input-sm amount" id="amount"
+                                    placeholder="Amount" value="{{ old('amount',0) }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -492,7 +500,7 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Sub Total</label>
-                                <input type="text" name="sub_total" value="0" class="form-control">
+                                <input type="text" name="sub_total" value="0" class="form-control" id="sub_total" required>
                             </div>
                         </div>
                     </div>
@@ -625,6 +633,32 @@
             $('body').on('click', '.addPackage', function(e) {
                 e.preventDefault();
                 $('.packageWeight').append(addPckage);
+            })
+
+            const calculation = () => {
+                var sub_total = 0;
+                var qty = 0;
+                var unitPrice = 0;
+                var discount = 0;
+                var amount = 0;
+
+                $('.discount').each(function(){
+                    var unitPrice = $(this).closest('.form-group').find('.unit_price').val()
+                    var qty = $(this).closest('.form-group').find('.qty').val()
+                    var discount = $(this).val();
+                    var amount = (qty * unitPrice) - discount;
+                    $(this).closest('.form-group').find('.amount').val(amount.toFixed(2));
+                })
+
+                $('.amount').each(function(){
+                    sub_total += parseFloat($(this).val());
+                })
+
+                $('#sub_total').val(sub_total.toFixed(2));
+            }
+
+            $('body').on('keyup','.calculate',function(){
+                calculation()
             })
         });
     </script>
