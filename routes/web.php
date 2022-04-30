@@ -1,60 +1,62 @@
 <?php
 
-use App\Http\Controllers\MailController;
-use App\Http\Controllers\Admin\LoginController as AdminLogin;
-use App\Http\Controllers\Admin\RegisterController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
-use App\Http\Controllers\Admin\OutletController as AdminOutlet;
-use App\Http\Controllers\Admin\PaymentMode\BankAccountController as AdminBankAccount;
-use App\Http\Controllers\Admin\PaymentMode\QrCodeController as AdminQrCode;
-use App\Http\Controllers\Admin\PaymentMode\UpiController as AdminUpi;
-use App\Http\Controllers\Admin\TopupRequestController as AdminTopupRequest;
-use App\Http\Controllers\Admin\ApiListController as AdminApiList;
-use App\Http\Controllers\Admin\PaymentChannelController as AdminPaymentChannel;
-use App\Http\Controllers\Admin\TransactionCommentController as AdminComment;
-use App\Http\Controllers\Admin\TransactionController as AdminTransaction;
-use App\Http\Controllers\Admin\EmployeeController as AdminEmployee;
-use App\Http\Controllers\Admin\EcollectionController as AdminECollection;
-use App\Http\Controllers\Api\EcollectionController;
-use App\Http\Controllers\Admin\PassbookController as AdminPassbook;
-use App\Http\Controllers\Admin\Action\CreditController as AdminCredit;
-use App\Http\Controllers\Admin\Action\DebitController as AdminDebit;
-use App\Http\Controllers\Controller;
-//for retailer panel
-use App\Http\Controllers\Retailer\WebhookApiController as WebhookApi;
-use App\Http\Controllers\Retailer\ProfileController as RetailerProfile;
-use App\Http\Controllers\Retailer\DashboardController as RetailerDashboard;
-use App\Http\Controllers\Retailer\PassbookController as RetailerPassbook;
-use App\Http\Controllers\Retailer\TopupController as RetailerTopup;
-use App\Http\Controllers\Retailer\Transaction\OfflinePayoutApiController as OfflinePayout;
-use App\Http\Controllers\Retailer\Transaction\RetailerTransController as RetailerRetailerTrans;
-use App\Http\Controllers\Retailer\TransactionController as RetailerTransaction;
-use App\Http\Controllers\Retailer\EcollectionController as RetailerECollection;
-
-//for employee panel
-use App\Http\Controllers\Employee\LoginController as EmployeeLogin;
-use App\Http\Controllers\Employee\ProfileController as EmployeeProfile;
-use App\Http\Controllers\Employee\DashboardController as EmployeeDashboard;
-use App\Http\Controllers\Employee\TopupRequestController as EmployeeTopupRequest;
-use App\Http\Controllers\Employee\TransactionController as EmployeeTransaction;
-
-//for Distributor panel
-use App\Http\Controllers\Distributor\LoginController as DistributorLogin;
-use App\Http\Controllers\Distributor\ProfileController as DistributorProfile;
-use App\Http\Controllers\Distributor\DashboardController as DistributorDashboard;
-use App\Http\Controllers\Distributor\TopupRequestController as DistributorTopupRequest;
-use App\Http\Controllers\Distributor\TransactionController as DistributorTransaction;
-use App\Http\Controllers\Distributor\OutletController as DistributorOutlet;
-use App\Http\Controllers\Distributor\PassbookController as DistributorPassbook;
-use App\Http\Controllers\Distributor\MakeTransactionController as MakeTransaction;
-use App\Http\Controllers\Distributor\MakeTopupController as MakeTopup;
-use App\Http\Controllers\Distributor\WebhookApiController as DWebhookApi;
-
-use App\Http\Controllers\PHPMailerController;
 use App\Mail\SendMail;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MailController;
+use App\Http\Controllers\PHPMailerController;
+use App\Http\Controllers\Admin\RegisterController;
+use App\Http\Controllers\Api\EcollectionController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Controllers\Admin\LoginController as AdminLogin;
+use App\Http\Controllers\Admin\OutletController as AdminOutlet;
+use App\Http\Controllers\Admin\ApiListController as AdminApiList;
+use App\Http\Controllers\Admin\EmployeeController as AdminEmployee;
+use App\Http\Controllers\Admin\PassbookController as AdminPassbook;
+use App\Http\Controllers\Employee\LoginController as EmployeeLogin;
+use App\Http\Controllers\Retailer\TopupController as RetailerTopup;
+use App\Http\Controllers\Admin\Action\DebitController as AdminDebit;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Admin\PaymentMode\UpiController as AdminUpi;
+use App\Http\Controllers\Retailer\WebhookApiController as WebhookApi;
+//for retailer panel
+use App\Http\Controllers\Admin\Action\CreditController as AdminCredit;
+use App\Http\Controllers\Distributor\MakeTopupController as MakeTopup;
+use App\Http\Controllers\Employee\ProfileController as EmployeeProfile;
+use App\Http\Controllers\Retailer\ProfileController as RetailerProfile;
+use App\Http\Controllers\Admin\EcollectionController as AdminECollection;
+use App\Http\Controllers\Admin\TransactionController as AdminTransaction;
+use App\Http\Controllers\Distributor\LoginController as DistributorLogin;
+use App\Http\Controllers\Distributor\WebhookApiController as DWebhookApi;
+use App\Http\Controllers\Retailer\PassbookController as RetailerPassbook;
+
+//for employee panel
+use App\Http\Controllers\Admin\PaymentMode\QrCodeController as AdminQrCode;
+use App\Http\Controllers\Admin\TopupRequestController as AdminTopupRequest;
+use App\Http\Controllers\Distributor\OutletController as DistributorOutlet;
+use App\Http\Controllers\Employee\DashboardController as EmployeeDashboard;
+use App\Http\Controllers\Retailer\DashboardController as RetailerDashboard;
+
+//for Distributor panel
+use App\Http\Controllers\Admin\TransactionCommentController as AdminComment;
+use App\Http\Controllers\Distributor\ProfileController as DistributorProfile;
+use App\Http\Controllers\Admin\PaymentChannelController as AdminPaymentChannel;
+use App\Http\Controllers\Distributor\PassbookController as DistributorPassbook;
+use App\Http\Controllers\Employee\TransactionController as EmployeeTransaction;
+use App\Http\Controllers\Retailer\EcollectionController as RetailerECollection;
+use App\Http\Controllers\Retailer\TransactionController as RetailerTransaction;
+use App\Http\Controllers\Distributor\DashboardController as DistributorDashboard;
+use App\Http\Controllers\Employee\TopupRequestController as EmployeeTopupRequest;
+use App\Http\Controllers\Distributor\MakeTransactionController as MakeTransaction;
+
+use App\Http\Controllers\Admin\PaymentMode\BankAccountController as AdminBankAccount;
+use App\Http\Controllers\Distributor\TransactionController as DistributorTransaction;
+use App\Http\Controllers\Distributor\TopupRequestController as DistributorTopupRequest;
+use App\Http\Controllers\Retailer\AddressController;
+use App\Http\Controllers\Retailer\OrderController;
+use App\Http\Controllers\Retailer\Transaction\OfflinePayoutApiController as OfflinePayout;
+use App\Http\Controllers\Retailer\Transaction\RetailerTransController as RetailerRetailerTrans;
 
 Route::get("email", [Controller::class, "show"]);
 Route::get("get-blance0", [Controller::class, "getBlance0"]);
@@ -175,7 +177,24 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
 
 //for retailer
+
+
 Route::group(['prefix' => 'retailer', 'middleware' => 'retailer'], function () {
+
+  Route::get('address',[AddressController::class,'index'])->name('address.index');
+  Route::get('address/create',[AddressController::class,'create'])->name('address.create');
+  Route::post('address/store',[AddressController::class,'store'])->name('address.store');
+  Route::get('address/{id}/edit',[AddressController::class,'edit'])->name('address.edit');
+  Route::put('address/update/{id}',[AddressController::class,'update'])->name('address.update');
+  Route::get('address/{id}/changeStatus',[AddressController::class,'changeStatus'])->name('address.changeStatus');
+  Route::get('address/{id}',[AddressController::class,'destroy'])->name('address.destroy');
+
+  Route::get('order',[OrderController::class,'index'])->name('order.index');
+  Route::get('order/create',[OrderController::class,'create'])->name('order.create');
+  Route::post('order/store',[OrderController::class,'store'])->name('order.store');
+  Route::get('order/{id}/edit',[OrderController::class,'edit'])->name('order.edit');
+  Route::put('order/update/{id}',[OrderController::class,'update'])->name('order.update');
+  Route::get('order/delete/{id}',[OrderController::class,'destroy'])->name('order.destroy');
 
   Route::resource('profile', RetailerProfile::class);
   Route::get('pin-password', [RetailerProfile::class, 'pinPassword']);
