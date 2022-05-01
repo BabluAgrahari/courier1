@@ -197,7 +197,7 @@ class OrderController extends Controller
                 $order->ship_country = $request->bill_country;
                 $order->ship_state = $request->bill_state;
             } else {
-                $request->address_both_same = 0;
+                $order->address_both_same = 0;
                 $order->ship_address_1 = $request->ship_address_1;
                 $order->ship_address_2 = $request->ship_address_2;
                 $order->ship_pincode = $request->ship_pincode;
