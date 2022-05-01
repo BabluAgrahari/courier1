@@ -10,25 +10,19 @@
           </button>
         </div>
         <div class="modal-body">
-          <form class="form">
+          <form class="form" action="{{ route('order.shipment') }}" id="shipForm" method="POST">
+            @csrf()
+              <input type="hidden" name="id" class="ship_id">
               <div class="form-group">
-                  <label>Option</label>
-                  <input type="radio" name="api"> A
-
-                  <label>Option</label>
-                  <input type="radio" name="api"> A
-
-
-                  <label>Option</label>
-                  <input type="radio" name="api"> A
+                  <label>
+                  <input type="radio" name="api" value="shiprocket"> Shprocket
+                </label>
               </div>
-
-
-          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Done</button>
+          <button type="submit" class="btn btn-primary">Done</button>
+        </form>
         </div>
       </div>
     </div>

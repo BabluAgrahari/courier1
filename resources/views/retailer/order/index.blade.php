@@ -57,7 +57,7 @@
                                 <td>{{$val->order_date}}</td>
                                 <td>
                                     <a class="btn btn-warning btn-xs changeStatus" href="{{ route('order.edit',[$val->id]) }}">Edit</a>
-                                    <a type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#exampleModalCenter">
+                                    <a type="button" class="btn btn-info btn-xs shipment" data-toggle="modal" data-target="#exampleModalCenter" data-id={{$val->id}}>
                                         Ship
                                     </a>
                                 </td>
@@ -85,6 +85,12 @@
         $(document).ready(function() {
             $('.datatable').DataTable();
         });
+
+
+        $('body').on('click','.shipment',function(){
+            $('body').find('.ship_id').val($(this).data('id'))
+        });
+
     </script>
 @endpush
 @endsection

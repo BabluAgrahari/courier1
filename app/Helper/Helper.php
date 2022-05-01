@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Address;
+use App\Models\Order;
 use App\Models\Outlet;
 use App\Models\TransferHistory;
 use App\Models\User;
@@ -208,4 +210,95 @@ function verify_url($base_url)
         return false;
 
     return true;
+}
+
+function shiprocket($orderId) {
+
+    $order = Order::find($orderId);
+    $orderItems = json_encode($orderItems = $order->productDetails);
+    $packageDetail = $order->packageDetail;
+    $length = $packageDetail[0]['length'];
+    $width = $packageDetail[0]['width'];
+    $height = $packageDetail[0]['height'];
+    $weigth = $packageDetail[0]['weight'];
+    $pickup_address = Address::find($order->pickup_address_id)->address;
+
+    $payload = '{
+        "order_id": "'.$order->id.'",
+        "order_date": "'.$order->order_date.'",
+        "pickup_location": "W.Duniya",
+        "comment": "Reseller: M/s Goku",
+        "billing_customer_name": "Naruto",
+        "billing_last_name": "Uzumaki",
+        "billing_address": "House 221B, Leaf Village",
+        "billing_address_2": "Near Hokage House",
+        "billing_city": "New Delhi",
+        "billing_pincode": "110002",
+        "billing_state": "Delhi",
+        "billing_country": "India",
+        "billing_email": "naruto@uzumaki.com",
+        "billing_phone": "9876543210",
+        "shipping_is_billing": true,
+        "shipping_customer_name": "",
+        "shipping_last_name": "",
+        "shipping_address": "",
+        "shipping_address_2": "",
+        "shipping_city": "",
+        "shipping_pincode": "",
+        "shipping_country": "",
+        "shipping_state": "",
+        "shipping_email": "",
+        "shipping_phone": "",
+        "order_items": [
+          {
+            "name": "Kunai",
+            "sku": "chakra123",
+            "units": 10,
+            "selling_price": "900",
+            "discount": "",
+            "tax": "",
+            "hsn": 441122
+          }
+        ],
+        "payment_method": "Prepaid",
+        "shipping_charges": 0,
+        "giftwrap_charges": 0,
+        "transaction_charges": 0,
+        "total_discount": 0,
+        "sub_total": 9000,
+        "length": "'.$length.'",
+        "breadth": "'.$width.'",
+        "height": "'.$height.'",
+        "weight": "'.$weigth.'"
+      }';
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "$payload",
+        CURLOPT_HTTPHEADER => array(
+            "authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjE2MDM5MDksImlzcyI6Imh0dHBzOi8vYXBpdjIuc2hpcHJvY2tldC5pbi92MS9leHRlcm5hbC9hdXRoL2xvZ2luIiwiaWF0IjoxNjUxMzg0NzcyLCJleHAiOjE2NTIyNDg3NzIsIm5iZiI6MTY1MTM4NDc3MiwianRpIjoiZVNpWHNwVXd6aTZxSEdwVSJ9.nEuAbh9Ph-ovVfKhoDCbqRdlMKTMHT5-nnzFF-Clmuw",
+            "cache-control: no-cache",
+            "content-type: application/json",
+            "postman-token: 3f6d69a0-03ad-ba67-7db2-a1e3999c5f25"
+        ),
+    ));
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    if ($err) {
+        return "cURL Error #:" . $err;
+    } else {
+        return $response;
+    }
 }

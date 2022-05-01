@@ -195,6 +195,7 @@ Route::group(['prefix' => 'retailer', 'middleware' => 'retailer'], function () {
   Route::get('order/{id}/edit',[OrderController::class,'edit'])->name('order.edit');
   Route::put('order/update/{id}',[OrderController::class,'update'])->name('order.update');
   Route::get('order/delete/{id}',[OrderController::class,'destroy'])->name('order.destroy');
+  Route::post('order/shipment',[OrderController::class,'shipment'])->name('order.shipment');
 
   Route::resource('profile', RetailerProfile::class);
   Route::get('pin-password', [RetailerProfile::class, 'pinPassword']);
