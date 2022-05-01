@@ -55,7 +55,12 @@
                                 <td>{{$val->buyer_name}}</td>
                                 <td>{{$val->phone}}</td>
                                 <td>{{$val->order_date}}</td>
-                                <td><a class="btn btn-warning btn-xs changeStatus" href="{{ route('order.edit',[$val->id]) }}">Edit</a></td>
+                                <td>
+                                    <a class="btn btn-warning btn-xs changeStatus" href="{{ route('order.edit',[$val->id]) }}">Edit</a>
+                                    <a type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#exampleModalCenter">
+                                        Ship
+                                    </a>
+                                </td>
                             </tr>
                     @endforeach
                 </tbody>
@@ -74,7 +79,7 @@
 </section>
 <!-- /.content -->
 
-
+@include('retailer.order.model')
 @push('custom-script')
     <script>
         $(document).ready(function() {
