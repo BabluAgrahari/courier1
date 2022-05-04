@@ -467,6 +467,10 @@
                                 <input type="text" name="amount[]" class="form-control form-control-sm amount" id="amount"
                                     placeholder="Amount" value="{{ old('amount',$val["amount"]) }}" readonly>
                             </div>
+
+                            <div class="col-sm-3">
+                                <button class="remove_product btn btn-danger mt-3"> Remove </button>
+                            </div>
                         </div>
                         @empty
 
@@ -552,28 +556,34 @@
                         <hr>
                         @php $packageDetails = collect($order->packageDetail); @endphp
                         @foreach ($packageDetails as $val)
-                        <div class="row">
-                            <div class="col-3">
-                                <label>Weight (KG)</label>
-                                <input type="text" name="weight[]" placeholder="KG" value="{{ old('weigth',$val['weight']) }}" class="form-control form-control-sm"
-                                    required>
-                            </div>
-                            <div class="col-3">
-                                <label>Length (CM)</label>
-                                <input type="text" name="length[]" placeholder="CM" value="{{ old('weigth',$val['length']) }}" class="form-control form-control-sm"
-                                    required>
-                            </div>
+                        <div class="package">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label>Weight (KG)</label>
+                                    <input type="text" name="weight[]" placeholder="KG" value="{{ old('weigth',$val['weight']) }}" class="form-control form-control-sm"
+                                        required>
+                                </div>
+                                <div class="col-2">
+                                    <label>Length (CM)</label>
+                                    <input type="text" name="length[]" placeholder="CM" value="{{ old('weigth',$val['length']) }}" class="form-control form-control-sm"
+                                        required>
+                                </div>
 
-                            <div class="col-3">
-                                <label>Width (CM)</label>
-                                <input type="text" name="width[]" placeholder="CM" value="{{ old('weigth',$val['width']) }}" class="form-control form-control-sm"
-                                    required>
-                            </div>
+                                <div class="col-2">
+                                    <label>Width (CM)</label>
+                                    <input type="text" name="width[]" placeholder="CM" value="{{ old('weigth',$val['width']) }}" class="form-control form-control-sm"
+                                        required>
+                                </div>
 
-                            <div class="col-3">
-                                <label>Height (CM)</label>
-                                <input type="text" name="height[]" placeholder="CM" value="{{ old('weigth',$val['height']) }}" class="form-control form-control-sm"
-                                    required>
+                                <div class="col-2">
+                                    <label>Height (CM)</label>
+                                    <input type="text" name="height[]" placeholder="CM" value="{{ old('weigth',$val['height']) }}" class="form-control form-control-sm"
+                                        required>
+                                </div>
+
+                                <div class="col-2">
+                                    <button type="button" class="remove_package btn btn-danger mt-3">Remove</button>
+                                </div>
                             </div>
                         </div>
                         @endforeach
@@ -627,17 +637,143 @@
             let addMore = $('.productFirst').clone().html();
             $('body').on('click', '.addMore', function(e) {
                 e.preventDefault();
-                $('.productFirst').append(addMore);
+                $('.productFirst').append(`
+                        <hr>
+                        <div class="row form-group">
+                            <div class="col-sm-3">
+                                <label for="product_name">
+                                    Product Name <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="product_name[]" class="form-control form-control-sm"
+                                    id="product_name" placeholder="Product Name" value="{{ old('product_name') }}"
+                                    required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="sku">
+                                    SKU <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="sku[]" class="form-control form-control-sm" id="sku"
+                                    placeholder="SKU" value="{{ old('sku') }}" required>
+                            </div>
+
+
+                            <div class="col-sm-3">
+                                <label for="qty">
+                                    Quantity <span class="requride_cls">*</span>
+                                </label>
+                                <input type="number" name="qty[]" class="form-control form-control-sm qty calculate"
+                                    id="qty" placeholder="Quantity" value="{{ old('qty', 0) }}" required>
+                            </div>
+
+
+                            <div class="col-sm-3">
+                                <label for="unit_price">
+                                    Unit Price <span class="requride_cls">*</span>
+                                </label>
+                                <input type="number" name="unit_price[]"
+                                    class="form-control form-control-sm unit_price calculate" id="unit_price"
+                                    placeholder="Unit Price" value="{{ old('unit_price') }}" required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="tax_rate">
+                                    Tax Rate<span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="tax_rate[]" class="form-control form-control-sm" id="tax_rate"
+                                    placeholder="Tax Rate" value="{{ old('tax_rate') }}" required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="hsn">
+                                    HSN <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="hsn[]" class="form-control form-control-sm" id="hsn"
+                                    placeholder="HSN" value="{{ old('hsn') }}" required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="discount">
+                                    Discount (optional) <span class="requride_cls">*</span>
+                                </label>
+                                <input type="number" name="discount[]"
+                                    class="form-control form-control-sm discount calculate" id="discount"
+                                    placeholder="Discount" value="{{ old('discount', 0) }}" required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="category">
+                                    Product Category <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="category[]" class="form-control form-control-sm" id="category"
+                                    placeholder="Product Category" value="{{ old('category') }}" required>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="amount">
+                                    Total Amount <span class="requride_cls">*</span>
+                                </label>
+                                <input type="text" name="amount[]" class="form-control form-control-sm amount"
+                                    id="amount" placeholder="Amount" value="{{ old('amount', 0) }}" readonly>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <button class="remove_product btn btn-danger mt-3"> Remove </button>
+                            </div>
+                        </div>`);
             })
 
-            $('body').on('click', '.remove', function(e) {
+            $('body').on('click', '.remove_product', function(e) {
                 e.preventDefault();
+                if ($(this).closest('.productFirst').find('.form-group').length > 1) {
+                    $(this).closest('.form-group').remove();
+                }
             })
 
-            let addPckage = $('.packageFirst').clone().html();
+            $('body').on('click', '.remove_package', function(e) {
+                e.preventDefault();
+
+                if($('.package').length >1) {
+                    $(this).closest('.package').remove();
+                }
+            })
+
+            let addPckage = $('.packageFirst').clone();
             $('body').on('click', '.addPackage', function(e) {
                 e.preventDefault();
-                $('.packageWeight').append(addPckage);
+                $('.packageWeight').append(` <div class="form-group packageFirst">
+                        <div class="package">
+                            <hr>
+                            <div class="row">
+                                <div class="col-2">
+                                    <label>Weight (KG)</label>
+                                    <input type="text" name="weight[]" placeholder="KG" value="0"
+                                        class="form-control form-control-sm" required>
+                                </div>
+                                <div class="col-2">
+                                    <label>Length (CM)</label>
+                                    <input type="text" name="length[]" placeholder="CM" value="0"
+                                        class="form-control form-control-sm" required>
+                                </div>
+
+                                <div class="col-2">
+                                    <label>Width (CM)</label>
+                                    <input type="text" name="width[]" placeholder="CM" value="0"
+                                        class="form-control form-control-sm" required>
+                                </div>
+
+                                <div class="col-2">
+                                    <label>Height (CM)</label>
+                                    <input type="text" name="height[]" placeholder="CM" value="0"
+                                        class="form-control form-control-sm" required>
+                                </div>
+
+                                <div class="col-2">
+                                    <button type="button" class="remove_package btn btn-danger mt-3">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`);
             })
 
             const calculation = () => {

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Address;
 use Exception;
 use Illuminate\Http\Request;
-
+use App\Http\Validation\AddressValidation;
 class AddressController extends Controller
 {
 
@@ -42,7 +42,7 @@ class AddressController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddressValidation $request)
     {
         try{
         $address = new Address();
@@ -88,7 +88,7 @@ class AddressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AddressValidation $request, $id)
     {
         try{
             $address = Address::find($id);

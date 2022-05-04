@@ -50,10 +50,9 @@
                                 Address Title <span class="requride_cls">*</span>
                             </label>
                             <input type="text" name="title" class="form-control input-sm" id="title" placeholder="Address Title"
-                                value="{{ old('title') }}" required>
-                            @if ($errors->has('title'))
-                                <span class="requride_cls"><strong>{{ $errors->first('title') }}</strong></span>
-                            @endif
+                                value="{{ old('title') }}">
+                                <span class="requride_cls" id="title_msg"><strong></strong></span>
+
                         </div>
 
                         <div class="col-sm-4">
@@ -61,13 +60,11 @@
                                 Status <span class="requride_cls">*</span>
                             </label>
 
-                            <select name="status" class="form-control" id="status" required>
+                            <select name="status" class="form-control" id="status">
                                 <option value="1">Active</option>
                                 <option value="0">Deactive</option>
                             </select>
-                            @if ($errors->has('status'))
-                                <span class="requride_cls"><strong>{{ $errors->first('status') }}</strong></span>
-                            @endif
+                            <span class="requride_cls" id="status_msg"><strong></strong></span>
                         </div>
 
                         <div class="col-sm-4">
@@ -76,9 +73,7 @@
                             </label>
                             <input type="number" name="pincode" class="form-control input-sm" id="pincode" placeholder="Pincode"
                                 value="{{ old('pincode') }}">
-                            @if ($errors->has('pincode'))
-                                <span class="requride_cls"><strong>{{ $errors->first('pincode') }}</strong></span>
-                            @endif
+                                <span class="requride_cls" id="pincode_msg"><strong></strong></span>
                         </div>
                     </div>
                 </div>
@@ -87,10 +82,8 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="address">Address *</label>
-                            <textarea cols="4" rows="4" class="form-control" placeholder="Address" id="address" name="address" required></textarea>
-                            @if ($errors->has('address'))
-                                <span class="requride_cls"><strong>{{ $errors->first('address') }}</strong></span>
-                            @endif
+                            <textarea cols="4" rows="4" class="form-control" placeholder="Address" id="address" name="address"></textarea>
+                            <span class="requride_cls" id="address_msg"><strong></strong></span>
                         </div>
                     </div>
                 </div>
@@ -134,9 +127,10 @@
                 $('.cover-loader').addClass('d-none');
 
                 /*Start Validation Error Message*/
-                $('span.custom-text-danger').html('');
+                $('span.requride_cls').html('');
                 $.each(res.validation, (index, msg) => {
                     $(`#${index}_msg`).html(`${msg}`);
+                    $(`#${index}_msg`).addClass('text-danger')
                 })
                 /*Start Validation Error Message*/
 

@@ -4,7 +4,7 @@
 
 <div class="cover-loader d-none">
     <div class="loader"></div>
-  </div>
+</div>
 
 <section class="content-header">
     <div class="container-fluid">
@@ -61,8 +61,8 @@
                             <label for="phone">
                                 Phone <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="phone" class="form-control form-control-sm" id="phone" placeholder="Phone"
-                                value="{{ old('phone') }}" required>
+                            <input type="text" name="phone" class="form-control form-control-sm" id="phone"
+                                placeholder="Phone" value="{{ old('phone') }}" required>
                             @if ($errors->has('phone'))
                                 <span class="requride_cls"><strong>{{ $errors->first('phone') }}</strong></span>
                             @endif
@@ -135,8 +135,8 @@
                                 <label for="pincode">
                                     Pincode <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="bill_pincode" class="form-control form-control-sm" id="pincode"
-                                    placeholder="Pincode" value="{{ old('pincode') }}">
+                                <input type="number" name="bill_pincode" class="form-control form-control-sm"
+                                    id="pincode" placeholder="Pincode" value="{{ old('pincode') }}">
                                 @if ($errors->has('pincode'))
                                     <span
                                         class="requride_cls"><strong>{{ $errors->first('pincode') }}</strong></span>
@@ -218,8 +218,8 @@
                                     Shipping Address 2<span class="requride_cls">*</span>
                                 </label>
                                 <input type="text" name="ship_address_2" class="form-control form-control-sm"
-                                    id="ship_address_2" placeholder="Street Name" value="{{ old('ship_address_2') }}"
-                                    >
+                                    id="ship_address_2" placeholder="Street Name"
+                                    value="{{ old('ship_address_2') }}">
                                 @if ($errors->has('ship_address_2'))
                                     <span
                                         class="requride_cls"><strong>{{ $errors->first('ship_address_2') }}</strong></span>
@@ -234,8 +234,8 @@
                                 <label for="pincode">
                                     Pincode <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="ship_pincode" class="form-control form-control-sm" id="pincode"
-                                    placeholder="Pincode" value="{{ old('pincode') }}">
+                                <input type="number" name="ship_pincode" class="form-control form-control-sm"
+                                    id="pincode" placeholder="Pincode" value="{{ old('pincode') }}">
                                 @if ($errors->has('pincode'))
                                     <span
                                         class="requride_cls"><strong>{{ $errors->first('pincode') }}</strong></span>
@@ -247,7 +247,7 @@
                                     City <span class="requride_cls">*</span>
                                 </label>
                                 <input type="text" name="ship_city" class="form-control form-control-sm" id="city"
-                                    placeholder="City" value="{{ old('ship_city') }}" >
+                                    placeholder="City" value="{{ old('ship_city') }}">
                                 @if ($errors->has('ship_city'))
                                     <span class="requride_cls"><strong>{{ $errors->first('city') }}</strong></span>
                                 @endif
@@ -398,16 +398,17 @@
                                 <label for="product_name">
                                     Product Name <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="product_name[]" class="form-control form-control-sm" id="product_name"
-                                    placeholder="Product Name" value="{{ old('product_name') }}" required>
+                                <input type="text" name="product_name[]" class="form-control form-control-sm"
+                                    id="product_name" placeholder="Product Name" value="{{ old('product_name') }}"
+                                    required>
                             </div>
 
                             <div class="col-sm-3">
                                 <label for="sku">
                                     SKU <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="sku[]" class="form-control form-control-sm" id="sku" placeholder="SKU"
-                                    value="{{ old('sku') }}" required>
+                                <input type="text" name="sku[]" class="form-control form-control-sm" id="sku"
+                                    placeholder="SKU" value="{{ old('sku') }}" required>
                             </div>
 
 
@@ -415,8 +416,8 @@
                                 <label for="qty">
                                     Quantity <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="qty[]" class="form-control form-control-sm qty calculate" id="qty"
-                                    placeholder="Quantity" value="{{ old('qty',0) }}" required>
+                                <input type="number" name="qty[]" class="form-control form-control-sm qty calculate"
+                                    id="qty" placeholder="Quantity" value="{{ old('qty', 0) }}" required>
                             </div>
 
 
@@ -424,8 +425,9 @@
                                 <label for="unit_price">
                                     Unit Price <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="unit_price[]" class="form-control form-control-sm unit_price calculate" id="unit_price"
-                                    placeholder="Unit Price" value="{{ old('unit_price') }}"  required>
+                                <input type="number" name="unit_price[]"
+                                    class="form-control form-control-sm unit_price calculate" id="unit_price"
+                                    placeholder="Unit Price" value="{{ old('unit_price') }}" required>
                             </div>
 
                             <div class="col-sm-3">
@@ -440,16 +442,17 @@
                                 <label for="hsn">
                                     HSN <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="hsn[]" class="form-control form-control-sm" id="hsn" placeholder="HSN"
-                                    value="{{ old('hsn') }}" required>
+                                <input type="text" name="hsn[]" class="form-control form-control-sm" id="hsn"
+                                    placeholder="HSN" value="{{ old('hsn') }}" required>
                             </div>
 
                             <div class="col-sm-3">
                                 <label for="discount">
                                     Discount (optional) <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="discount[]" class="form-control form-control-sm discount calculate" id="discount"
-                                    placeholder="Discount" value="{{ old('discount',0) }}" required>
+                                <input type="number" name="discount[]"
+                                    class="form-control form-control-sm discount calculate" id="discount"
+                                    placeholder="Discount" value="{{ old('discount', 0) }}" required>
                             </div>
 
                             <div class="col-sm-3">
@@ -464,8 +467,12 @@
                                 <label for="amount">
                                     Total Amount <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="amount[]" class="form-control form-control-sm amount" id="amount"
-                                    placeholder="Amount" value="{{ old('amount',0) }}" readonly>
+                                <input type="text" name="amount[]" class="form-control form-control-sm amount"
+                                    id="amount" placeholder="Amount" value="{{ old('amount', 0) }}" readonly>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <button class="remove_product btn btn-danger mt-3"> Remove </button>
                             </div>
                         </div>
                     </div>
@@ -497,7 +504,8 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Sub Total</label>
-                                <input type="text" name="sub_total" value="0" class="form-control" id="sub_total" required>
+                                <input type="text" name="sub_total" value="0" class="form-control" id="sub_total"
+                                    required>
                             </div>
                         </div>
                     </div>
@@ -546,38 +554,47 @@
 
                 <div class="packageWeight">
                     <div class="form-group packageFirst">
-                        <hr>
-                        <div class="row">
-                            <div class="col-3">
-                                <label>Weight (KG)</label>
-                                <input type="text" name="weight[]" placeholder="KG" value="0" class="form-control form-control-sm"
-                                    required>
-                            </div>
-                            <div class="col-3">
-                                <label>Length (CM)</label>
-                                <input type="text" name="length[]" placeholder="CM" value="0" class="form-control form-control-sm"
-                                    required>
-                            </div>
+                        <div class="package">
+                            <hr>
+                            <div class="row">
+                                <div class="col-2">
+                                    <label>Weight (KG)</label>
+                                    <input type="text" name="weight[]" placeholder="KG" value="0"
+                                        class="form-control form-control-sm" required>
+                                </div>
+                                <div class="col-2">
+                                    <label>Length (CM)</label>
+                                    <input type="text" name="length[]" placeholder="CM" value="0"
+                                        class="form-control form-control-sm" required>
+                                </div>
 
-                            <div class="col-3">
-                                <label>Width (CM)</label>
-                                <input type="text" name="width[]" placeholder="CM" value="0" class="form-control form-control-sm"
-                                    required>
-                            </div>
+                                <div class="col-2">
+                                    <label>Width (CM)</label>
+                                    <input type="text" name="width[]" placeholder="CM" value="0"
+                                        class="form-control form-control-sm" required>
+                                </div>
 
-                            <div class="col-3">
-                                <label>Height (CM)</label>
-                                <input type="text" name="height[]" placeholder="CM" value="0" class="form-control form-control-sm"
-                                    required>
+                                <div class="col-2">
+                                    <label>Height (CM)</label>
+                                    <input type="text" name="height[]" placeholder="CM" value="0"
+                                        class="form-control form-control-sm" required>
+                                </div>
+
+                                <div class="col-2">
+                                    <button type="button" class="remove_package btn btn-danger mt-3">Remove</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
-
-                <div class="form-group"><br>
+                <div class="form-group mt-3">
                     <button type="button" class="addPackage btn btn-success">Add More.</button>
                 </div>
+
+
+
 
 
         </div>
@@ -601,51 +618,51 @@
         $(document).ready(function() {
 
             /*start form submit functionality*/
-    $("#form").submit(function(e) {
-        e.preventDefault();
-        formData = new FormData(this);
-        var url = $(this).attr('action');
-        $.ajax({
-            data: formData,
-            type: "POST",
-            url: url,
-            dataType: 'json',
-            cache: false,
-            contentType: false,
-            processData: false,
-            beforeSend: function() {
-                $('.cover-loader').removeClass('d-none');
-            },
-            success: function(res) {
-                //hide loader
-                $('.cover-loader').addClass('d-none');
+            $("#form").submit(function(e) {
+                e.preventDefault();
+                formData = new FormData(this);
+                var url = $(this).attr('action');
+                $.ajax({
+                    data: formData,
+                    type: "POST",
+                    url: url,
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $('.cover-loader').removeClass('d-none');
+                    },
+                    success: function(res) {
+                        //hide loader
+                        $('.cover-loader').addClass('d-none');
 
-                /*Start Validation Error Message*/
-                $('span.custom-text-danger').html('');
-                $.each(res.validation, (index, msg) => {
-                    $(`#${index}_msg`).html(`${msg}`);
-                })
-                /*Start Validation Error Message*/
+                        /*Start Validation Error Message*/
+                        $('span.custom-text-danger').html('');
+                        $.each(res.validation, (index, msg) => {
+                            $(`#${index}_msg`).html(`${msg}`);
+                        })
+                        /*Start Validation Error Message*/
 
-                /*Start Status message*/
-                if (res.status == 'success' || res.status == 'error') {
-                    Swal.fire(
-                        `${res.status}!`,
-                        res.msg,
-                        `${res.status}`,
-                    )
-                }
-                /*End Status message*/
+                        /*Start Status message*/
+                        if (res.status == 'success' || res.status == 'error') {
+                            Swal.fire(
+                                `${res.status}!`,
+                                res.msg,
+                                `${res.status}`,
+                            )
+                        }
+                        /*End Status message*/
 
-                //for reset all field
-                if (res.status == 'success') {
-                    $('#form')[0].reset();
-                    $('#custom-file-label').html('');
-                }
-            }
-        });
-    });
-    /*end form submit functionality*/
+                        //for reset all field
+                        if (res.status == 'success') {
+                            $('#form')[0].reset();
+                            $('#custom-file-label').html('');
+                        }
+                    }
+                });
+            });
+            /*end form submit functionality*/
 
 
             $('body').on('change', '#same_both', function() {
@@ -670,9 +687,22 @@
                 $('.productFirst').append(addMore);
             })
 
-            $('body').on('click', '.remove', function(e) {
+            $('body').on('click', '.remove_product', function(e) {
                 e.preventDefault();
+                if ($(this).closest('.productFirst').find('.form-group').length > 1) {
+                    $(this).closest('.form-group').remove();
+                }
             })
+
+            $('body').on('click', '.remove_package', function(e) {
+                e.preventDefault();
+
+                if($('.package').length >1) {
+                    $(this).closest('.package').remove();
+                }
+            })
+
+
 
             let addPckage = $('.packageFirst').clone().html();
             $('body').on('click', '.addPackage', function(e) {
@@ -687,7 +717,7 @@
                 var discount = 0;
                 var amount = 0;
 
-                $('.discount').each(function(){
+                $('.discount').each(function() {
                     var unitPrice = $(this).closest('.form-group').find('.unit_price').val()
                     var qty = $(this).closest('.form-group').find('.qty').val()
                     var discount = $(this).val();
@@ -695,14 +725,14 @@
                     $(this).closest('.form-group').find('.amount').val(amount.toFixed(2));
                 })
 
-                $('.amount').each(function(){
+                $('.amount').each(function() {
                     sub_total += parseFloat($(this).val());
                 })
 
                 $('#sub_total').val(sub_total.toFixed(2));
             }
 
-            $('body').on('keyup','.calculate',function(){
+            $('body').on('keyup', '.calculate', function() {
                 calculation()
             })
         });
