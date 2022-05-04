@@ -133,9 +133,9 @@ class OrderController extends Controller
             $order->productDetails = $products;
             $order->packageDetail = $packageDetail;
             $order->save();
-            return redirect($this->route)->with('message', 'Order Details Save Successfully.');
+            return response(['status' => 'success', 'msg' => 'Order Created Successfully!']);
         } catch (Exception $e) {
-            return back()->with('error', $e->getMessage());
+            return response(['status' => 'error', 'msg' => 'Order Not Created!']);
         }
     }
 

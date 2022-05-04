@@ -392,7 +392,6 @@
             }
         });
     });
-
     /*end form submit functionality*/
 </script>
 @endpush

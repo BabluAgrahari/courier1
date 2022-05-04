@@ -44,7 +44,7 @@
                 <input type="hidden" value="{{ $address->id}}" name="id">
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <label for="name">
                                 Address Title <span class="requride_cls">*</span>
                             </label>
@@ -55,7 +55,7 @@
                             @endif
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <label for="status">
                                 Status <span class="requride_cls">*</span>
                             </label>
@@ -68,26 +68,26 @@
                                 <span class="requride_cls"><strong>{{ $errors->first('status') }}</strong></span>
                             @endif
                         </div>
+
+                        <div class="col-sm-4">
+                            <label for="pincode">
+                                Pincode <span class="requride_cls">*</span>
+                            </label>
+                            <input type="number" name="pincode" class="form-control input-sm" id="pincode" placeholder="Pincode"
+                                value="{{ old('pincode') }}">
+                            @if ($errors->has('pincode',$address->pincode))
+                                <span class="requride_cls"><strong>{{ $errors->first('pincode') }}</strong></span>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
+
                 <div class="row">
                     <div class="col-sm-6">
-                        <label for="pincode">
-                            Pincode <span class="requride_cls">*</span>
-                        </label>
-                        <input type="number" name="pincode" class="form-control input-sm" id="pincode" placeholder="Pincode"
-                            value="{{ old('pincode') }}">
-                        @if ($errors->has('pincode',$address->pincode))
-                            <span class="requride_cls"><strong>{{ $errors->first('pincode') }}</strong></span>
-                        @endif
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
                         <div class="form-group">
                             <label for="address">Address *</label>
-                            <textarea cols="4" rows="4" class="form-control" placeholder="Address" id="address" name="address" required>
+                            <textarea cols="4" rows="3" class="form-control" placeholder="Address" id="address" name="address" required>
                                 {{$address->address}}
                             </textarea>
                             @if ($errors->has('address'))

@@ -2,6 +2,9 @@
 @section('content')
 @section('page_heading', 'Spent Amount Topup List')
 
+<div class="cover-loader d-none">
+    <div class="loader"></div>
+  </div>
 
 <section class="content-header">
     <div class="container-fluid">
@@ -42,11 +45,11 @@
                 @csrf
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <label for="buyer_name">
                                 Buyer Name <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="buyer_name" class="form-control input-sm" id="buyer_name"
+                            <input type="text" name="buyer_name" class="form-control form-control-sm" id="buyer_name"
                                 placeholder="Buyer Name" value="{{ old('buyer_name') }}" required>
                             @if ($errors->has('buyer_name'))
                                 <span
@@ -54,38 +57,34 @@
                             @endif
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <label for="phone">
                                 Phone <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="phone" class="form-control input-sm" id="phone" placeholder="Phone"
+                            <input type="text" name="phone" class="form-control form-control-sm" id="phone" placeholder="Phone"
                                 value="{{ old('phone') }}" required>
                             @if ($errors->has('phone'))
                                 <span class="requride_cls"><strong>{{ $errors->first('phone') }}</strong></span>
                             @endif
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <label for="phone_alt_alt">
                                 Alternate Phone <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="phone_alt" class="form-control input-sm" id="phone_alt"
+                            <input type="text" name="phone_alt" class="form-control form-control-sm" id="phone_alt"
                                 placeholder="Alternate Phone" value="{{ old('phone_alt') }}" required>
                             @if ($errors->has('phone_alt'))
                                 <span
                                     class="requride_cls"><strong>{{ $errors->first('phone_alt') }}</strong></span>
                             @endif
                         </div>
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <label for="email">
                                 E-Mail ID <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="email" class="form-control input-sm" id="email"
+                            <input type="text" name="email" class="form-control form-control-sm" id="email"
                                 placeholder="E-Mail" value="{{ old('email') }}" required>
                             @if ($errors->has('email'))
                                 <span class="requride_cls"><strong>{{ $errors->first('email') }}</strong></span>
@@ -93,6 +92,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <hr>
                 <h3>Buyer Address</h3>
@@ -105,7 +105,7 @@
                                 <label for="bill_address_1">
                                     Billing Address 1<span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="bill_address_1" class="form-control input-sm"
+                                <input type="text" name="bill_address_1" class="form-control form-control-sm"
                                     id="bill_address_1" placeholder="House Building No"
                                     value="{{ old('bill_address_1') }}" required>
                                 @if ($errors->has('bill_address_1'))
@@ -118,7 +118,7 @@
                                 <label for="bill_address_2">
                                     Billing Address 2<span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="bill_address_2" class="form-control input-sm"
+                                <input type="text" name="bill_address_2" class="form-control form-control-sm"
                                     id="bill_address_2" placeholder="Street Name" value="{{ old('bill_address_2') }}"
                                     required>
                                 @if ($errors->has('bill_address_2'))
@@ -135,7 +135,7 @@
                                 <label for="pincode">
                                     Pincode <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="bill_pincode" class="form-control input-sm" id="pincode"
+                                <input type="number" name="bill_pincode" class="form-control form-control-sm" id="pincode"
                                     placeholder="Pincode" value="{{ old('pincode') }}">
                                 @if ($errors->has('pincode'))
                                     <span
@@ -147,7 +147,7 @@
                                 <label for="city">
                                     City <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="bill_city" class="form-control input-sm" id="city"
+                                <input type="text" name="bill_city" class="form-control form-control-sm" id="city"
                                     placeholder="City" value="{{ old('bill_city') }}" required>
                                 @if ($errors->has('bill_city'))
                                     <span class="requride_cls"><strong>{{ $errors->first('city') }}</strong></span>
@@ -204,7 +204,7 @@
                                 <label for="ship_address_1">
                                     Shipping Address 1<span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="ship_address_1" class="form-control input-sm"
+                                <input type="text" name="ship_address_1" class="form-control form-control-sm"
                                     id="ship_address_1" placeholder="House Building No"
                                     value="{{ old('ship_address_1') }}">
                                 @if ($errors->has('ship_address_1'))
@@ -217,7 +217,7 @@
                                 <label for="ship_address_2">
                                     Shipping Address 2<span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="ship_address_2" class="form-control input-sm"
+                                <input type="text" name="ship_address_2" class="form-control form-control-sm"
                                     id="ship_address_2" placeholder="Street Name" value="{{ old('ship_address_2') }}"
                                     >
                                 @if ($errors->has('ship_address_2'))
@@ -234,7 +234,7 @@
                                 <label for="pincode">
                                     Pincode <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="ship_pincode" class="form-control input-sm" id="pincode"
+                                <input type="number" name="ship_pincode" class="form-control form-control-sm" id="pincode"
                                     placeholder="Pincode" value="{{ old('pincode') }}">
                                 @if ($errors->has('pincode'))
                                     <span
@@ -246,7 +246,7 @@
                                 <label for="city">
                                     City <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="ship_city" class="form-control input-sm" id="city"
+                                <input type="text" name="ship_city" class="form-control form-control-sm" id="city"
                                     placeholder="City" value="{{ old('ship_city') }}" >
                                 @if ($errors->has('ship_city'))
                                     <span class="requride_cls"><strong>{{ $errors->first('city') }}</strong></span>
@@ -301,7 +301,7 @@
                             <label for="location">
                                 Enter Location<span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="location" class="form-control input-sm" id="location"
+                            <input type="text" name="location" class="form-control form-control-sm" id="location"
                                 placeholder="Enter a Location" value="{{ old('location') }}" required>
                             @if ($errors->has('location'))
                                 <span
@@ -314,11 +314,11 @@
                 <h3>Order Details</h3>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <label for="order_id">
                                 Order ID <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="order_id" class="form-control input-sm" id="order_id"
+                            <input type="text" name="order_id" class="form-control form-control-sm" id="order_id"
                                 placeholder="Order ID" value="ORD-{{ random_int(00000000000, 999999999) }}" required>
                             @if ($errors->has('order_id'))
                                 <span
@@ -326,11 +326,11 @@
                             @endif
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <label for="order_id">
                                 Order Date <span class="requride_cls">*</span>
                             </label>
-                            <input type="date" name="order_date" class="form-control input-sm" id="order_date"
+                            <input type="date" name="order_date" class="form-control form-control-sm" id="order_date"
                                 placeholder="Order Date" value="ORD-{{ random_int(00000000000, 999999999) }}"
                                 required>
                             @if ($errors->has('order_date'))
@@ -338,16 +338,12 @@
                                     class="requride_cls"><strong>{{ $errors->first('order_date') }}</strong></span>
                             @endif
                         </div>
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <label for="order_channel">
                                 Order Channel <span class="requride_cls">*</span>
                             </label>
-                            <select name="order_channel" class="form-control" required>
+                            <select name="order_channel" class="form-control form-control-sm" required>
                                 <option>Select Channel</option>
                                 <option>Channel 1</option>
                             </select>
@@ -358,11 +354,11 @@
                             @endif
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <label for="order_type">
                                 Order Type <span class="requride_cls">*</span>
                             </label>
-                            <select name="order_type" class="form-control" required>
+                            <select name="order_type" class="form-control form-control-sm" required>
                                 <option>Order Type</option>
                                 <option>Online</option>
                             </select>
@@ -375,13 +371,14 @@
                     </div>
                 </div>
 
+
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <label for="order_tag">
                                 Order Tag <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="order_tag" class="form-control input-sm" id="order_tag"
+                            <input type="text" name="order_tag" class="form-control form-control-sm" id="order_tag"
                                 placeholder="Order Tag" value="{{ old('order_tag') }}" required>
                             @if ($errors->has('order_tag'))
                                 <span
@@ -401,7 +398,7 @@
                                 <label for="product_name">
                                     Product Name <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="product_name[]" class="form-control input-sm" id="product_name"
+                                <input type="text" name="product_name[]" class="form-control form-control-sm" id="product_name"
                                     placeholder="Product Name" value="{{ old('product_name') }}" required>
                             </div>
 
@@ -409,7 +406,7 @@
                                 <label for="sku">
                                     SKU <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="sku[]" class="form-control input-sm" id="sku" placeholder="SKU"
+                                <input type="text" name="sku[]" class="form-control form-control-sm" id="sku" placeholder="SKU"
                                     value="{{ old('sku') }}" required>
                             </div>
 
@@ -418,7 +415,7 @@
                                 <label for="qty">
                                     Quantity <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="qty[]" class="form-control input-sm qty calculate" id="qty"
+                                <input type="number" name="qty[]" class="form-control form-control-sm qty calculate" id="qty"
                                     placeholder="Quantity" value="{{ old('qty',0) }}" required>
                             </div>
 
@@ -427,7 +424,7 @@
                                 <label for="unit_price">
                                     Unit Price <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="unit_price[]" class="form-control input-sm unit_price calculate" id="unit_price"
+                                <input type="number" name="unit_price[]" class="form-control form-control-sm unit_price calculate" id="unit_price"
                                     placeholder="Unit Price" value="{{ old('unit_price') }}"  required>
                             </div>
 
@@ -435,7 +432,7 @@
                                 <label for="tax_rate">
                                     Tax Rate<span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="tax_rate[]" class="form-control input-sm" id="tax_rate"
+                                <input type="text" name="tax_rate[]" class="form-control form-control-sm" id="tax_rate"
                                     placeholder="Tax Rate" value="{{ old('tax_rate') }}" required>
                             </div>
 
@@ -443,7 +440,7 @@
                                 <label for="hsn">
                                     HSN <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="hsn[]" class="form-control input-sm" id="hsn" placeholder="HSN"
+                                <input type="text" name="hsn[]" class="form-control form-control-sm" id="hsn" placeholder="HSN"
                                     value="{{ old('hsn') }}" required>
                             </div>
 
@@ -451,7 +448,7 @@
                                 <label for="discount">
                                     Discount (optional) <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="discount[]" class="form-control input-sm discount calculate" id="discount"
+                                <input type="number" name="discount[]" class="form-control form-control-sm discount calculate" id="discount"
                                     placeholder="Discount" value="{{ old('discount',0) }}" required>
                             </div>
 
@@ -459,7 +456,7 @@
                                 <label for="category">
                                     Product Category <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="category[]" class="form-control input-sm" id="category"
+                                <input type="text" name="category[]" class="form-control form-control-sm" id="category"
                                     placeholder="Product Category" value="{{ old('category') }}" required>
                             </div>
 
@@ -467,7 +464,7 @@
                                 <label for="amount">
                                     Total Amount <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="amount[]" class="form-control input-sm amount" id="amount"
+                                <input type="text" name="amount[]" class="form-control form-control-sm amount" id="amount"
                                     placeholder="Amount" value="{{ old('amount',0) }}" readonly>
                             </div>
                         </div>
@@ -553,24 +550,24 @@
                         <div class="row">
                             <div class="col-3">
                                 <label>Weight (KG)</label>
-                                <input type="text" name="weight[]" placeholder="KG" value="0" class="form-control"
+                                <input type="text" name="weight[]" placeholder="KG" value="0" class="form-control form-control-sm"
                                     required>
                             </div>
                             <div class="col-3">
                                 <label>Length (CM)</label>
-                                <input type="text" name="length[]" placeholder="CM" value="0" class="form-control"
+                                <input type="text" name="length[]" placeholder="CM" value="0" class="form-control form-control-sm"
                                     required>
                             </div>
 
                             <div class="col-3">
                                 <label>Width (CM)</label>
-                                <input type="text" name="width[]" placeholder="CM" value="0" class="form-control"
+                                <input type="text" name="width[]" placeholder="CM" value="0" class="form-control form-control-sm"
                                     required>
                             </div>
 
                             <div class="col-3">
                                 <label>Height (CM)</label>
-                                <input type="text" name="height[]" placeholder="CM" value="0" class="form-control"
+                                <input type="text" name="height[]" placeholder="CM" value="0" class="form-control form-control-sm"
                                     required>
                             </div>
                         </div>
@@ -602,6 +599,54 @@
 @push('custom-script')
     <script>
         $(document).ready(function() {
+
+            /*start form submit functionality*/
+    $("#form").submit(function(e) {
+        e.preventDefault();
+        formData = new FormData(this);
+        var url = $(this).attr('action');
+        $.ajax({
+            data: formData,
+            type: "POST",
+            url: url,
+            dataType: 'json',
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+                $('.cover-loader').removeClass('d-none');
+            },
+            success: function(res) {
+                //hide loader
+                $('.cover-loader').addClass('d-none');
+
+                /*Start Validation Error Message*/
+                $('span.custom-text-danger').html('');
+                $.each(res.validation, (index, msg) => {
+                    $(`#${index}_msg`).html(`${msg}`);
+                })
+                /*Start Validation Error Message*/
+
+                /*Start Status message*/
+                if (res.status == 'success' || res.status == 'error') {
+                    Swal.fire(
+                        `${res.status}!`,
+                        res.msg,
+                        `${res.status}`,
+                    )
+                }
+                /*End Status message*/
+
+                //for reset all field
+                if (res.status == 'success') {
+                    $('#form')[0].reset();
+                    $('#custom-file-label').html('');
+                }
+            }
+        });
+    });
+    /*end form submit functionality*/
+
 
             $('body').on('change', '#same_both', function() {
                 if ($(this).is(':checked')) {

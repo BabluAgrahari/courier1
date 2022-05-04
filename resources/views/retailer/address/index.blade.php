@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="card-body table-responsive">
-            <table class="datatable table table-bordered table-hover">
+            <table class="table table-hover text-nowrap table-sm">
                 <thead>
                     <tr>
                         <th>Sr No.</th>
@@ -58,11 +58,11 @@
                                     class="badge {{ $address->status == 1 ? 'bg-success' : 'bg-danger' }} ">{{ $address->status == 1 ? 'Active' : 'Deactive' }}</span>
                             </td>
                             <td>
-                                <a class="btn btn-warning btn-xs changeStatus" href="{{ route('address.edit',[$address->id]) }}">Edit</a>
+                                <a class="btn btn-warning btn-xs" href="{{ route('address.edit',[$address->id]) }}">Edit</a>
                                 @if ($address->status == 1)
-                                    <a class="btn btn-success btn-xs changeStatus" href="{{ route('address.changeStatus',[$address->id]) }}">Deactive</a>
+                                    <a class="btn btn-success btn-xs" href="{{ route('address.changeStatus',[$address->id]) }}">Deactive</a>
                                 @else
-                                    <a class="btn btn-danger btn-xs changeStatus" href="{{ route('address.changeStatus',[$address->id]) }}">Active</a>
+                                    <a class="btn btn-danger btn-xs" href="{{ route('address.changeStatus',[$address->id]) }}">Active</a>
                                 @endif
 
                                 <a class="btn btn-danger btn-xs changeStatus" href="{{ route('address.destroy',[$address->id]) }}">Delete</a>

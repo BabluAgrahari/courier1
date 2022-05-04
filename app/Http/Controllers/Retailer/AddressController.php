@@ -51,9 +51,9 @@ class AddressController extends Controller
         $address->pincode = $request->pincode;
         $address->status = $request->status;
         $address->save();
-        return redirect($this->route)->with('message','Address Save Successfully.');
+        return response(['status' => 'success', 'msg' => 'Address Created Successfully!']);
         }catch(Exception $e) {
-        return redirect($this->route)->with('error',$e->getMessage());
+            return response(['status' => 'error', 'msg' => 'Address Not Created!']);
         }
     }
 
@@ -111,17 +111,22 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-        $address = Address::find($id)->delete();
+        try{
+            $address = Address::find($id)->delete();
+        }catch(Exception $e){}
         return redirect($this->route)->with('message','Address Delete Succesfully.');
     }
 
     public function changeStatus($id) {
-        $address = Address::find($id);
+
+        try {
+            $address = Address::find($id);
         if($address->status == 1) {
             $address->update(['status' => 0]);
         } else {
             $address->update(['status' => 1]);
         }
+        } catch(Exception $e){}
 
         return redirect($this->route)->with('message','Address Status Change Succesfully.');
     }
