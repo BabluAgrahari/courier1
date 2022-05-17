@@ -143,6 +143,11 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
     margin-left: 180px;
 }
     }
+
+span{
+    text-transform: capitalize;
+    font-weight: bold;
+}
   </style>
 </head>
 
@@ -366,7 +371,7 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
             Swal.fire(
             '{{ $moduleName }}',
             '{!! session('error') !!}',
-            'success')
+            'warning')
         @endif
   </script>
 

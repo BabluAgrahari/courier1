@@ -532,11 +532,12 @@
                                 <div class="form-group">
                                     <div class="card">
                                         <div class="card-header">
-                                            {{ $val->title }}
+                                            {{ $val->pickup_location }}
                                         </div>
                                         <div class="card-body">
-                                            <p class="card-text">{{ $val->address }}</p>
-                                            <p class="card-text">{{ $val->pincode }}</p>
+                                            <p class="card-text">{{ $val->address_1 }} - {{ $val->address_2 }}</p>
+                                            <p class="card-text">{{ $val->city }} - {{ $val->pincode }}</p>
+                                            <p class="card-text">{{ $val->state }} - {{ $val->country }}</p>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <input type="radio" name="pickup_address_id" class="custom-control"

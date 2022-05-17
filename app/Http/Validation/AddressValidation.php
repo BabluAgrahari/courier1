@@ -19,17 +19,17 @@ class AddressValidation extends FormRequest
     {
 
         return [
-            'title'   => 'required',
-            'address' => 'required',
-            'pincode' => 'numeric'
-        ];
-    }
+            'pickup_location'   => 'required',
+            'address_1' => 'required',
+            'pincode'   => 'numeric',
+            'city'      => 'required',
+            'state'     => 'required',
+            'country'   => 'required',
+            'email'     => 'required',
+            'phone'     => 'required',
+            'name'      => 'required',
+            'status'    => 'required'
 
-    public function messages()
-    {
-        return [
-            'title.required' =>'Title field is Required.',
-            'address.required'   =>'Address is Required.',
         ];
     }
 

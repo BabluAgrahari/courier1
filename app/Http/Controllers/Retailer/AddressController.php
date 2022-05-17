@@ -7,6 +7,7 @@ use App\Models\Address;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Validation\AddressValidation;
+
 class AddressController extends Controller
 {
 
@@ -22,7 +23,7 @@ class AddressController extends Controller
     {
         $moduleName = $this->moduleName;
         $addresses = Address::all();
-        return view($this->view.'/index',compact('moduleName','addresses'));
+        return view($this->view . '/index', compact('moduleName', 'addresses'));
     }
 
     /**
@@ -33,7 +34,7 @@ class AddressController extends Controller
     public function create()
     {
         $moduleName = $this->moduleName;
-        return view($this->view.'/form',compact('moduleName'));
+        return view($this->view . '/form', compact('moduleName'));
     }
 
     /**
@@ -44,15 +45,24 @@ class AddressController extends Controller
      */
     public function store(AddressValidation $request)
     {
-        try{
-        $address = new Address();
-        $address->title = $request->title;
-        $address->address = $request->address;
-        $address->pincode = $request->pincode;
-        $address->status = $request->status;
-        $address->save();
-        return response(['status' => 'success', 'msg' => 'Address Created Successfully!']);
-        }catch(Exception $e) {
+
+        try {
+            $address = new Address();
+            $address->pickup_location = $request->pickup_location;
+            $address->address_1 = $request->address_1;
+            $address->address_2 = $request->address_2;
+            $address->city = $request->city;
+            $address->state = $request->state;
+            $address->country = $request->country;
+            $address->pincode = $request->pincode;
+            $address->email = $request->email;
+            $address->phone = $request->phone;
+            $address->name = $request->name;
+            $address->company_id = $request->company_id;
+            $address->status = $request->status;
+            $address->save();
+            return response(['status' => 'success', 'msg' => 'Address Created Successfully!']);
+        } catch (Exception $e) {
             return response(['status' => 'error', 'msg' => 'Address Not Created!']);
         }
     }
@@ -78,7 +88,7 @@ class AddressController extends Controller
     {
         $address = Address::find($id);
         $moduleName = $this->moduleName;
-        return view($this->view.'/_form',compact('moduleName','address'));
+        return view($this->view . '/_form', compact('moduleName', 'address'));
     }
 
     /**
@@ -90,17 +100,25 @@ class AddressController extends Controller
      */
     public function update(AddressValidation $request, $id)
     {
-        try{
+        try {
             $address = Address::find($id);
-            $address->title = $request->title;
-            $address->address = $request->address;
+            $address->pickup_location = $request->pickup_location;
+            $address->address_1 = $request->address_1;
+            $address->address_2 = $request->address_2;
+            $address->city = $request->city;
+            $address->state = $request->state;
+            $address->country = $request->country;
             $address->pincode = $request->pincode;
+            $address->email = $request->email;
+            $address->phone = $request->phone;
+            $address->name = $request->name;
+            $address->company_id = $request->company_id;
             $address->status = $request->status;
             $address->save();
-            return redirect($this->route)->with('message','Address Updated Successfully.');
-            }catch(Exception $e) {
-            return redirect($this->route)->with('error',$e->getMessage());
-            }
+            return redirect($this->route)->with('message', 'Address Updated Successfully.');
+        } catch (Exception $e) {
+            return redirect($this->route)->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -111,23 +129,26 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-        try{
+        try {
             $address = Address::find($id)->delete();
-        }catch(Exception $e){}
-        return redirect($this->route)->with('message','Address Delete Succesfully.');
+        } catch (Exception $e) {
+        }
+        return redirect($this->route)->with('message', 'Address Delete Succesfully.');
     }
 
-    public function changeStatus($id) {
+    public function changeStatus($id)
+    {
 
         try {
             $address = Address::find($id);
-        if($address->status == 1) {
-            $address->update(['status' => 0]);
-        } else {
-            $address->update(['status' => 1]);
+            if ($address->status == 1) {
+                $address->update(['status' => 0]);
+            } else {
+                $address->update(['status' => 1]);
+            }
+        } catch (Exception $e) {
         }
-        } catch(Exception $e){}
 
-        return redirect($this->route)->with('message','Address Status Change Succesfully.');
+        return redirect($this->route)->with('message', 'Address Status Change Succesfully.');
     }
 }

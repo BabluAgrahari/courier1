@@ -58,7 +58,7 @@
                                 <td>
                                     <a class="btn btn-warning btn-xs changeStatus" href="{{ route('order.edit',[$val->id]) }}">Edit</a>
                                     <a type="button" class="btn btn-info btn-xs shipment" data-toggle="modal" data-target="#exampleModalCenter" data-id={{$val->id}}>
-                                        Ship
+                                        Ready To Ship
                                     </a>
                                 </td>
                             </tr>

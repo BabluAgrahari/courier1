@@ -133,6 +133,7 @@ class OrderController extends Controller
             }
             $order->productDetails = $products;
             $order->packageDetail = $packageDetail;
+            $order->ship_response = "";
             $order->save();
             return response(['status' => 'success', 'msg' => 'Order Created Successfully!']);
         } catch (Exception $e) {
@@ -275,11 +276,22 @@ class OrderController extends Controller
 
     public function shipment(Request $request)
     {
-        $res = '';
+
+        try{
+            $res = '';
         if($request->api == 'shiprocket') {
             $res = shiprocket($request->id);
+             if($res[1] === 200) {
+                $res = $res[0];
+                Order::find($request->id)->update(['ship_response' => $res]);
+                return back()->with('message',$res);
+             } else {
+                $res = $res[0];
+                return back()->with('error',$res);
+             }
         }
-
-        return back()->with('message',$res);
+        } catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 }

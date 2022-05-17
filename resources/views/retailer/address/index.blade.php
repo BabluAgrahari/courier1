@@ -40,8 +40,8 @@
                 <thead>
                     <tr>
                         <th>Sr No.</th>
-                        <th>Title</th>
-                        <th>Address</th>
+                        <th>Pickup Location</th>
+                        <th>Address 1</th>
                         <th>Pincode</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -51,8 +51,8 @@
                     @foreach ($addresses as $key => $address)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $address->title }}</td>
-                            <td>{{ $address->address }}</td>
+                            <td>{{ $address->pickup_location }}</td>
+                            <td>{{ $address->address_1 }}</td>
                             <td>{{ $address->pincode }}</td>
                             <td><span
                                     class="badge {{ $address->status == 1 ? 'bg-success' : 'bg-danger' }} ">{{ $address->status == 1 ? 'Active' : 'Deactive' }}</span>

@@ -39,7 +39,7 @@
         <a href="{{ route('address.index') }}" class="nav-link {{ (url()->full() == url('retailer/address'))? 'active':''}}">
           <!-- <i class="fas fa-solid fa-book nav-icon text-warning"></i> -->
           <i class="fas fa-money-bill-wave nav-icon"></i>
-          <p>Address</p>
+          <p>Pickup Address</p>
         </a>
       </li>
 
