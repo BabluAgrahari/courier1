@@ -56,7 +56,7 @@
                                 <td>{{$val->phone}}</td>
                                 <td>{{$val->order_date}}</td>
                                 <td>
-                                    <a class="btn btn-warning btn-xs changeStatus" href="{{ route('order.edit',[$val->id]) }}">Edit</a>
+                                    <a class="btn btn-warning btn-xs changeStatus" href="{{ route('order.edit',[$val->id]) }}"><i class="far fa-edit"></i></a>
                                     <a type="button" class="btn btn-info btn-xs shipment" data-toggle="modal" data-target="#exampleModalCenter" data-id={{$val->id}}>
                                         Ready To Ship
                                     </a>

@@ -212,6 +212,37 @@ function verify_url($base_url)
     return true;
 }
 
+ function authToken() {
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => "https://apiv2.shiprocket.in/v1/external/auth/login",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "{\r\n    \"email\": \"websiteduniya2019@gmail.com\",\r\n    \"password\": \"Trick@123\"\r\n}",
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache",
+    "content-type: application/json",
+    "postman-token: fc2b5374-31cf-f0fa-a20f-b94658d812ec"
+  ),
+));
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  return json_decode($response)->token;
+}
+}
+
 function shiprocket($orderId) {
 
     $order = Order::find($orderId);
@@ -251,7 +282,7 @@ function shiprocket($orderId) {
         "billing_state": "'.$order->bill_state.'",
         "billing_country": "'.$order->bill_country.'",
         "billing_email": "billemail@gmail.com",
-        "billing_phone": "1111111111",
+        "billing_phone": "'.$order->phone.'",
         "shipping_is_billing": "'.$bill_ship.'",
         "shipping_customer_name": "'.$order->buyer_name.'",
         "shipping_last_name": "",
@@ -262,7 +293,7 @@ function shiprocket($orderId) {
         "shipping_country": "'.$order->ship_country.'",
         "shipping_state": "'.$order->ship_state.'",
         "shipping_email": "ship@gmail.com",
-        "shipping_phone": "1111111111",
+        "shipping_phone": "'.$order->phone.'",
         "order_items": '.json_encode($items).',
         "payment_method": "Prepaid",
         "shipping_charges": 0,
@@ -288,7 +319,7 @@ function shiprocket($orderId) {
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => "$payload",
         CURLOPT_HTTPHEADER => array(
-            "authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjE2MDM5MDksImlzcyI6Imh0dHBzOi8vYXBpdjIuc2hpcHJvY2tldC5pbi92MS9leHRlcm5hbC9hdXRoL2xvZ2luIiwiaWF0IjoxNjUxMzg0NzcyLCJleHAiOjE2NTIyNDg3NzIsIm5iZiI6MTY1MTM4NDc3MiwianRpIjoiZVNpWHNwVXd6aTZxSEdwVSJ9.nEuAbh9Ph-ovVfKhoDCbqRdlMKTMHT5-nnzFF-Clmuw",
+            "authorization: Bearer ".authToken(),
             "cache-control: no-cache",
             "content-type: application/json",
             "postman-token: 3f6d69a0-03ad-ba67-7db2-a1e3999c5f25"

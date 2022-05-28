@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Retailer;
 use App\Http\Controllers\Controller;
 use App\Http\Validation\OrderValidation;
 use App\Models\Address;
+use App\Models\ApiList;
 use App\Models\Order;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -23,10 +25,16 @@ class OrderController extends Controller
      */
     public function index()
     {
+
+        //return User::first();
         $moduleName = $this->moduleName;
         $addresses = Address::get();
         $orders = Order::all();
-        return view($this->view . '/index', compact('moduleName', 'orders'));
+        $checkShiprocket = ApiList::where('name', 'Shiprocket-Order')->pluck('retailer_ids')->toArray()[0];
+        $checkShiprocket = !empty($checkShiprocket) ? $checkShiprocket : [];
+        $checkXpressbees = ApiList::where('name', 'Xpressbees')->pluck('retailer_ids')->toArray()[0];
+        $checkXpressbees = !empty($checkShiprocket) ? $checkShiprocket : [];
+        return view($this->view . '/index', compact('moduleName', 'orders', 'checkShiprocket', 'checkXpressbees'));
     }
 
     /**
@@ -276,21 +284,34 @@ class OrderController extends Controller
 
     public function shipment(Request $request)
     {
+        $request->validate([
+            'api' => 'required'
+        ]);
 
-        try{
+        try {
             $res = '';
-        if($request->api == 'shiprocket') {
-            $res = shiprocket($request->id);
-             if($res[1] === 200) {
-                $res = $res[0];
-                Order::find($request->id)->update(['ship_response' => $res]);
-                return back()->with('message',$res);
-             } else {
-                $res = $res[0];
-                return back()->with('error',$res);
-             }
-        }
-        } catch(Exception $e){
+            if ($request->api == 'shiprocket') {
+                $res = shiprocket($request->id);
+                if ($res[1] === 200) {
+                    $res = $res[0];
+                    Order::find($request->id)->update(['ship_response' => $res]);
+                    return back()->with('message', $res);
+                } else {
+                    $res = $res[0];
+                    return back()->with('error', $res);
+                }
+            } else if ($request->api == 'xpressbees') {
+                $res = shiprocket($request->id);
+                if ($res[1] === 200) {
+                    $res = $res[0];
+                    Order::find($request->id)->update(['ship_response' => $res]);
+                    return back()->with('message', $res);
+                } else {
+                    $res = $res[0];
+                    return back()->with('error', $res);
+                }
+            }
+        } catch (Exception $e) {
             return $e->getMessage();
         }
     }
