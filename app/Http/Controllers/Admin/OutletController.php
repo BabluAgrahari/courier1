@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
+use App\Models\User;
+use App\Models\Outlet;
+use App\Support\Email;
+use App\Models\ApiList;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Validation\BankChargesValidation;
 use App\Http\Validation\CreateOutletValidation;
 use App\Http\Validation\UpdateOutletValidation;
-use App\Models\Outlet;
-use App\Models\User;
-use App\Support\Email;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class OutletController extends Controller
 {
@@ -288,6 +289,7 @@ class OutletController extends Controller
             $outlet = Outlet::find($id);
             if (!empty($outlet)) {
                 $data['bank_charges'] = $outlet->bank_charges;
+                $data['apis'] = ApiList::get();
                 $data['id'] = $outlet->_id;
                 return view('admin.outlet.bank_charges', $data);
             }
@@ -318,6 +320,7 @@ class OutletController extends Controller
                 $bank_charges_val = $outlet->bank_charges;
 
             $bank_charges_val[] = [
+                'api_id'      => $request->api_id,
                 'from_amount' => $request->from_amount,
                 'to_amount'   => $request->to_amount,
                 'type'        => $request->type,
@@ -370,6 +373,7 @@ class OutletController extends Controller
                 $bank_charge = $outlet->bank_charges;
 
             //check name and value is not empry
+            $bank_charge[$key]['api_id'] = $request->api_id;
             $bank_charge[$key]['from_amount'] = $request->from_amount;
             $bank_charge[$key]['to_amount']  = $request->to_amount;
             $bank_charge[$key]['type']       = $request->type;

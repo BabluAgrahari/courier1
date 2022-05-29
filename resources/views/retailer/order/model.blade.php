@@ -13,6 +13,10 @@
                 <form class="form" action="{{ route('order.shipment') }}" id="shipForm" method="POST">
                     @csrf()
                     <input type="hidden" name="id" class="ship_id">
+
+                    <div class="form-group">
+                        Total Distance Kelometers  <label id="order_km"></label>
+                    </div>
                     @if (in_array(auth()->user()->id, $checkShiprocket))
                         <div class="form-group">
                             <label>

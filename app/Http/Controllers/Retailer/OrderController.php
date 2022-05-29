@@ -168,6 +168,9 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
+        //https://www.codexworld.com/distance-between-two-addresses-google-maps-api-php/
+        //https://www.myprogrammingtutorials.com/find-distance-between-two-addresses-google-api-php.html
+        //$distance = getDistance($addressFrom, $addressTo);
         $addresses = Address::get();
         $order = Order::find($id);
         $moduleName = $this->moduleName;
@@ -314,5 +317,16 @@ class OrderController extends Controller
         } catch (Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    public function getDistance($id) {
+
+        $order = Order::find($id);
+        $from = $order->bill_address_1;
+        $to = Address::find($order->pickup_address_id)->address_1;
+
+        $distance = getDistance($from,$to);
+
+        return json_encode($distance);
     }
 }

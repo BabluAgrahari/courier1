@@ -88,7 +88,16 @@
 
 
         $('body').on('click','.shipment',function(){
-            $('body').find('.ship_id').val($(this).data('id'))
+            var orderId = $(this).data('id');
+            $('body').find('.ship_id').val(orderId);
+            $.ajax({
+                type: "GET",
+                url: `{{ url('retailer/order/getDistance/${orderId}') }}`,
+                dataType: "json",
+                success: function (response) {
+                    $('body').find('#order_km').text(response);
+                }
+            });
         });
 
     </script>
