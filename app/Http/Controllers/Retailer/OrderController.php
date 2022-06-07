@@ -7,6 +7,7 @@ use App\Http\Validation\OrderValidation;
 use App\Models\Address;
 use App\Models\ApiList;
 use App\Models\Order;
+use App\Models\Outlet;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ class OrderController extends Controller
     public function index()
     {
 
+        $checkShiprocket = ApiList::where('name', 'Shiprocket-Order')->first();
         //return User::first();
         $moduleName = $this->moduleName;
         $addresses = Address::get();
@@ -293,7 +295,7 @@ class OrderController extends Controller
 
         try {
             $res = '';
-            if ($request->api == 'shiprocket') {
+            if ($request->api == 'Shiprocket-Order') {
                 $res = shiprocket($request->id);
                 if ($res[1] === 200) {
                     $res = $res[0];
@@ -303,7 +305,7 @@ class OrderController extends Controller
                     $res = $res[0];
                     return back()->with('error', $res);
                 }
-            } else if ($request->api == 'xpressbees') {
+            } else if ($request->api == 'Xpressbees') {
                 $res = shiprocket($request->id);
                 if ($res[1] === 200) {
                     $res = $res[0];
@@ -322,11 +324,18 @@ class OrderController extends Controller
     public function getDistance($id) {
 
         $order = Order::find($id);
-        $from = $order->bill_address_1;
-        $to = Address::find($order->pickup_address_id)->address_1;
+        $fromAddr = $order->bill_address_1;
+        $toAddr = Address::find($order->pickup_address_id)->address_1;
 
-        $distance = getDistance($from,$to);
-
+        $distance = getDistance($fromAddr,$toAddr);
         return json_encode($distance);
+    }
+
+    public function getCharges(Request $request) {
+
+        $api = ApiList::where('name',$request->api)->first();
+        $charges = getSlabRate(ceil($request->km),$api->id);
+
+        return json_encode($charges);
     }
 }

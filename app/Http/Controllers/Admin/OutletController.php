@@ -329,6 +329,7 @@ class OutletController extends Controller
             ];
 
             $outlet->bank_charges = $bank_charges_val;
+            $outlet->api_id = $request->api_id;
             if ($outlet->save())
                 return response(['status' => 'success', 'msg' => 'Bank Charges Added Successfully!']);
 
@@ -380,6 +381,7 @@ class OutletController extends Controller
             $bank_charge[$key]['charges']    = $request->charges;
 
             $outlet->bank_charges          = $bank_charge;
+            $outlet->api_id                = $request->api_id;
 
             if ($outlet->save())
                 return response(['status' => 'success', 'msg' => 'Field Updated successfully!']);

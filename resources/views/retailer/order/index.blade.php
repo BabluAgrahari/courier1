@@ -100,6 +100,21 @@
             });
         });
 
+        $('body').on('change','.api',function (e) {
+            var totalKm = $('#order_km').text();
+            var api = $(this).val();
+            var _token = "{{ @csrf_token() }}";
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('order.getcharges') }}",
+                data: {_token:_token,km:totalKm,api:api},
+                dataType: "json",
+                success: function (response) {
+                    $('body').find('#total_charges').text(response)
+                }
+            });
+         })
     </script>
 @endpush
 @endsection

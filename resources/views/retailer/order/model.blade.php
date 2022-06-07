@@ -15,19 +15,20 @@
                     <input type="hidden" name="id" class="ship_id">
 
                     <div class="form-group">
-                        Total Distance Kelometers  <label id="order_km"></label>
+                        Total Distance Kelometers  <span id="order_km" class="text-bold"></span>
+                        Total Charges <span id="total_charges" class="text-bold"> 0</span>
                     </div>
                     @if (in_array(auth()->user()->id, $checkShiprocket))
                         <div class="form-group">
                             <label>
-                                <input type="radio" name="api" value="shiprocket" required> Shiprocket-Order
+                            <input type="radio" name="api" value="Shiprocket-Order" class="api" required> Shiprocket-Order
                             </label>
                         </div>
                     @endif
                     @if (in_array(auth()->user()->id, $checkXpressbees))
                             <div class="form-group">
                                 <label>
-                                    <input type="radio" name="api" value="xpressbees" required> Xpressbees
+                            <input type="radio" name="api" value="Xpressbees" class="api" required> Xpressbees
                                 </label>
                             </div>
                     @endif
