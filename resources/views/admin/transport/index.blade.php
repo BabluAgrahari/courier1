@@ -71,6 +71,7 @@
                             <td>{{ $val->state }}</td>
                             <td>{{ $val->city }}</td>
                             <td>{{ $val->pincode }}</td>
+                            <td>{{ $val->payment_accept}}</td>
                             <td><span
                                     class="badge {{ $val->status == 1 ? 'bg-success' : 'bg-danger' }} ">{{ $val->status == 1 ? 'Active' : 'Deactive' }}</span>
                             </td>
@@ -78,10 +79,10 @@
                                 <a class="btn btn-warning btn-xs"
                                     href="{{ route('transport.edit', [$val->id]) }}">Edit</a>
                                 @if ($val->status == 1)
-                                    <a class="btn btn-success btn-xs"
+                                    <a class="btn btn-success btn-xs m-1"
                                         href="{{ route('transport.changeStatus', [$val->id]) }}">Deactive</a>
                                 @else
-                                    <a class="btn btn-danger btn-xs"
+                                    <a class="btn btn-danger btn-xs m-1"
                                         href="{{ route('transport.changeStatus', [$val->id]) }}">Active</a>
                                 @endif
                             </td>

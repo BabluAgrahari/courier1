@@ -95,7 +95,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
   Route::post('import', [AdminDashboard::class, 'import']);
 
 
-  Route::get('/transport',[TransportController::class,'index'])->name('transport');
+  Route::get('/transport',[TransportController::class,'index'])->name('transport.index');
   Route::get('transport/create',[TransportController::class,'create'])->name('transport.create');
   Route::post('transport/store',[TransportController::class,'store'])->name('transport.store');
   Route::get('transport/{id}/edit',[TransportController::class,'edit'])->name('transport.edit');

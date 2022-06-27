@@ -257,7 +257,7 @@
         <!-- /.card-body -->
         <div class="card-footer">
             <center>
-                <a href=" {{ route('order.index') }}" class="btn btn-danger">Cancel</a>
+                <a href=" {{ route('transport.index') }}" class="btn btn-danger">Cancel</a>
                 <button type="submit" class="btn btn-info">Submit</button>
         </div>
         </form>

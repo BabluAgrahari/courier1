@@ -29,7 +29,6 @@ class TransportController extends Controller
     public function store(TransportValidation $request)
     {
 
-
         try {
             if ($request->hasFile('logo')) {
                 $logo = singleFile($request->file('logo'), 'transport');
@@ -58,16 +57,25 @@ class TransportController extends Controller
     }
 
 
+    public function edit($id)
+    {
+        $moduleName = $this->moduleName;
+        $transport = Transport::find($id);
+        return view($this->view . '/_form', compact('moduleName','transport'));
+    }
+
     public function update(TransportValidation $request, $id)
     {
         try {
             if ($request->hasFile('logo')) {
+                file_exists('public/transport/'.$request->old_logo) ?? unlink('public/transport/'.$request->old_logo);
                 $logo = singleFile($request->file('logo'), 'transport');
             } else {
                 $logo = $request->old_logo;
             }
 
             if ($request->hasFile('store_cover_photo')) {
+                file_exists('public/transport/'.$request->old_store_cover_photo) ?? unlink('public/transport/'.$request->old_store_cover_photo);
                 $store_cover_photo = singleFile($request->file('store_cover_photo'), 'transport');
             } else {
                 $store_cover_photo = $request->old_store_cover_photo;
@@ -91,12 +99,18 @@ class TransportController extends Controller
             $transport->service_area = $request->service_area;
             $transport->business_description = $request->business_description;
             $transport->status = $request->status;
+            $transport->is_verify = $request->is_verify;
             $transport->logo = $logo;
             $transport->store_cover_photo = $store_cover_photo;
             $transport->save();
-            return response(['status' => 'success', 'msg' => 'Transport Updated Successfully!']);
+
+            if($request->method() == 'PUT') {
+                 return back()->with('success','Transport Updated Successfully.');
+            } else {
+                return response(['status' => 'success', 'msg' => 'Transport Updated Error !']);
+            }
         } catch (Exception $e) {
-            return response(['status' => 'error', 'msg' => 'Transport Not Updated!']);
+            return response(['status' => 'error', 'msg' => $e->getMessage()]);
         }
     }
 
