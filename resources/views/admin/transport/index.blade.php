@@ -59,26 +59,31 @@
                 <tbody>
                     @foreach ($transports as $key => $val)
                         <tr>
-                            <td>{{$key+1}}</td>
-                            <td>{{$val->owner_name}}</td>
-                            <td>{{$val->transport_from}}</td>
-                            <td>{{$val->mobile_no}}</td>
-                            <td>{{$val->business_name}}</td>
-                            <td>{{$val->gst_no}}</td>
-                            <td>{{$val->whatsapp_no}}</td>
-                            <td>{{$val->email}}</td>
-                            <td>{{$val->country}}</td>
-                            <td>{{$val->state}}</td>
-                            <td>{{$val->city}}</td>
-                            <td>{{$val->pincode}}</td>
-                            <td>{{($val->status == 1) ? "Active" : "In-Active"}}</td>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $val->owner_name }}</td>
+                            <td>{{ $val->transport_from }}</td>
+                            <td>{{ $val->mobile_no }}</td>
+                            <td>{{ $val->business_name }}</td>
+                            <td>{{ $val->gst_no }}</td>
+                            <td>{{ $val->whatsapp_no }}</td>
+                            <td>{{ $val->email }}</td>
+                            <td>{{ $val->country }}</td>
+                            <td>{{ $val->state }}</td>
+                            <td>{{ $val->city }}</td>
+                            <td>{{ $val->pincode }}</td>
+                            <td><span
+                                    class="badge {{ $val->status == 1 ? 'bg-success' : 'bg-danger' }} ">{{ $val->status == 1 ? 'Active' : 'Deactive' }}</span>
+                            </td>
                             <td>
-                                <td>
-                                    <a class="btn btn-warning btn-xs changeStatus" href="{{ route('transport.edit',[$val->id]) }}"><i class="far fa-edit"></i></a>
-                                    <a type="button" class="btn btn-info btn-xs shipment" data-toggle="modal" data-target="#exampleModalCenter" data-id={{$val->id}}>
-                                        Ready To Ship
-                                    </a>
-                                </td>
+                                <a class="btn btn-warning btn-xs"
+                                    href="{{ route('transport.edit', [$val->id]) }}">Edit</a>
+                                @if ($val->status == 1)
+                                    <a class="btn btn-success btn-xs"
+                                        href="{{ route('transport.changeStatus', [$val->id]) }}">Deactive</a>
+                                @else
+                                    <a class="btn btn-danger btn-xs"
+                                        href="{{ route('transport.changeStatus', [$val->id]) }}">Active</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -101,22 +106,27 @@
 @push('custom-script')
     <script>
         $(document).ready(function() {
-        $('.datatable').DataTable();
+            $('.datatable').DataTable();
 
-        $('body').on('click','.shipment',function(){
-            var orderId = $(this).data('id');
-            $('body').find('.ship_id').val(orderId);
-            $.ajax({
-                type: "GET",
-                url: `{{ url('retailer/order/getDistance/${orderId}') }}`,
-                dataType: "json",
-                success: function (response) {
-                    $('body').find('#order_km').text(response);
-                }
+            $('body').on('click', '.changeStatus', function(e) {
+                e.preventDefault();
+                var status = $(this).text();
+                var url = $(this).attr('href');
+                swal({
+                        title: `${status}`,
+                        text: `Are You Sure Want ${status}`,
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            window.location = url;
+                        }
+                    });
             });
-        });
 
-})
+        })
     </script>
 @endpush
 @endsection

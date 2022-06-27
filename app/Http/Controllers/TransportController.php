@@ -53,7 +53,7 @@ class TransportController extends Controller
             Transport::create($inputs);
             return response(['status' => 'success', 'msg' => 'Transport Created Successfully!']);
         } catch (Exception $e) {
-            return response(['status' => 'error', 'msg' => 'Order Not Created!']);
+            return response(['status' => 'error', 'msg' => 'Transport Not Created!']);
         }
     }
 
@@ -94,9 +94,25 @@ class TransportController extends Controller
             $transport->logo = $logo;
             $transport->store_cover_photo = $store_cover_photo;
             $transport->save();
-            return response(['status' => 'success', 'msg' => 'Transport Created Successfully!']);
+            return response(['status' => 'success', 'msg' => 'Transport Updated Successfully!']);
         } catch (Exception $e) {
-            return response(['status' => 'error', 'msg' => 'Order Not Created!']);
+            return response(['status' => 'error', 'msg' => 'Transport Not Updated!']);
         }
+    }
+
+    public function changeStatus($id)
+    {
+
+        try {
+            $address = Transport::find($id);
+            if ($address->status == 1) {
+                $address->update(['status' => 0]);
+            } else {
+                $address->update(['status' => 1]);
+            }
+        } catch (Exception $e) {
+        }
+
+        return redirect($this->route)->with('message', 'Transport Status Change Succesfully.');
     }
 }
