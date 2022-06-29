@@ -190,7 +190,7 @@
                             <label for="service_state">
                                 Service State <span class="requride_cls">*</span>
                             </label>
-                            <select name="service_state" class="form-control" id="service_state">
+                            <select name="service_state" class="form-control select2" id="service_state">
                                 <option value="">Select State</option>
                                 @foreach ($states as $key => $val)
                                     <option value="{{ $val->iso2 }}">{{ $val->name }}</option>
@@ -204,7 +204,7 @@
                             <label for="service_city">
                                 Service City <span class="requride_cls">*</span>
                             </label>
-                            <select name="service_city" id="service_city" class="form-control">
+                            <select name="service_city[]" id="service_city" class="form-control select2" multiple>
                                 <option value="">Select City</option>
 
                             </select>
@@ -339,6 +339,7 @@
 
             $('body').on('change','#service_state', function() {
                 var state = $('#service_state').find(':selected').val();
+                $('body').find("#service_city").val('').trigger('change');
                 var settings = {
                     "url": `https://api.countrystatecity.in/v1/countries/IN/states/${state}/cities`,
                     "method": "GET",
@@ -349,10 +350,10 @@
 
                 $.ajax(settings).done(function(res) {
                     $('body').find("#service_city").val('').trigger('change');
-                    $("#service_city").html('<option value="">Select City</option>');
+                    $("#service_city").html('<option value=""></option>');
                     $.each(res, (index, value) => {
                         $('body').find('#service_city').append(
-                            `<option>${value.name}</option>`)
+                            `<option value=${value.name}>${value.name}</option>`)
                     });
                 });
             })

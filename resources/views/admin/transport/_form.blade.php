@@ -30,7 +30,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Create New Record</h3>
+            <h3 class="card-title">Update New Record</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
@@ -189,15 +189,28 @@
                         </div>
 
                         <div class="col-sm-3">
-                            <label for="service_area">
-                                Service Area <span class="requride_cls">*</span>
+                            <label for="service_state">
+                                Service State <span class="requride_cls">*</span>
                             </label>
-                            <select name="service_area" class="form-control">
-                                <option value="">Select Area</option>
-                                <option value="state" {{ ($transport->service_area == 'state') ? 'selected' : ''}}>State</option>
-                                <option value="city" {{ ($transport->service_area == 'city') ? 'selected' : ''}}>City</option>
+                            <select name="service_state" class="form-control select2" id="service_state">
+                                <option value="">Select State</option>
+                                @foreach ($states as $key => $val)
+                                    <option value="{{ $val->iso2 }}" {{ ($transport->service_state == $val->iso2) ? 'selected' : ''}}>{{ $val->name }}</option>
+                                @endforeach
                             </select>
-                            <strong><span class="requride_cls" id="service_area_msg"></strong></span>
+                            <strong><span class="requride_cls" id="service_state_msg"></strong></span>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label for="service_city">
+                                Service City <span class="requride_cls">*</span>
+                            </label>
+                            <select name="service_city[]" id="service_city" class="form-control select2" multiple>
+                                @foreach (explode(',',$transport->service_city) as $city)
+                                    <option value="{{$city}}" selected>{{$city}}</option>
+                                @endforeach
+                            </select>
+                            <strong><span class="requride_cls" id="service_city_msg"></strong></span>
                         </div>
 
                         <br><br><br><br>
@@ -338,6 +351,26 @@
             });
             /*end form submit functionality*/
 
+
+            $('body').on('change','#service_state', function() {
+                var state = $('#service_state').find(':selected').val();
+                var settings = {
+                    "url": `https://api.countrystatecity.in/v1/countries/IN/states/${state}/cities`,
+                    "method": "GET",
+                    "headers": {
+                        "X-CSCAPI-KEY": "TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=="
+                    },
+                };
+
+                $.ajax(settings).done(function(res) {
+                    $('body').find("#service_city").val('').trigger('change');
+                    $("#service_city").html('<option value=""></option>');
+                    $.each(res, (index, value) => {
+                        $('body').find('#service_city').append(
+                            `<option value=${value.name}>${value.name}</option>`)
+                    });
+                });
+            })
         });
     </script>
 @endpush

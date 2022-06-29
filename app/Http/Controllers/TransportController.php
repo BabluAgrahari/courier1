@@ -18,6 +18,7 @@ class TransportController extends Controller
 
     public function index()
     {
+
         //  set_time_limit(-1);
 
         // $states = simplexml_load_file("states.xml") or die("Error: Cannot create object");
@@ -56,7 +57,6 @@ class TransportController extends Controller
 
     public function store(TransportValidation $request)
     {
-
         try {
             if ($request->hasFile('logo')) {
                 $logo = singleFile($request->file('logo'), 'transport');
@@ -85,8 +85,8 @@ class TransportController extends Controller
             $transport->pincode = $request->pincode;
             $transport->address = $request->address;
             $transport->payment_accept = $request->payment_accept;
-            $transport->service_city = $request->service_city;
             $transport->service_state = $request->service_state;
+            $transport->service_city = implode(',',$request->service_city);
             $transport->business_description = $request->business_description;
             $transport->status = $request->status;
             $transport->is_verify = $request->is_verify;
@@ -104,8 +104,10 @@ class TransportController extends Controller
     public function edit($id)
     {
         $moduleName = $this->moduleName;
+        $states = (object) getState('IN');
         $transport = Transport::find($id);
-        return view($this->view . '/_form', compact('moduleName','transport'));
+
+        return view($this->view . '/_form', compact('moduleName','transport','states'));
     }
 
     public function update(TransportValidation $request, $id)
@@ -140,7 +142,8 @@ class TransportController extends Controller
             $transport->pincode = $request->pincode;
             $transport->address = $request->address;
             $transport->payment_accept = $request->payment_accept;
-            $transport->service_area = $request->service_area;
+            $transport->service_state = $request->service_state;
+            $transport->service_city = implode(',',$request->service_city);
             $transport->business_description = $request->business_description;
             $transport->status = $request->status;
             $transport->is_verify = $request->is_verify;
