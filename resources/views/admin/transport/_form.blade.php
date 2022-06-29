@@ -1,4 +1,4 @@
-@extends('retailer.layouts.app')
+@extends('admin.layouts.app')
 @section('content')
 @section('page_heading', 'Spent Amount Topup List')
 
@@ -291,51 +291,51 @@
                 Swal.fire("{{$moduleName}}","{{ session()->get('success') }}");
             @endif
             /*start form submit functionality*/
-            // $("#form").submit(function(e) {
-            //     e.preventDefault();
-            //     formData = new FormData(this);
-            //     var url = $(this).attr('action');
-            //     $.ajax({
-            //         data: formData,
-            //         type: "POST",
-            //         url: url,
-            //         dataType: 'json',
-            //         cache: false,
-            //         contentType: false,
-            //         processData: false,
-            //         beforeSend: function() {
-            //             $('.cover-loader').removeClass('d-none');
-            //         },
-            //         success: function(res) {
-            //             //hide loader
-            //             $('.cover-loader').addClass('d-none');
+            $("#form").submit(function(e) {
+                e.preventDefault();
+                formData = new FormData(this);
+                var url = $(this).attr('action');
+                $.ajax({
+                    data: formData,
+                    type: "POST",
+                    url: url,
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $('.cover-loader').removeClass('d-none');
+                    },
+                    success: function(res) {
+                        //hide loader
+                        $('.cover-loader').addClass('d-none');
 
-            //             /*Start Validation Error Message*/
-            //             $('span.custom-text-danger').html('');
-            //             $.each(res.validation, (index, msg) => {
-            //                 $(`#${index}_msg`).html(`${msg}`);
-            //                 $(`#${index}_msg`).addClass('text-danger')
-            //             })
-            //             /*Start Validation Error Message*/
+                        /*Start Validation Error Message*/
+                        $('span.custom-text-danger').html('');
+                        $.each(res.validation, (index, msg) => {
+                            $(`#${index}_msg`).html(`${msg}`);
+                            $(`#${index}_msg`).addClass('text-danger')
+                        })
+                        /*Start Validation Error Message*/
 
-            //             /*Start Status message*/
-            //             if (res.status == 'success' || res.status == 'error') {
-            //                 Swal.fire(
-            //                     `${res.status}!`,
-            //                     res.msg,
-            //                     `${res.status}`,
-            //                 )
-            //             }
-            //             /*End Status message*/
+                        /*Start Status message*/
+                        if (res.status == 'success' || res.status == 'error') {
+                            Swal.fire(
+                                `${res.status}!`,
+                                res.msg,
+                                `${res.status}`,
+                            )
+                        }
+                        /*End Status message*/
 
-            //             //for reset all field
-            //             if (res.status == 'success') {
-            //                 $('#form')[0].reset();
-            //                 $('#custom-file-label').html('');
-            //             }
-            //         }
-            //     });
-            // });
+                        //for reset all field
+                        if (res.status == 'success') {
+                            $('#form')[0].reset();
+                            $('#custom-file-label').html('');
+                        }
+                    }
+                });
+            });
             /*end form submit functionality*/
 
         });

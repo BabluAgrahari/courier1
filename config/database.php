@@ -93,7 +93,7 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'dsn' => env('DB_URI', 'mongodb+srv://callcenter:ZsQV4Vpihi6vVqAZ@cluster0.gcdem.mongodb.net/callcenter?retryWrites=true&w=majority'),
+            'dsn' => env('DB_URI', 'mongodb+srv://lakum:lakum654@cluster0.qvgrb.mongodb.net/test'),
             'database' => 'test',
         ],
 

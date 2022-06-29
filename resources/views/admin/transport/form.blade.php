@@ -1,4 +1,4 @@
-@extends('retailer.layouts.app')
+@extends('admin.layouts.app')
 @section('content')
 @section('page_heading', 'Spent Amount Topup List')
 
@@ -40,8 +40,8 @@
         </div>
 
         <div class="card-body">
-            <form id="form" method="post" action="{{ route('transport.store') }}" class="form-horizontal form-label-left"
-                autocomplete="off" enctype="multipart/form-data">
+            <form id="form" method="post" action="{{ route('transport.store') }}"
+                class="form-horizontal form-label-left" autocomplete="off" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <div class="row">
@@ -49,9 +49,9 @@
                             <label for="transport_from">
                                 Transport From <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="transport_from" class="form-control form-control-sm" id="transport_from"
-                                placeholder="Transport From" value="{{ old('transport_from') }}">
-                                <strong><span class="requride_cls" id="transport_from_msg"></strong></span>
+                            <input type="text" name="transport_from" class="form-control form-control-sm"
+                                id="transport_from" placeholder="Transport From" value="{{ old('transport_from') }}">
+                            <strong><span class="requride_cls" id="transport_from_msg"></strong></span>
                         </div>
 
                         <div class="col-sm-3">
@@ -59,8 +59,8 @@
                                 Owner Name <span class="requride_cls">*</span>
                             </label>
                             <input type="text" name="owner_name" class="form-control form-control-sm" id="owner_name"
-                                placeholder="Owner Name" value="{{ old('owner_name') }}" >
-                                <strong><span class="requride_cls" id="owner_name_msg"></strong></span>
+                                placeholder="Owner Name" value="{{ old('owner_name') }}">
+                            <strong><span class="requride_cls" id="owner_name_msg"></strong></span>
                         </div>
 
                         <div class="col-sm-3">
@@ -68,17 +68,17 @@
                                 Mobile No <span class="requride_cls">*</span>
                             </label>
                             <input type="number" name="mobile_no" class="form-control form-control-sm" id="mobile_no"
-                                placeholder="Alternate Phone" value="{{ old('mobile_no') }}" >
-                                <span class="requride_cls" id="mobile_no_msg"></strong></span>
+                                placeholder="Alternate Phone" value="{{ old('mobile_no') }}">
+                            <span class="requride_cls" id="mobile_no_msg"></strong></span>
                         </div>
 
                         <div class="col-sm-3">
                             <label for="business_name">
                                 Business Name <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="business_name" class="form-control form-control-sm" id="business_name"
-                                placeholder="Business Name" value="{{ old('business_name') }}" >
-                                <strong><span class="requride_cls" id="business_name_msg"></strong></span>
+                            <input type="text" name="business_name" class="form-control form-control-sm"
+                                id="business_name" placeholder="Business Name" value="{{ old('business_name') }}">
+                            <strong><span class="requride_cls" id="business_name_msg"></strong></span>
                         </div>
 
                         <br>
@@ -91,16 +91,16 @@
                             </label>
                             <input type="text" name="gst_no" class="form-control form-control-sm" id="gst_no"
                                 placeholder="GST NO" value="{{ old('gst_no') }}">
-                                <strong><span class="requride_cls" id="gst_no_msg"></strong></span>
+                            <strong><span class="requride_cls" id="gst_no_msg"></strong></span>
                         </div>
 
                         <div class="col-sm-3">
                             <label for="gst_no">
                                 Whatsapp No <span class="requride_cls">*</span>
                             </label>
-                            <input type="number" name="whatsapp_no" class="form-control form-control-sm" id="whatsapp_no"
-                                placeholder="Whatsapp No" value="{{ old('whatsapp_no') }}">
-                                <strong><span class="requride_cls" id="whatsapp_no_msg"></strong></span>
+                            <input type="number" name="whatsapp_no" class="form-control form-control-sm"
+                                id="whatsapp_no" placeholder="Whatsapp No" value="{{ old('whatsapp_no') }}">
+                            <strong><span class="requride_cls" id="whatsapp_no_msg"></strong></span>
                         </div>
 
                         <div class="col-sm-3">
@@ -109,7 +109,7 @@
                             </label>
                             <input type="number" name="phone" class="form-control form-control-sm" id="phone"
                                 placeholder="Phone" value="{{ old('phone') }}">
-                                <strong><span class="requride_cls" id="phone_msg"></strong></span>
+                            <strong><span class="requride_cls" id="phone_msg"></strong></span>
                         </div>
 
                         <br><br><br><br>
@@ -118,8 +118,8 @@
                                 E-Mail ID <span class="requride_cls">*</span>
                             </label>
                             <input type="text" name="email" class="form-control form-control-sm" id="email"
-                                placeholder="E-Mail" value="{{ old('email') }}" >
-                                <strong><span class="requride_cls" id="email_msg"></strong></span>
+                                placeholder="E-Mail" value="{{ old('email') }}">
+                            <strong><span class="requride_cls" id="email_msg"></strong></span>
                         </div>
 
                         <div class="col-sm-3">
@@ -152,17 +152,17 @@
                                 City <span class="requride_cls">*</span>
                             </label>
                             <input type="text" name="city" class="form-control form-control-sm" id="city"
-                                placeholder="City" value="{{ old('city') }}" >
-                                <strong><span class="requride_cls" id="city_msg"></strong></span>
+                                placeholder="City" value="{{ old('city') }}">
+                            <strong><span class="requride_cls" id="city_msg"></strong></span>
                         </div>
 
                         <div class="col-sm-3">
                             <label for="pincode">
                                 Pincode <span class="requride_cls">*</span>
                             </label>
-                            <input type="number" name="pincode" class="form-control form-control-sm"
-                                id="pincode" placeholder="Pincode" value="{{ old('pincode') }}" >
-                                <strong><span class="requride_cls" id="pincode_msg"></strong></span>
+                            <input type="number" name="pincode" class="form-control form-control-sm" id="pincode"
+                                placeholder="Pincode" value="{{ old('pincode') }}">
+                            <strong><span class="requride_cls" id="pincode_msg"></strong></span>
                         </div>
 
                         <div class="col-sm-3">
@@ -171,7 +171,7 @@
                             </label>
                             <input type="text" name="address" class="form-control form-control-sm" id="address"
                                 placeholder="Address" value="{{ old('address') }}">
-                                <strong><span class="requride_cls" id="address_msg"></strong></span>
+                            <strong><span class="requride_cls" id="address_msg"></strong></span>
                         </div>
 
                         <div class="col-sm-3">
@@ -187,15 +187,28 @@
                         </div>
 
                         <div class="col-sm-3">
-                            <label for="service_area">
-                                Payment Accept <span class="requride_cls">*</span>
+                            <label for="service_state">
+                                Service State <span class="requride_cls">*</span>
                             </label>
-                            <select name="service_area" class="form-control">
-                                <option value="">Select Payment</option>
-                                <option value="state">State</option>
-                                <option value="city">City</option>
+                            <select name="service_state" class="form-control" id="service_state">
+                                <option value="">Select State</option>
+                                @foreach ($states as $key => $val)
+                                    <option value="{{ $val->iso2 }}">{{ $val->name }}</option>
+                                @endforeach
+
                             </select>
-                            <strong><span class="requride_cls" id="service_area_msg"></strong></span>
+                            <strong><span class="requride_cls" id="service_state_msg"></strong></span>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label for="service_city">
+                                Service City <span class="requride_cls">*</span>
+                            </label>
+                            <select name="service_city" id="service_city" class="form-control">
+                                <option value="">Select City</option>
+
+                            </select>
+                            <strong><span class="requride_cls" id="service_city_msg"></strong></span>
                         </div>
 
                         <br><br><br><br>
@@ -212,8 +225,8 @@
                             <label for="store_cover_photo">
                                 Store Cover Photo <span class="requride_cls">*</span>
                             </label>
-                            <input type="file" name="store_cover_photo" class="form-control form-control-sm" id="store_cover_photo"
-                                placeholder="Store Cover Photo" accept="jpg,jpeg,png">
+                            <input type="file" name="store_cover_photo" class="form-control form-control-sm"
+                                id="store_cover_photo" placeholder="Store Cover Photo" accept="jpg,jpeg,png">
                             <strong><span class="requride_cls" id="store_cover_photo_msg"></strong></span>
                         </div>
 
@@ -221,16 +234,17 @@
                             <label for="business_description">
                                 Business Description <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="business_description" class="form-control form-control-sm" id="business_description"
-                                placeholder="Business Description" value="{{ old('business_description') }}">
+                            <input type="text" name="business_description" class="form-control form-control-sm"
+                                id="business_description" placeholder="Business Description"
+                                value="{{ old('business_description') }}">
                             <span class="requride_cls" id="business_description_msg"><strong></strong></span>
                         </div>
 
                         <div class="col-sm-3">
                             <label for="is_verify">
-                                Is Verify <span class="requride_cls" >*</span>
+                                Is Verify <span class="requride_cls">*</span>
                             </label>
-                            <select name="is_verify" class="form-control" >
+                            <select name="is_verify" class="form-control">
                                 <option value="">Select Verify</option>
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
@@ -321,6 +335,27 @@
             });
             /*end form submit functionality*/
 
+
+
+            $('body').on('change','#service_state', function() {
+                var state = $('#service_state').find(':selected').val();
+                var settings = {
+                    "url": `https://api.countrystatecity.in/v1/countries/IN/states/${state}/cities`,
+                    "method": "GET",
+                    "headers": {
+                        "X-CSCAPI-KEY": "TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=="
+                    },
+                };
+
+                $.ajax(settings).done(function(res) {
+                    $('body').find("#service_city").val('').trigger('change');
+                    $("#service_city").html('<option value="">Select City</option>');
+                    $.each(res, (index, value) => {
+                        $('body').find('#service_city').append(
+                            `<option>${value.name}</option>`)
+                    });
+                });
+            })
         });
     </script>
 @endpush

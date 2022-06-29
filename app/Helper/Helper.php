@@ -398,7 +398,7 @@ function getDistance($from, $to, $unit = 'km')
     $curl = curl_init();
     $apiKey = 'Google api key';
     curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://maps.googleapis.com/maps/api/distancematrix/json?units=".$unit."&origins=".$from."&destinations=".$to."&key=".$apiKey."",
+        CURLOPT_URL => "https://maps.googleapis.com/maps/api/distancematrix/json?units=" . $unit . "&origins=" . $from . "&destinations=" . $to . "&key=" . $apiKey . "",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -419,21 +419,40 @@ function getDistance($from, $to, $unit = 'km')
     if ($err) {
         return "cURL Error #:" . $err;
     } else {
-        if(isset(json_decode($response)->rows[0])) {
-            return str_replace('km','',json_decode($response)->rows[0]->elements[0]->distance->text);
+        if (isset(json_decode($response)->rows[0])) {
+            return str_replace('km', '', json_decode($response)->rows[0]->elements[0]->distance->text);
         } else {
             return 0;
         }
     }
 }
 
-function getSlabRate($km,$apiId) {
-    $slab = Outlet::where('api_id',$apiId)->first()->bank_charges;
-    if($changes = collect($slab)->where('from_amount','>=',$km)->pluck('charges')->first()) {
+function getSlabRate($km, $apiId)
+{
+    $slab = Outlet::where('api_id', $apiId)->first()->bank_charges;
+    if ($changes = collect($slab)->where('from_amount', '>=', $km)->pluck('charges')->first()) {
         return $changes;
-    } else if($changes = collect($slab)->where('to_amount','<=',$km)->pluck('charges')->first()) {
+    } else if ($changes = collect($slab)->where('to_amount', '<=', $km)->pluck('charges')->first()) {
         return $changes;
     } else {
-        return random_int(00,1000);
+        return random_int(00, 1000);
     }
+}
+
+function getState($country = "IN")
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://api.countrystatecity.in/v1/countries/'.$country.'/states',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => array(
+            'X-CSCAPI-KEY: TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=='
+        ),
+    ));
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    return json_decode($response);
 }

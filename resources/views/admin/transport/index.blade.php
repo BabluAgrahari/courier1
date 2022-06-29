@@ -1,4 +1,4 @@
-@extends('retailer.layouts.app')
+@extends('admin.layouts.app')
 @section('content')
 @section('page_heading', $moduleName)
 
