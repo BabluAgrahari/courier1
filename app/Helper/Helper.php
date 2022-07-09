@@ -396,7 +396,7 @@ function getAPIName($id)
 function getDistance($from, $to, $unit = 'km')
 {
     $curl = curl_init();
-    $apiKey = 'Google api key';
+    $apiKey = 'AIzaSyBS7N6bugP8MssTKboANjmwS0XiRbPBxXo';
     curl_setopt_array($curl, array(
         CURLOPT_URL => "https://maps.googleapis.com/maps/api/distancematrix/json?units=" . $unit . "&origins=" . $from . "&destinations=" . $to . "&key=" . $apiKey . "",
         CURLOPT_RETURNTRANSFER => true,
@@ -422,7 +422,7 @@ function getDistance($from, $to, $unit = 'km')
         if (isset(json_decode($response)->rows[0])) {
             return str_replace('km', '', json_decode($response)->rows[0]->elements[0]->distance->text);
         } else {
-            return 0;
+            return $response;
         }
     }
 }
@@ -430,13 +430,13 @@ function getDistance($from, $to, $unit = 'km')
 function getSlabRate($km, $apiId)
 {
     $slab = Outlet::where('api_id', $apiId)->first()->bank_charges;
-    if ($changes = collect($slab)->where('from_amount', '>=', $km)->pluck('charges')->first()) {
-        return $changes;
-    } else if ($changes = collect($slab)->where('to_amount', '<=', $km)->pluck('charges')->first()) {
-        return $changes;
-    } else {
-        return random_int(00, 1000);
+    foreach($slab as $key => $val) {
+        if($km >= $val['from_amount'] &&  $km <= $val['to_amount']) {
+            return $val['charges'];
+        }
     }
+
+    return 0;
 }
 
 function getState($country = "IN")

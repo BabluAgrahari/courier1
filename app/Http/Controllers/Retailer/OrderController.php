@@ -27,15 +27,31 @@ class OrderController extends Controller
     public function index()
     {
 
-        $checkShiprocket = ApiList::where('name', 'Shiprocket-Order')->first();
+
+        $api = ApiList::where('name','Ship Rocket')->first();
+        //return $charges = getSlabRate(13,$api->id);
+
+        // $slab = Outlet::where('api_id', $api->id)->first()->bank_charges;
+        // foreach($slab as $key => $val) {
+        //     if("13" >= $val['from_amount'] &&  "13" <= $val['to_amount']) {
+        //         return $val['charges'];
+        //     }
+        // }
+
+        exit;
+        $checkShiprocket = ApiList::first();
         //return User::first();
         $moduleName = $this->moduleName;
         $addresses = Address::get();
         $orders = Order::all();
-        $checkShiprocket = ApiList::where('name', 'Shiprocket-Order')->pluck('retailer_ids')->toArray()[0];
+
+
+        $checkShiprocket = ApiList::where('name', 'Ship Rocket')->pluck('retailer_ids')->toArray()[0];
         $checkShiprocket = !empty($checkShiprocket) ? $checkShiprocket : [];
+
         $checkXpressbees = ApiList::where('name', 'Xpressbees')->pluck('retailer_ids')->toArray()[0];
-        $checkXpressbees = !empty($checkShiprocket) ? $checkShiprocket : [];
+        $checkXpressbees = !empty($checkXpressbees) ? $checkXpressbees : [];
+
         return view($this->view . '/index', compact('moduleName', 'orders', 'checkShiprocket', 'checkXpressbees'));
     }
 
@@ -334,8 +350,8 @@ class OrderController extends Controller
     public function getCharges(Request $request) {
 
         $api = ApiList::where('name',$request->api)->first();
-        $charges = getSlabRate(ceil($request->km),$api->id);
 
+        $charges = getSlabRate(ceil($request->km),$api->id);
         return json_encode($charges);
     }
 }

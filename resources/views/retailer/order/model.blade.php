@@ -21,10 +21,11 @@
                     @if (in_array(auth()->user()->id, $checkShiprocket))
                         <div class="form-group">
                             <label>
-                            <input type="radio" name="api" value="Shiprocket-Order" class="api" required> Shiprocket-Order
+                            <input type="radio" name="api" value="Ship Rocket" class="api" required> Shiprocket-Order
                             </label>
                         </div>
                     @endif
+
                     @if (in_array(auth()->user()->id, $checkXpressbees))
                             <div class="form-group">
                                 <label>
@@ -34,7 +35,7 @@
                     @endif
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModel">Close</button>
                 <button type="submit" class="btn btn-primary">Done</button>
                 </form>
             </div>

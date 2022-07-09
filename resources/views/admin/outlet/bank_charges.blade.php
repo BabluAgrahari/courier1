@@ -23,8 +23,8 @@
                         <tr>
                             <th>Sl No.</th>
                             <th>API Name</th>
-                            <th>From Amount</th>
-                            <th>To Amount</th>
+                            <th>From KM</th>
+                            <th>To KM</th>
                             <th>Type</th>
                             <th>Charges</th>
                             <th>Status</th>
@@ -120,7 +120,7 @@
                                         <span id="from_amount_msg" class="custom-text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>To Amount</label>
+                                        <label>To KM</label>
                                         <input type="number" name="to_amount" id="to_amount"
                                             min="{{ !empty($bank['to_amount']) ? $bank['to_amount'] + 1 : '0' }}" required
                                             class="form-control form-control-sm" placeholder="Enter Amount">

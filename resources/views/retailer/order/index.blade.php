@@ -88,6 +88,7 @@
 
 
         $('body').on('click','.shipment',function(){
+
             var orderId = $(this).data('id');
             $('body').find('.ship_id').val(orderId);
             $.ajax({
