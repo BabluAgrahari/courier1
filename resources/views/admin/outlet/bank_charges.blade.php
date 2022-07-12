@@ -23,9 +23,10 @@
                         <tr>
                             <th>Sl No.</th>
                             <th>API Name</th>
-                            <th>From KM</th>
-                            <th>To KM</th>
-                            <th>Type</th>
+                            <th>From State</th>
+                            <th>From City</th>
+                            <th>To State</th>
+                            <th>To City</th>
                             <th>Charges</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -40,9 +41,11 @@
                                 <tr>
                                     <td>{{ ++$i }}</td>
                                     <td>{{ getAPIName($bank['api_id']) }}</td>
-                                    <td>{!! !empty($bank['from_amount']) ? mSign($bank['from_amount']) : mSign(0) !!}</td>
-                                    <td>{!! !empty($bank['to_amount']) ? mSign($bank['to_amount']) : mSign(0) !!}</td>
-                                    <td>{{ !empty($bank['type']) ? ucwords($bank['type']) : '' }}</td>
+                                    <td>{!! !empty($bank['from_state']) ? ($bank['from_state']) : mSign(0) !!}</td>
+                                    <td>{!! !empty($bank['from_city']) ? ($bank['from_city']) : mSign(0) !!}</td>
+                                    <td>{!! !empty($bank['to_state']) ? ($bank['to_state']) : mSign(0) !!}</td>
+                                    <td>{!! !empty($bank['to_city']) ? ($bank['to_city']) : mSign(0) !!}</td>
+
                                     <td>{{ !empty($bank['charges']) ? $bank['charges'] : 0 }}</td>
                                     <td>
                                         @if (!empty($bank['status']) && $bank['status'] == 1)
@@ -76,90 +79,54 @@
 <!-- /.row -->
 
 @push('modal')
-
     <!-- Modal -->
-    <div class="modal fade" id="banckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Bank Charges/Commission</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="cover-loader-modal d-none">
-                    <div class="loader-modal"></div>
-                </div>
-
-                <div class="modal-body" id="bank_charges">
-
-                    <form id="add_bank_charges" action="{{ url('admin/outlet-add-bank-charges') }}" method="post">
-                        @csrf
-                        <input type="hidden" value="{{ $id }}" name="id" id="outlet_id">
-                        <div id="put"></div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <select name="api_id" id="api_id" class="form-control form-control-sm" required>
-                                            <option value="">Select API</option>
-                                            @foreach ($apis as $api)
-                                                <option value="{{ $api->id }}">{{ $api->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>From Amount</label>
-                                        <input type="number" name="from_amount" id="from_amount" required
-                                            value="{{ !empty($bank['to_amount']) ? $bank['to_amount'] + 1 : '0' }}"
-                                            class="form-control form-control-sm" placeholder="Enter Amount" readonly>
-                                        <span id="from_amount_msg" class="custom-text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>To KM</label>
-                                        <input type="number" name="to_amount" id="to_amount"
-                                            min="{{ !empty($bank['to_amount']) ? $bank['to_amount'] + 1 : '0' }}" required
-                                            class="form-control form-control-sm" placeholder="Enter Amount">
-                                        <span id="to_amount_msg" class="custom-text-danger"></span>
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Type</label>
-                                        <select class="form-control form-control-sm" id="type" required name="type">
-                                            <option value="">Select</option>
-                                            <option value="persantage">Persantage(%)</option>
-                                            <option value="inr">INR</option>
-
-                                        </select>
-                                        <span id="type_msg" class="custom-text-danger"></span>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>Charges</label>
-                                        <input type="number" step="any" required name="charges" id="charges"
-                                            class="form-control form-control-sm" placeholder="Enter Charges">
-                                        <span id="charges_msg" class="custom-text-danger"></span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group text-center">
-                                    <input type="submit" class="btn btn-success btn-sm" id="submit_bank_charges"
-                                        value="Submit">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('admin.outlet.model')
 
     <script>
+        $('body').on('change', '.to_state', function() {
+            var state = $('#to_state').find(':selected').val();
+            $('body').find("#to_city").val('').trigger('change');
+            $('body').find("#to_city").prop('disabled', true);
+            var settings = {
+                "url": `https://api.countrystatecity.in/v1/countries/IN/states/${state}/cities`,
+                "method": "GET",
+                "headers": {
+                    "X-CSCAPI-KEY": "TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=="
+                },
+            };
+            $('body').find("#to_city").prop('disabled', false);
+            $.ajax(settings).done(function(res) {
+                $('body').find("#to_city").val('').trigger('change');
+                $("#to_city").html('<option value=""></option>');
+                $.each(res, (index, value) => {
+                    $('body').find('#to_city').append(
+                        `<option value=${value.name}>${value.name}</option>`)
+                });
+            });
+        });
+
+        $('body').on('change', '.from_state', function() {
+            var state = $('#from_state').find(':selected').val();
+            $('body').find("#from_city").val('').trigger('change');
+            $('body').find("#from_city").prop('disabled', true);
+            var settings = {
+                "url": `https://api.countrystatecity.in/v1/countries/IN/states/${state}/cities`,
+                "method": "GET",
+                "headers": {
+                    "X-CSCAPI-KEY": "TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=="
+                },
+            };
+            $('body').find("#from_city").prop('disabled', false);
+            $.ajax(settings).done(function(res) {
+                $('body').find("#from_city").val('').trigger('change');
+                $("#from_city").html('<option value=""></option>');
+                $.each(res, (index, value) => {
+                    $('body').find('#from_city').append(
+                        `<option value=${value.name}>${value.name}</option>`)
+                });
+            });
+        })
+
         $('#add_bank_charges').click(function(e) {
             e.preventDefault();
             $('form#add_bank_charges')[0].reset();
@@ -288,10 +255,11 @@
                         `${res.status}`,
                     )
                 }
-            })
+            });
+
+
         });
     </script>
-
 @endpush
 
 

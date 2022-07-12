@@ -15,7 +15,6 @@
                     <input type="hidden" name="id" class="ship_id">
 
                     <div class="form-group">
-                        Total Distance Kelometers  <span id="order_km" class="text-bold"></span>
                         Total Charges <span id="total_charges" class="text-bold"> 0</span>
                     </div>
                     @if (in_array(auth()->user()->id, $checkShiprocket))

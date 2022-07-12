@@ -69,6 +69,9 @@
       height: auto;
     }
 
+    .select2{
+        width: 100%;
+    }
     select {
       font-family: IBM Plex Sans, sans-serif !important;
       font-size: 12px !important;
@@ -339,11 +342,11 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
 
     $(document).ready(function() {
 
-        $(document).ready(function() {
-            $('.select2').select2({
+        $('.select2').select2({
                 placeholder: "Select"
             });
-        });
+
+
 
       $('[data-toggle="tooltip"]').tooltip();
 

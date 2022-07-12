@@ -140,7 +140,7 @@ class LoginController extends Controller
         $otp = trim(str_replace(',', '', $otp));
         $id  = Auth::user()->_id;
 
-        $count = User::where('otp', (int)$otp)->where('_id', $id)->count();
+        $count = User::where('otp', auth()->user()->otp)->where('_id', $id)->count();
         if ($count > 0) {
             $user = User::find($id);
             $user->verify_otp = 1;

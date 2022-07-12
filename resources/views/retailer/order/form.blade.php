@@ -128,7 +128,7 @@
                                 <label for="city">
                                     City <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="bill_city" class="form-control form-control-sm" id="city"
+                                <input type="text" name="bill_city" class="form-control form-control-sm"
                                     placeholder="City" value="{{ old('bill_city') }}" >
                                 <span class="requride_cls" id="bill_city_msg"><strong></strong></span>
                             </div>
@@ -219,7 +219,7 @@
                                 <label for="city">
                                     City <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="ship_city" class="form-control form-control-sm" id="city"
+                                <input type="text" name="ship_city" class="form-control form-control-sm"
                                     placeholder="City" value="{{ old('ship_city') }}" required>
                                 @if ($errors->has('ship_city'))
                                     <span class="requride_cls"><strong>{{ $errors->first('city') }}</strong></span>
@@ -517,6 +517,47 @@
                     </div>
                 </div>
                 <hr>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label for="country">
+                                Country <span class="requride_cls">*</span>
+                            </label>
+                             <select class="form-control select2" name="country" id="country" style="width: 100%;">
+                                <option value=""></option>
+                                <option value="India">India</option>
+                            </select>
+                            </strong><span class="requride_cls" id="country_msg"><strong></span>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label for="state">
+                                State <span class="requride_cls">*</span>
+                            </label>
+                             <select class="form-control select2" name="state" id="state" style="width: 100%;">
+                                <option value=""></option>
+                                @foreach (getState() as $key => $val)
+                                <option value="{{ $val->iso2 }}">{{ $val->name }}</option>
+                            @endforeach
+                            </select>
+                            </strong><span class="requride_cls" id="state_msg"><strong></span>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label for="country">
+                                City <span class="requride_cls">*</span>
+                            </label>
+                             <select class="form-control select2" name="city"  id="city" style="width: 100%;">
+                                <option value=""></option>
+
+                            </select>
+                            </strong><span class="requride_cls" id="city_msg"><strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
                 <h3>Package Weight</h3>
 
                 <div class="packageWeight">
@@ -583,6 +624,27 @@
 @push('custom-script')
     <script>
         $(document).ready(function() {
+
+            $('body').on('change', '#state', function() {
+            var state = $('#state').find(':selected').val();
+            $('body').find("#city").val('').trigger('change');
+            var settings = {
+                "url": `https://api.countrystatecity.in/v1/countries/IN/states/${state}/cities`,
+                "method": "GET",
+                "headers": {
+                    "X-CSCAPI-KEY": "TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=="
+                },
+            };
+
+            $.ajax(settings).done(function(res) {
+                $('body').find("#city").val('').trigger('change');
+                $("#city").html('<option value=""></option>');
+                $.each(res, (index, value) => {
+                    $('body').find('#city').append(
+                        `<option value=${value.name}>${value.name}</option>`)
+                });
+            });
+        })
 
             /*start form submit functionality*/
             $("#form").submit(function(e) {

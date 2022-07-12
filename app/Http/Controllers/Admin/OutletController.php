@@ -291,6 +291,7 @@ class OutletController extends Controller
                 $data['bank_charges'] = $outlet->bank_charges;
                 $data['apis'] = ApiList::get();
                 $data['id'] = $outlet->_id;
+                $data['states'] = getState();
                 return view('admin.outlet.bank_charges', $data);
             }
             return redirect('500');
@@ -302,6 +303,8 @@ class OutletController extends Controller
 
     public function outletAddBankCharges(BankChargesValidation $request)
     {
+
+
         try {
 
             $outlet_id = $request->id;
@@ -310,7 +313,7 @@ class OutletController extends Controller
             $bank_changes = $outlet->bank_charges;
             if (!empty($bank_charges)) {
                 foreach ($bank_changes as $charge) {
-                    if ($charge['from_amount'] == $request->from_amount && $charge['to_amount'] == $request->to_amount)
+                    if ($charge['from_state'] == $request->from_state && $charge['to_state'] == $request->to_state && $charge['from_city'] == $request->from_city && $charge['to_city'] == $request->to_city)
                         return response(['status' => 'error', 'msg' => 'This Amount Slab is already Added.']);
                 }
             }
@@ -321,8 +324,10 @@ class OutletController extends Controller
 
             $bank_charges_val[] = [
                 'api_id'      => $request->api_id,
-                'from_amount' => $request->from_amount,
-                'to_amount'   => $request->to_amount,
+                'from_state' => $request->from_state,
+                'to_state'   => $request->to_state,
+                'from_city' => $request->from_city,
+                'to_city'   => $request->to_city,
                 'type'        => $request->type,
                 'charges'     => $request->charges,
                 'status'      => 1
@@ -365,7 +370,7 @@ class OutletController extends Controller
             $bank_changes = $outlet->bank_charges;
 
             foreach ($bank_changes as $nkey => $charge) {
-                if ($charge['from_amount'] == $request->from_amount && $charge['to_amount'] == $request->to_amount && $key != $nkey)
+                if ($charge['from_state'] == $request->from_state && $charge['to_state'] == $request->to_state && $charge['from_city'] == $request->from_city && $charge['to_city'] == $request->to_city)
                     return response(['status' => 'error', 'msg' => 'This Amount Slab is already Exist.']);
             }
 
@@ -375,9 +380,10 @@ class OutletController extends Controller
 
             //check name and value is not empry
             $bank_charge[$key]['api_id'] = $request->api_id;
-            $bank_charge[$key]['from_amount'] = $request->from_amount;
-            $bank_charge[$key]['to_amount']  = $request->to_amount;
-            $bank_charge[$key]['type']       = $request->type;
+            $bank_charge[$key]['from_state'] = $request->from_state;
+            $bank_charge[$key]['to_state']  = $request->to_state;
+            $bank_charge[$key]['to_city']  = $request->to_city;
+            $bank_charge[$key]['from_city']  = $request->from_city;
             $bank_charge[$key]['charges']    = $request->charges;
 
             $outlet->bank_charges          = $bank_charge;

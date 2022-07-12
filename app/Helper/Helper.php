@@ -427,16 +427,32 @@ function getDistance($from, $to, $unit = 'km')
     }
 }
 
-function getSlabRate($km, $apiId)
-{
-    $slab = Outlet::where('api_id', $apiId)->first()->bank_charges;
-    foreach($slab as $key => $val) {
-        if($km >= $val['from_amount'] &&  $km <= $val['to_amount']) {
-            return $val['charges'];
-        }
+// function getSlabRate($km, $apiId)
+// {
+//     $slab = Outlet::where('api_id', $apiId)->first()->bank_charges;
+//     foreach($slab as $key => $val) {
+//         if($km >= $val['from_amount'] &&  $km <= $val['to_amount']) {
+//             return $val['charges'];
+//         }
+//     }
+
+//     return 0;
+// }
+
+function getSlabRate($from,$to,$apiId) {
+    try{
+        $slab = Outlet::where('api_id', $apiId)->first()->bank_charges;
+
+    $charge = collect($slab)->where('from_city',$from)->where('to_city',$to)->first();
+    if($charge) {
+        return $charge['charges'];
+    } else {
+        return 0;
+    }
+    } catch(Exception $e){
+        return 'No Charges Found.';
     }
 
-    return 0;
 }
 
 function getState($country = "IN")

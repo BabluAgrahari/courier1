@@ -28,8 +28,8 @@ class OrderController extends Controller
     {
 
 
-        $api = ApiList::where('name','Ship Rocket')->first();
-        //return $charges = getSlabRate(13,$api->id);
+        //$api = ApiList::where('name','Ship Rocket')->first();
+        //$charges = getSlabRate('Ahmedabad','Rajkot',$api->id);
 
         // $slab = Outlet::where('api_id', $api->id)->first()->bank_charges;
         // foreach($slab as $key => $val) {
@@ -38,7 +38,7 @@ class OrderController extends Controller
         //     }
         // }
 
-        exit;
+
         $checkShiprocket = ApiList::first();
         //return User::first();
         $moduleName = $this->moduleName;
@@ -146,6 +146,10 @@ class OrderController extends Controller
             $order->pickup_address = $request->pickup_address;
             $order->pickup_address_id = $request->pickup_address_id;
 
+            $order->country = $request->country;
+            $order->state = $request->state;
+            $order->city = $request->city;
+
             $packageDetail = [];
             foreach ($request->weight as $key => $val) {
                 $package = [
@@ -250,6 +254,10 @@ class OrderController extends Controller
             $order->order_type = $request->order_type;
             $order->order_tag = $request->order_tag;
 
+            $order->country = $request->country;
+            $order->state = $request->state;
+            $order->city = $request->city;
+
             $products = [];
             foreach ($request->product_name as $key => $val) {
                 $product = [
@@ -340,18 +348,22 @@ class OrderController extends Controller
     public function getDistance($id) {
 
         $order = Order::find($id);
-        $fromAddr = $order->bill_address_1;
-        $toAddr = Address::find($order->pickup_address_id)->address_1;
+        $fromCity = $order->city;
+        $toCity = Address::find($order->pickup_address_id)->city;
 
-        $distance = getDistance($fromAddr,$toAddr);
-        return json_encode($distance);
+         $charges = getSlabRate($fromCity,$toCity,1);
     }
 
     public function getCharges(Request $request) {
 
-        $api = ApiList::where('name',$request->api)->first();
 
-        $charges = getSlabRate(ceil($request->km),$api->id);
-        return json_encode($charges);
+        $apiId = ApiList::where('name',$request->apiId)->first()->id;
+        $order = Order::find($request->orderId);
+        $fromCity = $order->city;
+        $toCity = Address::find($order->pickup_address_id)->city;
+
+         $charges = getSlabRate('Ahmedabad','Rajkot',$apiId);
+
+         return json_encode($charges);
     }
 }
