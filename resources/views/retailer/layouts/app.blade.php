@@ -31,12 +31,17 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
 
   <link rel="stylesheet" href="{{ asset('assets') }}/custom/custom.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <style>
     label {
       font-size: 14px;
       margin: 0rem !important;
     }
 
+    .select2-container--default.select2-container--focus .select2-selection--multiple, .select2-container--default.select2-container .select2-selection--single{
+        height: 34px !important;
+    }
     .form-group {
       margin-bottom: 0.5rem !important;
     }
@@ -143,6 +148,11 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
     margin-left: 180px;
 }
     }
+
+span{
+    text-transform: capitalize;
+    font-weight: bold;
+}
   </style>
 </head>
 
@@ -299,6 +309,8 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
 
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
   <script>
     //filter open and close
     $('#filter-btn').click(function() {
@@ -309,6 +321,10 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
         $(this).html('<i class="fas fa-filter"></i>&nbsp;Filter');
       }
     })
+
+    $('.select2').select2({
+                placeholder: "Select"
+            });
 
     //popover
     $(document).ready(function() {
@@ -366,7 +382,7 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
             Swal.fire(
             '{{ $moduleName }}',
             '{!! session('error') !!}',
-            'success')
+            'warning')
         @endif
   </script>
 

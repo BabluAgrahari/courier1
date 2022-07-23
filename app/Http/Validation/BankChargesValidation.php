@@ -19,9 +19,10 @@ class BankChargesValidation extends FormRequest
     {
 
         return [
-            'from_amount'   => 'required|numeric',
-            'to_amount'     => 'required|numeric',
-            'type'          => 'required',
+            'from_state'   => 'required',
+            'to_state'     => 'required',
+            'from_city'   => 'required',
+            'to_city'     => 'required',
             'charges'       => 'required'
         ];
     }

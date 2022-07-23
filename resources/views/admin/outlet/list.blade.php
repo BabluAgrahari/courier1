@@ -268,12 +268,12 @@
             <div class="col-md-12">
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label>From Amount</label>
+                  <label>From KM</label>
                   <input type="number" name="from_amount" id="from_amount" required class="form-control form-control-sm" placeholder="Enter Amount">
                   <span id="from_amount_msg" class="custom-text-danger"></span>
                 </div>
                 <div class="form-group col-md-6">
-                  <label>To Amount</label>
+                  <label>To KM</label>
                   <input type="number" name="to_amount" id="to_amount" required class="form-control form-control-sm" placeholder="Enter Amount">
                   <span id="to_amount_msg" class="custom-text-danger"></span>
                 </div>

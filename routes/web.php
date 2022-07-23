@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\PHPMailerController;
 use App\Http\Controllers\Admin\RegisterController;
+use App\Http\Controllers\Retailer\OrderController;
 use App\Http\Controllers\Api\EcollectionController;
+use App\Http\Controllers\Retailer\AddressController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\Admin\LoginController as AdminLogin;
 use App\Http\Controllers\Admin\OutletController as AdminOutlet;
@@ -18,9 +20,9 @@ use App\Http\Controllers\Employee\LoginController as EmployeeLogin;
 use App\Http\Controllers\Retailer\TopupController as RetailerTopup;
 use App\Http\Controllers\Admin\Action\DebitController as AdminDebit;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+//for retailer panel
 use App\Http\Controllers\Admin\PaymentMode\UpiController as AdminUpi;
 use App\Http\Controllers\Retailer\WebhookApiController as WebhookApi;
-//for retailer panel
 use App\Http\Controllers\Admin\Action\CreditController as AdminCredit;
 use App\Http\Controllers\Distributor\MakeTopupController as MakeTopup;
 use App\Http\Controllers\Employee\ProfileController as EmployeeProfile;
@@ -28,17 +30,17 @@ use App\Http\Controllers\Retailer\ProfileController as RetailerProfile;
 use App\Http\Controllers\Admin\EcollectionController as AdminECollection;
 use App\Http\Controllers\Admin\TransactionController as AdminTransaction;
 use App\Http\Controllers\Distributor\LoginController as DistributorLogin;
-use App\Http\Controllers\Distributor\WebhookApiController as DWebhookApi;
-use App\Http\Controllers\Retailer\PassbookController as RetailerPassbook;
 
 //for employee panel
+use App\Http\Controllers\Distributor\WebhookApiController as DWebhookApi;
+use App\Http\Controllers\Retailer\PassbookController as RetailerPassbook;
 use App\Http\Controllers\Admin\PaymentMode\QrCodeController as AdminQrCode;
 use App\Http\Controllers\Admin\TopupRequestController as AdminTopupRequest;
 use App\Http\Controllers\Distributor\OutletController as DistributorOutlet;
-use App\Http\Controllers\Employee\DashboardController as EmployeeDashboard;
-use App\Http\Controllers\Retailer\DashboardController as RetailerDashboard;
 
 //for Distributor panel
+use App\Http\Controllers\Employee\DashboardController as EmployeeDashboard;
+use App\Http\Controllers\Retailer\DashboardController as RetailerDashboard;
 use App\Http\Controllers\Admin\TransactionCommentController as AdminComment;
 use App\Http\Controllers\Distributor\ProfileController as DistributorProfile;
 use App\Http\Controllers\Admin\PaymentChannelController as AdminPaymentChannel;
@@ -47,16 +49,15 @@ use App\Http\Controllers\Employee\TransactionController as EmployeeTransaction;
 use App\Http\Controllers\Retailer\EcollectionController as RetailerECollection;
 use App\Http\Controllers\Retailer\TransactionController as RetailerTransaction;
 use App\Http\Controllers\Distributor\DashboardController as DistributorDashboard;
+
 use App\Http\Controllers\Employee\TopupRequestController as EmployeeTopupRequest;
 use App\Http\Controllers\Distributor\MakeTransactionController as MakeTransaction;
-
 use App\Http\Controllers\Admin\PaymentMode\BankAccountController as AdminBankAccount;
 use App\Http\Controllers\Distributor\TransactionController as DistributorTransaction;
 use App\Http\Controllers\Distributor\TopupRequestController as DistributorTopupRequest;
-use App\Http\Controllers\Retailer\AddressController;
-use App\Http\Controllers\Retailer\OrderController;
 use App\Http\Controllers\Retailer\Transaction\OfflinePayoutApiController as OfflinePayout;
 use App\Http\Controllers\Retailer\Transaction\RetailerTransController as RetailerRetailerTrans;
+use App\Http\Controllers\TransportController;
 
 Route::get("email", [Controller::class, "show"]);
 Route::get("get-blance0", [Controller::class, "getBlance0"]);
@@ -92,6 +93,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
   Route::resource('dashboard', AdminDashboard::class);
   Route::get('export', [AdminDashboard::class, 'export']);
   Route::post('import', [AdminDashboard::class, 'import']);
+
+
+  Route::get('/transport',[TransportController::class,'index'])->name('transport.index');
+  Route::get('transport/create',[TransportController::class,'create'])->name('transport.create');
+  Route::post('transport/store',[TransportController::class,'store'])->name('transport.store');
+  Route::get('transport/{id}/edit',[TransportController::class,'edit'])->name('transport.edit');
+  Route::put('transport/update/{id}',[TransportController::class,'update'])->name('transport.update');
+  Route::get('transport/{id}/changeStatus',[TransportController::class,'changeStatus'])->name('transport.changeStatus');
 
   Route::resource('outlets', AdminOutlet::class);
   Route::post('outlets-status', [AdminOutlet::class, 'outletStatus']);
@@ -181,20 +190,23 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
 Route::group(['prefix' => 'retailer', 'middleware' => 'retailer'], function () {
 
-  Route::get('address',                  [AddressController::class,'index'])->name('address.index');
-  Route::get('address/create',           [AddressController::class,'create'])->name('address.create');
-  Route::post('address/store',           [AddressController::class,'store'])->name('address.store');
-  Route::get('address/{id}/edit',        [AddressController::class,'edit'])->name('address.edit');
-  Route::put('address/update/{id}',      [AddressController::class,'update'])->name('address.update');
+  Route::get('address',[AddressController::class,'index'])->name('address.index');
+  Route::get('address/create',[AddressController::class,'create'])->name('address.create');
+  Route::post('address/store',[AddressController::class,'store'])->name('address.store');
+  Route::get('address/{id}/edit',[AddressController::class,'edit'])->name('address.edit');
+  Route::put('address/update/{id}',[AddressController::class,'update'])->name('address.update');
   Route::get('address/{id}/changeStatus',[AddressController::class,'changeStatus'])->name('address.changeStatus');
-  Route::get('address/{id}',             [AddressController::class,'destroy'])->name('address.destroy');
+  Route::get('address/{id}',[AddressController::class,'destroy'])->name('address.destroy');
 
-  Route::get('order',             [OrderController::class,'index'])->name('order.index');
-  Route::get('order/create',      [OrderController::class,'create'])->name('order.create');
-  Route::post('order/store',      [OrderController::class,'store'])->name('order.store');
-  Route::get('order/{id}/edit',   [OrderController::class,'edit'])->name('order.edit');
-  Route::put('order/update/{id}', [OrderController::class,'update'])->name('order.update');
-  Route::get('order/delete/{id}', [OrderController::class,'destroy'])->name('order.destroy');
+  Route::get('order',[OrderController::class,'index'])->name('order.index');
+  Route::get('order/create',[OrderController::class,'create'])->name('order.create');
+  Route::post('order/store',[OrderController::class,'store'])->name('order.store');
+  Route::get('order/{id}/edit',[OrderController::class,'edit'])->name('order.edit');
+  Route::put('order/update/{id}',[OrderController::class,'update'])->name('order.update');
+  Route::get('order/delete/{id}',[OrderController::class,'destroy'])->name('order.destroy');
+  Route::post('order/shipment',[OrderController::class,'shipment'])->name('order.shipment');
+  Route::get('order/getDistance/{id}',[OrderController::class,'getDistance'])->name('order.getDistance');
+  Route::post('order/getCharges',[OrderController::class,'getCharges'])->name('order.getcharges');
 
   Route::resource('profile', RetailerProfile::class);
   Route::get('pin-password', [RetailerProfile::class, 'pinPassword']);

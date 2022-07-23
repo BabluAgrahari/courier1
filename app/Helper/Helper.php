@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Address;
+use App\Models\ApiList;
+use App\Models\Order;
 use App\Models\Outlet;
 use App\Models\TransferHistory;
 use App\Models\User;
@@ -74,7 +77,7 @@ if (!function_exists('employeeImage')) {
 }
 
 if (!function_exists('transferHistory')) {
-    function transferHistory($retailer_id, $amount, $receiver_name, $payment_date, $status, $payment_mode, $transaction_type, $fees, $type, $remark = '',$bank_details='')
+    function transferHistory($retailer_id, $amount, $receiver_name, $payment_date, $status, $payment_mode, $transaction_type, $fees, $type, $remark = '', $bank_details = '')
     {
 
         $closing_amount = 0;
@@ -95,8 +98,8 @@ if (!function_exists('transferHistory')) {
         $transferHistory->transaction_type = $transaction_type;
         $transferHistory->closing_amount = $closing_amount;
         $transferHistory->remark        = $remark;
-        if(!empty($bank_details))
-        $transferHistory->bank_details  = $bank_details;
+        if (!empty($bank_details))
+            $transferHistory->bank_details  = $bank_details;
         $transferHistory->save();
     }
 }
@@ -208,4 +211,264 @@ function verify_url($base_url)
         return false;
 
     return true;
+}
+
+function authToken()
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://apiv2.shiprocket.in/v1/external/auth/login",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "{\r\n    \"email\": \"websiteduniya2019@gmail.com\",\r\n    \"password\": \"Trick@123\"\r\n}",
+        CURLOPT_HTTPHEADER => array(
+            "cache-control: no-cache",
+            "content-type: application/json",
+            "postman-token: fc2b5374-31cf-f0fa-a20f-b94658d812ec"
+        ),
+    ));
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    if ($err) {
+        echo "cURL Error #:" . $err;
+    } else {
+        return json_decode($response)->token;
+    }
+}
+
+function shiprocket($orderId)
+{
+
+    $order = Order::find($orderId);
+    $items = [];
+    foreach ($order->productDetails as $val) {
+        $item = [
+            'name' => $val['product_name'],
+            'sku' => $val['sku'],
+            'units' => '1',
+            'selling_price' => $val['unit_price'],
+            'discount' => $val['discount'],
+            'tax' => $val['tax_rate'],
+            "hsn" => $val['hsn']
+        ];
+
+        array_push($items, $item);
+    }
+
+    $packageDetail = $order->packageDetail;
+    $length = $packageDetail[0]['length'];
+    $width = $packageDetail[0]['width'];
+    $height = $packageDetail[0]['height'];
+    $weigth = $packageDetail[0]['weight'];
+    $pickup_address = Address::find($order->pickup_address_id)->pickup_location;
+    $bill_ship = ($order->address_both_same == 1) ? true : 0;
+    $payload = '{
+        "order_id": "' . $order->id . '",
+        "order_date": "' . $order->order_date . '",
+        "pickup_location": "' . $pickup_address . '",
+        "comment": "Order",
+        "billing_customer_name": "' . $order->buyer_name . '",
+        "billing_last_name": "Uzumaki",
+        "billing_address": "' . $order->bill_address_1 . '",
+        "billing_address_2": "' . $order->bill_address_1 . '",
+        "billing_city": "' . $order->bill_city . '",
+        "billing_pincode": "' . $order->bill_pincode . '",
+        "billing_state": "' . $order->bill_state . '",
+        "billing_country": "' . $order->bill_country . '",
+        "billing_email": "billemail@gmail.com",
+        "billing_phone": "' . $order->phone . '",
+        "shipping_is_billing": "' . $bill_ship . '",
+        "shipping_customer_name": "' . $order->buyer_name . '",
+        "shipping_last_name": "",
+        "shipping_address": "' . $order->ship_address_1 . '",
+        "shipping_address_2": "' . $order->ship_address_1 . '",
+        "shipping_city": "' . $order->ship_city . '",
+        "shipping_pincode": "' . $order->ship_pincode . '",
+        "shipping_country": "' . $order->ship_country . '",
+        "shipping_state": "' . $order->ship_state . '",
+        "shipping_email": "ship@gmail.com",
+        "shipping_phone": "' . $order->phone . '",
+        "order_items": ' . json_encode($items) . ',
+        "payment_method": "Prepaid",
+        "shipping_charges": 0,
+        "giftwrap_charges": 0,
+        "transaction_charges": 0,
+        "total_discount": 0,
+        "sub_total": 9000,
+        "length": "' . ($length) . '",
+        "breadth": "' . ($width) . '",
+        "height": "' . $height . '",
+        "weight": "' . $weigth . '"
+      }';
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "$payload",
+        CURLOPT_HTTPHEADER => array(
+            "authorization: Bearer " . authToken(),
+            "cache-control: no-cache",
+            "content-type: application/json",
+            "postman-token: 3f6d69a0-03ad-ba67-7db2-a1e3999c5f25"
+        ),
+    ));
+
+    $response = curl_exec($curl);
+    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    if ($err) {
+        return "cURL Error #:" . $err;
+    } else {
+        return  [$response, $httpcode];
+    }
+}
+
+function getAPIName($id)
+{
+    return ApiList::find($id)->name;
+}
+
+//  function getDistance($addressFrom, $addressTo, $unit = ''){
+//     // Google API key
+//     $apiKey = 'AIzaSyBS7N6bugP8MssTKboANjmwS0XiRbPBxXo';
+
+//     // Change address format
+//     $formattedAddrFrom    = str_replace(' ', '+', $addressFrom);
+//     $formattedAddrTo     = str_replace(' ', '+', $addressTo);
+
+//     // Geocoding API request with start address
+//     $geocodeFrom = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddrFrom.'&sensor=false&key='.$apiKey);
+//     $outputFrom = json_decode($geocodeFrom);
+//     if(!empty($outputFrom->error_message)){
+//         return $outputFrom->error_message;
+//     }
+
+//     // Geocoding API request with end address
+//     $geocodeTo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddrTo.'&sensor=false&key='.$apiKey);
+//     $outputTo = json_decode($geocodeTo);
+//     if(!empty($outputTo->error_message)){
+//         return $outputTo->error_message;
+//     }
+
+//     // Get latitude and longitude from the geodata
+//     $latitudeFrom    = $outputFrom->results[0]->geometry->location->lat;
+//     $longitudeFrom    = $outputFrom->results[0]->geometry->location->lng;
+//     $latitudeTo        = $outputTo->results[0]->geometry->location->lat;
+//     $longitudeTo    = $outputTo->results[0]->geometry->location->lng;
+
+//     // Calculate distance between latitude and longitude
+//     $theta    = $longitudeFrom - $longitudeTo;
+//     $dist    = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) +  cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
+//     $dist    = acos($dist);
+//     $dist    = rad2deg($dist);
+//     $miles    = $dist * 60 * 1.1515;
+
+//     // Convert unit and return distance
+//     $unit = strtoupper($unit);
+//     if($unit == "K"){
+//         return round($miles * 1.609344, 2).' km';
+//     }elseif($unit == "M"){
+//         return round($miles * 1609.344, 2).' meters';
+//     }else{
+//         return round($miles, 2).' miles';
+//     }
+// }
+
+function getDistance($from, $to, $unit = 'km')
+{
+    $curl = curl_init();
+    $apiKey = 'AIzaSyBS7N6bugP8MssTKboANjmwS0XiRbPBxXo';
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://maps.googleapis.com/maps/api/distancematrix/json?units=" . $unit . "&origins=" . $from . "&destinations=" . $to . "&key=" . $apiKey . "",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => array(
+            "cache-control: no-cache",
+            "postman-token: fb4c7470-70d5-372b-9561-771d1f8bd73f"
+        ),
+    ));
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    if ($err) {
+        return "cURL Error #:" . $err;
+    } else {
+        if (isset(json_decode($response)->rows[0])) {
+            return str_replace('km', '', json_decode($response)->rows[0]->elements[0]->distance->text);
+        } else {
+            return $response;
+        }
+    }
+}
+
+// function getSlabRate($km, $apiId)
+// {
+//     $slab = Outlet::where('api_id', $apiId)->first()->bank_charges;
+//     foreach($slab as $key => $val) {
+//         if($km >= $val['from_amount'] &&  $km <= $val['to_amount']) {
+//             return $val['charges'];
+//         }
+//     }
+
+//     return 0;
+// }
+
+function getSlabRate($from,$to,$apiId) {
+    try{
+        $slab = Outlet::where('api_id', $apiId)->first()->bank_charges;
+
+    $charge = collect($slab)->where('from_city',$from)->where('to_city',$to)->first();
+    if($charge) {
+        return $charge['charges'];
+    } else {
+        return 0;
+    }
+    } catch(Exception $e){
+        return 'No Charges Found.';
+    }
+
+}
+
+function getState($country = "IN")
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://api.countrystatecity.in/v1/countries/'.$country.'/states',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => array(
+            'X-CSCAPI-KEY: TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=='
+        ),
+    ));
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    return json_decode($response);
 }

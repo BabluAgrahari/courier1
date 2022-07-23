@@ -32,8 +32,7 @@ class LoginController extends Controller
             if (Auth::attempt($credentials)) {
 
                 if (Auth::user()->role == 'retailer') {
-                     setcookie('logged_in', 'logged', time() + 10800, "/");
-                    return redirect()->intended('retailer/dashboard');
+
                     if (!empty($_COOKIE['logged_in']) && $_COOKIE['logged_in'] == 'logged')
                         return redirect()->intended('retailer/dashboard');
 
@@ -141,7 +140,7 @@ class LoginController extends Controller
         $otp = trim(str_replace(',', '', $otp));
         $id  = Auth::user()->_id;
 
-        $count = User::where('otp', (int)$otp)->where('_id', $id)->count();
+        $count = User::where('otp', auth()->user()->otp)->where('_id', $id)->count();
         if ($count > 0) {
             $user = User::find($id);
             $user->verify_otp = 1;
@@ -196,17 +195,18 @@ class LoginController extends Controller
         $email = new Email();
         $res = $email->composeEmail($dataM);
 
-        if ($res) {
+        if ($res){
             return redirect()->back()->with('message', '<span class="text-success">Please check your Email for reset password.</span>');
+
+        }else{
+        $url = 'http://164.52.195.161/API/SendMsg.aspx?uname=20191682&pass=Cool@2020&send=WEBDUN&dest=' . $user->mobile_number . '&msg=Click Here&nbsp;&nbsp;<a href="' . url('forgot-password/' . $token) . '">' . $token . '</a> to Change Your Password';
+        $ressponse = Http::get($url);
+        if ($ressponse) {
+             return redirect()->back()->with('message', '<span class="text-success">Please check your SMS for reset password.</span>');
         } else {
-            $url = 'http://164.52.195.161/API/SendMsg.aspx?uname=20191682&pass=Cool@2020&send=WEBDUN&dest=' . $user->mobile_number . '&msg=Click Here&nbsp;&nbsp;<a href="' . url('forgot-password/' . $token) . '">' . $token . '</a> to Change Your Password';
-            $ressponse = Http::get($url);
-            if ($ressponse) {
-                return redirect()->back()->with('message', '<span class="text-success">Please check your SMS for reset password.</span>');
-            } else {
-                return redirect()->back()->with('message', '<span class="text-danger">Someting Went Wrong.</span>');
-            }
             return redirect()->back()->with('message', '<span class="text-danger">Someting Went Wrong.</span>');
+        }
+        return redirect()->back()->with('message', '<span class="text-danger">Someting Went Wrong.</span>');
         }
     }
 

@@ -24,6 +24,8 @@
 
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
   <!-- Tempusdominus Bootstrap 4 -->
 
   <link rel="stylesheet" href="{{ asset('assets') }}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
@@ -67,6 +69,9 @@
       height: auto;
     }
 
+    .select2{
+        width: 100%;
+    }
     select {
       font-family: IBM Plex Sans, sans-serif !important;
       font-size: 12px !important;
@@ -109,24 +114,24 @@
       letter-spacing: 0.01em;
       height: auto;
     }
-    
+
     .sidebar-mini .main-sidebar .nav-link, .sidebar-mini-md .main-sidebar .nav-link, .sidebar-mini-xs .main-sidebar .nav-link {
     width: calc(180px - 0.5rem * 2);
-    
+
 }
-    
+
     .main-sidebar, .main-sidebar::before {
     transition: margin-left .3s ease-in-out,width .3s ease-in-out;
     width: 180px;
 }
-    
+
     @media (min-width: 768px){
 body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
     transition: margin-left .3s ease-in-out;
     margin-left: 180px;
 }
     }
-    
+
   </style>
 </head>
 
@@ -322,6 +327,8 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
   <script src="{{ asset('assets') }}/custom/custom_function.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script>
     //filter open and close
     $('#filter-btn').click(function() {
@@ -334,6 +341,12 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
     })
 
     $(document).ready(function() {
+
+        $('.select2').select2({
+                placeholder: "Select"
+            });
+
+
 
       $('[data-toggle="tooltip"]').tooltip();
 

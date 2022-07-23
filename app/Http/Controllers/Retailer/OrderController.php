@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Retailer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Validation\OrderValidation;
 use App\Models\Address;
+use App\Models\ApiList;
 use App\Models\Order;
+use App\Models\Outlet;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -22,10 +26,33 @@ class OrderController extends Controller
      */
     public function index()
     {
+
+
+        //$api = ApiList::where('name','Ship Rocket')->first();
+        //$charges = getSlabRate('Ahmedabad','Rajkot',$api->id);
+
+        // $slab = Outlet::where('api_id', $api->id)->first()->bank_charges;
+        // foreach($slab as $key => $val) {
+        //     if("13" >= $val['from_amount'] &&  "13" <= $val['to_amount']) {
+        //         return $val['charges'];
+        //     }
+        // }
+
+
+        $checkShiprocket = ApiList::first();
+        //return User::first();
         $moduleName = $this->moduleName;
         $addresses = Address::get();
         $orders = Order::all();
-        return view($this->view.'/index',compact('moduleName','orders'));
+
+
+        $checkShiprocket = ApiList::where('name', 'Ship Rocket')->pluck('retailer_ids')->toArray()[0];
+        $checkShiprocket = !empty($checkShiprocket) ? $checkShiprocket : [];
+
+        $checkXpressbees = ApiList::where('name', 'Xpressbees')->pluck('retailer_ids')->toArray()[0];
+        $checkXpressbees = !empty($checkXpressbees) ? $checkXpressbees : [];
+
+        return view($this->view . '/index', compact('moduleName', 'orders', 'checkShiprocket', 'checkXpressbees'));
     }
 
     /**
@@ -37,7 +64,7 @@ class OrderController extends Controller
     {
         $moduleName = $this->moduleName;
         $addresses = Address::get();
-        return view($this->view.'/form',compact('moduleName','addresses'));
+        return view($this->view . '/form', compact('moduleName', 'addresses'));
     }
 
     /**
@@ -46,98 +73,102 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrderValidation $request)
     {
         //Order::first();
         // dd($request->all());
 
         try {
-        $order = new Order();
+            $order = new Order();
 
-        $order->buyer_name = $request->buyer_name;
-        $order->phone = $request->phone;
-        $order->phone_alt = $request->phone_alt;
-        $order->email = $request->email;
-        $order->bill_address_1 = $request->bill_address_1;
-        $order->bill_address_2 = $request->bill_address_2;
-        $order->bill_pincode = $request->bill_pincode;
-        $order->bill_city = $request->bill_city;
-        $order->bill_country = $request->bill_country;
-        $order->bill_state = $request->bill_state;
+            $order->buyer_name = $request->buyer_name;
+            $order->phone = $request->phone;
+            $order->phone_alt = $request->phone_alt;
+            $order->email = $request->email;
+            $order->bill_address_1 = $request->bill_address_1;
+            $order->bill_address_2 = $request->bill_address_2;
+            $order->bill_pincode = $request->bill_pincode;
+            $order->bill_city = $request->bill_city;
+            $order->bill_country = $request->bill_country;
+            $order->bill_state = $request->bill_state;
 
-        if($request->has('address_both_same')){
-            $order->address_both_same = 1;
-            $order->ship_address_1 = $request->bill_address_1;
-            $order->ship_address_2 = $request->bill_address_2;
-            $order->ship_pincode = $request->bill_pincode;
-            $order->ship_city = $request->bill_city;
-            $order->ship_country = $request->bill_country;
-            $order->ship_state = $request->bill_state;
-        } else {
-            $order->address_both_same = 0;
-            $order->ship_address_1 = $request->ship_address_1;
-            $order->ship_address_2 = $request->ship_address_2;
-            $order->ship_pincode = $request->ship_pincode;
-            $order->ship_city = $request->ship_city;
-            $order->ship_country = $request->ship_country;
-            $order->ship_state = $request->ship_state;
+            if ($request->has('address_both_same')) {
+                $order->address_both_same = 1;
+                $order->ship_address_1 = $request->bill_address_1;
+                $order->ship_address_2 = $request->bill_address_2;
+                $order->ship_pincode = $request->bill_pincode;
+                $order->ship_city = $request->bill_city;
+                $order->ship_country = $request->bill_country;
+                $order->ship_state = $request->bill_state;
+            } else {
+                $order->address_both_same = 0;
+                $order->ship_address_1 = $request->ship_address_1;
+                $order->ship_address_2 = $request->ship_address_2;
+                $order->ship_pincode = $request->ship_pincode;
+                $order->ship_city = $request->ship_city;
+                $order->ship_country = $request->ship_country;
+                $order->ship_state = $request->ship_state;
+            }
+
+            if ($request->has('hyperlocal_shipment')) {
+                $order->hyperlocal_shipment = 1;
+                $order->location = $request->location;
+            } else {
+                $order->hyperlocal_shipment = 0;
+                $order->location = null;
+            }
+
+            $order->order_id = $request->order_id;
+            $order->order_date = $request->order_date;
+            $order->order_channel = $request->order_channel;
+            $order->order_type = $request->order_type;
+            $order->order_tag = $request->order_tag;
+
+            $products = [];
+            foreach ($request->product_name as $key => $val) {
+                $product = [
+                    'product_name' => $request->product_name[$key],
+                    'sku' => $request->sku[$key],
+                    'qty' => $request->qty[$key],
+                    'unit_price' => $request->unit_price[$key],
+                    'tax_rate' => $request->tax_rate[$key],
+                    'hsn' => $request->hsn[$key],
+                    'discount' => $request->discount[$key],
+                    'category' => $request->category[$key],
+                    'amount'  => $request->amount[$key]
+                ];
+
+                array_push($products, $product);
+            }
+
+            $order->payment_type = $request->payment_type;
+            $order->sub_total = $request->sub_total;
+            $order->pickup_address = $request->pickup_address;
+            $order->pickup_address_id = $request->pickup_address_id;
+
+            $order->country = $request->country;
+            $order->state = $request->state;
+            $order->city = $request->city;
+
+            $packageDetail = [];
+            foreach ($request->weight as $key => $val) {
+                $package = [
+                    'weight' => $request->weight[$key],
+                    'length' => $request->length[$key],
+                    'width' => $request->width[$key],
+                    'height' => $request->height[$key],
+                ];
+
+                array_push($packageDetail, $package);
+            }
+            $order->productDetails = $products;
+            $order->packageDetail = $packageDetail;
+            $order->ship_response = "";
+            $order->save();
+            return response(['status' => 'success', 'msg' => 'Order Created Successfully!']);
+        } catch (Exception $e) {
+            return response(['status' => 'error', 'msg' => 'Order Not Created!']);
         }
-
-        if($request->has('hyperlocal_shipment')){
-            $order->hyperlocal_shipment = 1;
-            $order->location = $request->location;
-        } else {
-            $order->hyperlocal_shipment = 0;
-            $order->location = null;
-        }
-
-        $order->order_id = $request->order_id;
-        $order->order_date = $request->order_date;
-        $order->order_channel = $request->order_channel;
-        $order->order_type = $request->order_type;
-        $order->order_tag = $request->order_tag;
-
-        $products = [];
-        foreach($request->product_name as $key => $val) {
-            $product = [
-                'product_name' => $request->product_name[$key],
-                'sku' => $request->sku[$key],
-                'qty' => $request->qty[$key],
-                'unit_price' => $request->unit_price[$key],
-                'tax_rate' => $request->tax_rate[$key],
-                'hsn' => $request->hsn[$key],
-                'discount' => $request->discount[$key],
-                'category' => $request->category[$key],
-                'amount'  => $request->amount[$key]
-            ];
-
-            array_push($products,$product);
-        }
-
-        $order->payment_type = $request->payment_type;
-        $order->sub_total = $request->sub_total;
-        $order->pickup_address = $request->pickup_address;
-        $order->pickup_address_id = $request->pickup_address_id;
-
-        $packageDetail = [];
-        foreach($request->weight as $key => $val) {
-            $package = [
-                'weight' => $request->weight[$key],
-                'length' => $request->length[$key],
-                'width' => $request->width[$key],
-                'height' => $request->height[$key],
-            ];
-
-            array_push($packageDetail,$package);
-        }
-        $order->productDetails = $products;
-        $order->packageDetail = $packageDetail;
-        $order->save();
-        return redirect($this->route)->with('message','Order Details Save Successfully.');
-        } catch(Exception $e) {
-            return back()->with('error',$e->getMessage());
-        }
-
     }
 
     /**
@@ -159,10 +190,13 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
+        //https://www.codexworld.com/distance-between-two-addresses-google-maps-api-php/
+        //https://www.myprogrammingtutorials.com/find-distance-between-two-addresses-google-api-php.html
+        //$distance = getDistance($addressFrom, $addressTo);
         $addresses = Address::get();
         $order = Order::find($id);
         $moduleName = $this->moduleName;
-        return view($this->view.'/_form',compact('moduleName','order','addresses'));
+        return view($this->view . '/_form', compact('moduleName', 'order', 'addresses'));
     }
 
     /**
@@ -188,7 +222,7 @@ class OrderController extends Controller
             $order->bill_country = $request->bill_country;
             $order->bill_state = $request->bill_state;
 
-            if($request->has('address_both_same')){
+            if ($request->has('address_both_same')) {
                 $order->address_both_same = 1;
                 $order->ship_address_1 = $request->bill_address_1;
                 $order->ship_address_2 = $request->bill_address_2;
@@ -206,7 +240,7 @@ class OrderController extends Controller
                 $order->ship_state = $request->ship_state;
             }
 
-            if($request->has('hyperlocal_shipment')){
+            if ($request->has('hyperlocal_shipment')) {
                 $order->hyperlocal_shipment = 1;
                 $order->location = $request->location;
             } else {
@@ -220,8 +254,12 @@ class OrderController extends Controller
             $order->order_type = $request->order_type;
             $order->order_tag = $request->order_tag;
 
+            $order->country = $request->country;
+            $order->state = $request->state;
+            $order->city = $request->city;
+
             $products = [];
-            foreach($request->product_name as $key => $val) {
+            foreach ($request->product_name as $key => $val) {
                 $product = [
                     'product_name' => $request->product_name[$key],
                     'sku' => $request->sku[$key],
@@ -234,7 +272,7 @@ class OrderController extends Controller
                     'amount'  => $request->amount[$key]
                 ];
 
-                array_push($products,$product);
+                array_push($products, $product);
             }
 
             $order->payment_type = $request->payment_type;
@@ -243,7 +281,7 @@ class OrderController extends Controller
             $order->pickup_address_id = $request->pickup_address_id;
 
             $packageDetail = [];
-            foreach($request->weight as $key => $val) {
+            foreach ($request->weight as $key => $val) {
                 $package = [
                     'weight' => $request->weight[$key],
                     'length' => $request->length[$key],
@@ -251,15 +289,15 @@ class OrderController extends Controller
                     'height' => $request->height[$key],
                 ];
 
-                array_push($packageDetail,$package);
+                array_push($packageDetail, $package);
             }
             $order->productDetails = $products;
             $order->packageDetail = $packageDetail;
             $order->save();
-            return redirect($this->route)->with('message','Order Updated Successfully.');
-            } catch(Exception $e) {
-                return back()->with('error',$e->getMessage());
-            }
+            return redirect($this->route)->with('message', 'Order Updated Successfully.');
+        } catch (Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -271,5 +309,61 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function shipment(Request $request)
+    {
+        $request->validate([
+            'api' => 'required'
+        ]);
+
+        try {
+            $res = '';
+            if ($request->api == 'Shiprocket-Order') {
+                $res = shiprocket($request->id);
+                if ($res[1] === 200) {
+                    $res = $res[0];
+                    Order::find($request->id)->update(['ship_response' => $res]);
+                    return back()->with('message', $res);
+                } else {
+                    $res = $res[0];
+                    return back()->with('error', $res);
+                }
+            } else if ($request->api == 'Xpressbees') {
+                $res = shiprocket($request->id);
+                if ($res[1] === 200) {
+                    $res = $res[0];
+                    Order::find($request->id)->update(['ship_response' => $res]);
+                    return back()->with('message', $res);
+                } else {
+                    $res = $res[0];
+                    return back()->with('error', $res);
+                }
+            }
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function getDistance($id) {
+
+        $order = Order::find($id);
+        $fromCity = $order->city;
+        $toCity = Address::find($order->pickup_address_id)->city;
+
+         $charges = getSlabRate($fromCity,$toCity,1);
+    }
+
+    public function getCharges(Request $request) {
+
+
+        $apiId = ApiList::where('name',$request->apiId)->first()->id;
+        $order = Order::find($request->orderId);
+        $fromCity = $order->city;
+        $toCity = Address::find($order->pickup_address_id)->city;
+
+         $charges = getSlabRate('Ahmedabad','Rajkot',$apiId);
+
+         return json_encode($charges);
     }
 }

@@ -49,14 +49,21 @@
                 </thead>
                 <tbody>
                     @foreach ($orders as $key => $val)
-                            <tr>
-                                <td>{{$key+1}}</td>
-                                <td>{{$val->order_id}}</td>
-                                <td>{{$val->buyer_name}}</td>
-                                <td>{{$val->phone}}</td>
-                                <td>{{$val->order_date}}</td>
-                                <td><a class="btn btn-warning btn-xs changeStatus" href="{{ route('order.edit',[$val->id]) }}">Edit</a></td>
-                            </tr>
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $val->order_id }}</td>
+                            <td>{{ $val->buyer_name }}</td>
+                            <td>{{ $val->phone }}</td>
+                            <td>{{ $val->order_date }}</td>
+                            <td>
+                                <a class="btn btn-warning btn-xs changeStatus"
+                                    href="{{ route('order.edit', [$val->id]) }}"><i class="far fa-edit"></i></a>
+                                <a type="button" class="btn btn-info btn-xs shipment" data-toggle="modal"
+                                    data-target="#exampleModalCenter" data-id={{ $val->id }}>
+                                    Ready To Ship
+                                </a>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -74,12 +81,38 @@
 </section>
 <!-- /.content -->
 
-
+@include('retailer.order.model')
 @push('custom-script')
     <script>
         $(document).ready(function() {
-            $('.datatable').DataTable();
-        });
+                    $('.datatable').DataTable();
+
+                    $('body').on('click', '.shipment', function() {
+                        var orderId = $(this).data('id');
+                        $('body').find('.ship_id').val(orderId);
+                    });
+
+                    $('body').on('change', '.api', function(e) {
+                        $('body').find('#total_charges').text('...');
+                        var apiId = $(this).val();
+                        var _token = "{{ @csrf_token() }}";
+                        var orderId = $('body').find('.ship_id').val();
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ route('order.getcharges') }}",
+                            data: {
+                                _token: _token,
+                                apiId: apiId,
+                                orderId:orderId
+                            },
+                            dataType: "json",
+                            success: function(response) {
+                                $('body').find('#total_charges').text(response);
+                            }
+
+                        });
+                    });
+                });
     </script>
 @endpush
 @endsection

@@ -46,7 +46,7 @@
                             <option value="retailer">Retailer</option>
                             <option value="distributor">Distributor</option>
                         </select>
-                        <span id="outlet_type_msg" class="custom-text-danger"></span>
+                        <span id="outlet_outlet_type_msg" class="custom-text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>Outlet Name</label>
@@ -392,7 +392,6 @@
             }
         });
     });
-
     /*end form submit functionality*/
 </script>
 @endpush

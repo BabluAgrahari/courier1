@@ -15,7 +15,7 @@
 
                 <div class="card-tools">
                     <a href="javascript:void(0);" class="btn btn-sm btn-success" id="create_topup"><i class="fas fa-hand-holding-usd"></i>&nbsp;Request for Topup</a>
-                    <a href="{{ url('retailer/passbook-export') }}{{ !empty($_SERVER['QUERY_STRING'])?'?'.$_SERVER['QUERY_STRING']:''}}" class="btn btn-sm btn-success"><i class="fas fa-cloud-download-alt"></i>&nbsp;Export</a>
+  <a href="{{ url('retailer/passbook-export') }}{{ !empty($_SERVER['QUERY_STRING'])?'?'.$_SERVER['QUERY_STRING']:''}}" class="btn btn-sm btn-success"><i class="fas fa-cloud-download-alt"></i>&nbsp;Export</a>
                     @if(!empty($filter))
                     <a href="javascript:void(0);" class="btn btn-sm btn-success" id="filter-btn"><i class="far fa-times-circle"></i>&nbsp;Close</a>
                     @else
@@ -26,11 +26,11 @@
             </div>
 
 
-            <div class="row pl-2 pr-2" id="filter" <?= (empty($filter)) ? "style='display:none'" : "" ?>>
+            <div class="row pl-2 pr-2" id="filter" <?=(empty($filter))?"style='display:none'":""?>>
                 <div class="col-md-12 ml-auto">
                     <form action="{{ url('retailer/passbook') }}">
                         <div class="form-row">
-                            <div class="form-group col-md-2">
+                             <div class="form-group col-md-2">
                                 <label>Start Data</label>
                                 <input type="date" class="form-control form-control-sm" value="<?= !empty($filter['start_date']) ? $filter['start_date'] : '' ?>" name="start_date" />
                             </div>
@@ -43,8 +43,8 @@
                                 <label>Type</label>
                                 <select class="form-control form-control-sm" name="type">
                                     <option value="">All</option>
-                                    <option value="credit" <?= (!empty($filter['type']) && $filter['type'] == 'credit') ? 'selected' : '' ?>>Credit</option>
-                                    <option value="debit" <?= (!empty($filter['type']) && $filter['type'] == 'debit') ? 'selected' : '' ?>>Debit</option>
+                                    <option value="credit" <?= (!empty($filter['type']) && $filter['type']=='credit')?'selected':'' ?>>Credit</option>
+                                    <option value="debit" <?= (!empty($filter['type']) && $filter['type']=='debit')?'selected':'' ?>>Debit</option>
                                 </select>
                             </div>
                             <div class="form-group mt-4">
@@ -84,10 +84,10 @@
 
                         @if($pb->type == 'credit')
                         <td class="text-success">{{ ucfirst($pb->type) }}</td>
-                        @elseif($pb->type == 'debit')
+                          @elseif($pb->type == 'debit')
                         <td class="text-danger">{{ ucfirst($pb->type) }}</td>
                         @else
-                        <td class="text-danger">-</td>
+                         <td class="text-danger">-</td>
                         @endif
 
                         <td>{{ ucfirst($pb->status) }}</td>

@@ -4,15 +4,12 @@
     <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-
     <li class="nav-item">
       <a href="{{ url('admin/dashboard') }}" class="nav-link {{ (url()->full() == url('admin/dashboard'))? 'active':''}}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p class="text">Dashboard</p>
       </a>
     </li>
-
-
 
     <li class="nav-item">
       <a href="{{ url('admin/outlets') }}" class="nav-link {{ (url()->full() == url('admin/outlets'))? 'active':''}}">
@@ -27,6 +24,13 @@
         <p>Employee</p>
       </a>
     </li>
+
+    <li class="nav-item">
+        <a href="{{ url('admin/transport') }}" class="nav-link {{ (url()->full() == url('admin/employee'))? 'active':''}}">
+          <i class=" nav-icon fas fa-box"></i>
+          <p>Transport</p>
+        </a>
+      </li>
 
     <li class="nav-item">
       <a href="{{ url('admin/passbook') }}" class="nav-link {{ (url()->full() == url('admin/passbook'))? 'active':''}}">
