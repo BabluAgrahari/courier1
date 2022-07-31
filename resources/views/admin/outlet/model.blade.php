@@ -22,7 +22,7 @@
                         <div class="col-md-12">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    <select name="api_id" id="api_id" class="form-control form-control-sm">
+                                    <select name="api_id" id="api_id" class="form-control form-control-sm" required>
                                         <option value="">Select API</option>
                                         @foreach ($apis as $api)
                                         <option value="{{ $api->id }}">{{ $api->name }}</option>
@@ -35,7 +35,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label>From State</label>
-                                    <select class="select2 from_state" id="from_state" name="from_state" style="width: 100%">
+                                    <select class="select2 from_state" id="from_state" name="from_state[]" style="width: 100%" multiple>
                                         <option value=""></option>
                                         @foreach ($states as $key => $val)
                                         <option value="{{ $val->iso2 }}">{{ $val->name}}</option>
@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>To State</label>
-                                    <select class="select2 to_state" id="to_state" name="to_state" style="width: 100%">
+                                    <select class="form-control select2 to_state" id="to_state" name="to_state[]" style="width: 100%" multiple>
                                         <option value=""></option>
                                         @foreach ($states as $key => $val)
                                         <option value="{{ $val->iso2 }}">{{ $val->name}}</option>
@@ -77,23 +77,24 @@
                             <div class="addMoreFields">
                                 <div class="form-group addslab">
                                     <hr>
+
                                     <div class="addcharges">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label>Minimum Weight</label>
-                                                <input type="text" name="min_weight" id="min_weight" class="form-control form-control-sm" placeholder="Enter minimum weight">
+                                                <input type="number" name="min_weight[]" id="min_weight" value="" class="form-control form-control-sm" placeholder="Enter minimum weight">
                                                 <span id="min_weight_msg" class="custom-text-danger"></span>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>Maximum Weight</label>
-                                                <input type="text" name="max_weight" id="max_weight" class="form-control form-control-sm" placeholder="Enter maximum weight">
+                                                <input type="number" name="max_weight[]" id="max_weight" value="" class="form-control form-control-sm" placeholder="Enter maximum weight">
                                                 <span id="max_weight_msg" class="custom-text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label>Charges</label>
-                                                <input type="number" step="any" name="charges" id="charges" class="form-control form-control-sm" placeholder="Enter Charges">
+                                                <input type="number" step="any" name="charges[]" id="charges" value="" class="form-control form-control-sm" placeholder="Enter Charges">
                                                 <span id="charges_msg" class="custom-text-danger"></span>
                                             </div>
                                         </div>
@@ -130,19 +131,19 @@
                                    <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label>Minimum Weight</label>
-                                            <input type="text" name="min_weight" id="min_weight" class="form-control form-control-sm" placeholder="Enter minimum weight">
+                                            <input type="number" name="min_weight[]" id="min_weight" class="form-control form-control-sm" placeholder="Enter minimum weight">
                                             <span id="min_weight_msg" class="custom-text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Maximum Weight</label>
-                                            <input type="text" name="max_weight" id="max_weight" class="form-control form-control-sm" placeholder="Enter maximum weight">
+                                            <input type="number" name="max_weight[]" id="max_weight" class="form-control form-control-sm" placeholder="Enter maximum weight">
                                             <span id="max_weight_msg" class="custom-text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label>Charges</label>
-                                            <input type="number" step="any" name="charges" id="charges" class="form-control form-control-sm" placeholder="Enter Charges">
+                                            <input type="number" step="any" name="charges[]" id="charges" class="form-control form-control-sm" placeholder="Enter Charges">
                                             <span id="charges_msg" class="custom-text-danger"></span>
                                         </div>
                                         <div class="col-2">

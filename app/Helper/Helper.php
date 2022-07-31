@@ -309,20 +309,32 @@ function getDistance($from, $to, $unit = 'km')
 //     return 0;
 // }
 
-function getSlabRate($from,$to,$apiId) {
-    try{
+function getSlabRate($from, $to, $apiId, $weight, $vol_weight)
+{
+    try {
         $slab = Outlet::where('api_id', $apiId)->first()->bank_charges;
-
-    $charge = collect($slab)->where('from_city',$from)->where('to_city',$to)->first();
-    if($charge) {
-        return $charge['charges'];
-    } else {
-        return 0;
+        $vol_weight =$vol_weight/1000;
+        $weight =$weight/1000;
+        
+        //  $charge = collect($slab)->whereIn('from_state',$from)->whereIn('to_state',$to)->first();
+        //$charge = collect($slab)->where('from_city',$from)->where('to_city',$to)->first();
+        foreach ($slab as $charge) {
+            foreach ($charge['weight_range'] as $data) {
+                if ($vol_weight > $weight) {
+                    if ($data['min_weight'] <= $vol_weight || $data['min_weight'] >= $vol_weight) {
+                        return $data['charges'];
+                    }
+                } else {
+                    if ($data['min_weight'] <= $weight || $data['min_weight'] >= $weight) {
+                        return $data['charges'];
+                }
+            }
+        }
     }
-    } catch(Exception $e){
+  
+    } catch (Exception $e) {
         return 'No Charges Found.';
     }
-
 }
 
 function getState($country = "IN")
@@ -330,7 +342,7 @@ function getState($country = "IN")
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://api.countrystatecity.in/v1/countries/'.$country.'/states',
+        CURLOPT_URL => 'https://api.countrystatecity.in/v1/countries/' . $country . '/states',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HTTPHEADER => array(
             'X-CSCAPI-KEY: TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=='

@@ -78,7 +78,7 @@ class OrderController extends Controller
     public function store(OrderValidation $request)
     {
         //Order::first();
-        // dd($request->all());
+      //  dd($request->all());
 
         try {
             $order = new Order();
@@ -377,10 +377,11 @@ class OrderController extends Controller
 
         $apiId = ApiList::where('name', $request->apiId)->first()->id;
         $order = Order::find($request->orderId);
-        $fromCity = $order->city;
-        $weight = $order->weight;
-        $toCity = Address::find($order->pickup_address_id)->city;
-        $charges = getSlabRate($fromCity, $toCity, $apiId,$weight);
+        $fromState = $order->ship_state;
+        $weight = $order->package_weight;
+        $vol_weight = $order->package_volumatic_weight;
+        $toState = Address::find($order->pickup_address_id)->state;
+        $charges = getSlabRate($fromState, $toState, $apiId,$weight,$vol_weight);
         return json_encode($charges);
     }
 }
