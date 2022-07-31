@@ -21,9 +21,11 @@ class BankChargesValidation extends FormRequest
         return [
             'from_state'   => 'required',
             'to_state'     => 'required',
-            'from_city'   => 'required',
-            'to_city'     => 'required',
-            'charges'       => 'required'
+            'from_city'    => 'required',
+            'to_city'      => 'required',
+            'min_weight'   => 'required|numeric',
+            'max_weight'   => 'required|numeric',
+            'charges'      => 'required'
         ];
     }
     public function messages()
@@ -32,6 +34,10 @@ class BankChargesValidation extends FormRequest
             'form_account.required' =>'From Account field is Required.',
             'to_account.required'   =>'To Account field is Required.',
             'type.required'         =>'Type field is Required.',
+            'min_weight.required'   =>'Minimum weight is Requierd.',
+            'min_weight.numeric'    =>'Minimum weight field must be a numeric value.',
+            'max_weight.required'   =>'Maximum weight is Requierd.',
+            'max_weight.numeric'    =>'Maximum weight field must be a numeric value.',
             'charges.required'      =>'Charges field is Requierd.',
         ];
     }

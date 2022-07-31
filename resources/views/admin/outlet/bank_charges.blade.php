@@ -24,9 +24,9 @@
                             <th>Sl No.</th>
                             <th>API Name</th>
                             <th>From State</th>
-                            <th>From City</th>
+                            <!-- <th>From City</th> -->
                             <th>To State</th>
-                            <th>To City</th>
+                            <!-- <th>To City</th> -->
                             <th>Charges</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -40,11 +40,11 @@
                             @foreach ($bank_charges as $key => $bank)
                                 <tr>
                                     <td>{{ ++$i }}</td>
-                                    <td>{{ getAPIName($bank['api_id']) }}</td>
+                                    <td>{!! !empty($bank['api_id']) ? getAPIName($bank['api_id']) : ''  !!}</td>
                                     <td>{!! !empty($bank['from_state']) ? ($bank['from_state']) : mSign(0) !!}</td>
-                                    <td>{!! !empty($bank['from_city']) ? ($bank['from_city']) : mSign(0) !!}</td>
+                                    <!-- <td>{!! !empty($bank['from_city']) ? ($bank['from_city']) : mSign(0) !!}</td> -->
                                     <td>{!! !empty($bank['to_state']) ? ($bank['to_state']) : mSign(0) !!}</td>
-                                    <td>{!! !empty($bank['to_city']) ? ($bank['to_city']) : mSign(0) !!}</td>
+                                    <!-- <td>{!! !empty($bank['to_city']) ? ($bank['to_city']) : mSign(0) !!}</td> -->
 
                                     <td>{{ !empty($bank['charges']) ? $bank['charges'] : 0 }}</td>
                                     <td>
@@ -83,54 +83,54 @@
     @include('admin.outlet.model')
 
     <script>
-        $('body').on('change', '.to_state', function() {
-            var state = $('#to_state').find(':selected').val();
-            $('body').find("#to_city").val('').trigger('change');
-            $('body').find("#to_city").prop('disabled', true);
-            var settings = {
-                "url": `https://api.countrystatecity.in/v1/countries/IN/states/${state}/cities`,
-                "method": "GET",
-                "headers": {
-                    "X-CSCAPI-KEY": "TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=="
-                },
-            };
-            $('body').find("#to_city").prop('disabled', false);
-            $.ajax(settings).done(function(res) {
-                $('body').find("#to_city").val('').trigger('change');
-                $("#to_city").html('<option value=""></option>');
-                $.each(res, (index, value) => {
-                    $('body').find('#to_city').append(
-                        `<option value=${value.name}>${value.name}</option>`)
-                });
-            });
-        });
+        // $('body').on('change', '.to_state', function() {
+        //     var state = $('#to_state').find(':selected').val();
+        //     $('body').find("#to_city").val('').trigger('change');
+        //     $('body').find("#to_city").prop('disabled', true);
+        //     var settings = {
+        //         "url": `https://api.countrystatecity.in/v1/countries/IN/states/${state}/cities`,
+        //         "method": "GET",
+        //         "headers": {
+        //             "X-CSCAPI-KEY": "TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=="
+        //         },
+        //     };
+        //     $('body').find("#to_city").prop('disabled', false);
+        //     $.ajax(settings).done(function(res) {
+        //         $('body').find("#to_city").val('').trigger('change');
+        //         $("#to_city").html('<option value=""></option>');
+        //         $.each(res, (index, value) => {
+        //             $('body').find('#to_city').append(
+        //                 `<option value=${value.name}>${value.name}</option>`)
+        //         });
+        //     });
+        // });
 
-        $('body').on('change', '.from_state', function() {
-            var state = $('#from_state').find(':selected').val();
-            $('body').find("#from_city").val('').trigger('change');
-            $('body').find("#from_city").prop('disabled', true);
-            var settings = {
-                "url": `https://api.countrystatecity.in/v1/countries/IN/states/${state}/cities`,
-                "method": "GET",
-                "headers": {
-                    "X-CSCAPI-KEY": "TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=="
-                },
-            };
-            $('body').find("#from_city").prop('disabled', false);
-            $.ajax(settings).done(function(res) {
-                $('body').find("#from_city").val('').trigger('change');
-                $("#from_city").html('<option value=""></option>');
-                $.each(res, (index, value) => {
-                    $('body').find('#from_city').append(
-                        `<option value=${value.name}>${value.name}</option>`)
-                });
-            });
-        })
+        // $('body').on('change', '.from_state', function() {
+        //     var state = $('#from_state').find(':selected').val();
+        //     $('body').find("#from_city").val('').trigger('change');
+        //     $('body').find("#from_city").prop('disabled', true);
+        //     var settings = {
+        //         "url": `https://api.countrystatecity.in/v1/countries/IN/states/${state}/cities`,
+        //         "method": "GET",
+        //         "headers": {
+        //             "X-CSCAPI-KEY": "TjI0c3NLbVFSUmRUckZhdlY2cmROSjNsSmFQR2RjRkR0YTEyTk5KQg=="
+        //         },
+        //     };
+        //     $('body').find("#from_city").prop('disabled', false);
+        //     $.ajax(settings).done(function(res) {
+        //         $('body').find("#from_city").val('').trigger('change');
+        //         $("#from_city").html('<option value=""></option>');
+        //         $.each(res, (index, value) => {
+        //             $('body').find('#from_city').append(
+        //                 `<option value=${value.name}>${value.name}</option>`)
+        //         });
+        //     });
+        // })
 
         $('#add_bank_charges').click(function(e) {
             e.preventDefault();
             $('form#add_bank_charges')[0].reset();
-            let url = '{{ url('admin/outlet-add-bank-charges') }}';
+            let url = "{{ url('admin/outlet-add-bank-charges') }}";
             $('#heading_bank').html('Add Bank Charges');
             $('#put').html('');
             $('form#add_bank_charges').attr('action', url);
@@ -153,13 +153,15 @@
                 },
                 success: function(res) {
                     $('#api_id').val(res.data.api_id);
-                    $('#from_amount').val(res.data.from_amount);
-                    $('#to_amount').val(res.data.to_amount);
-                    $('input#to_amount').prop('min', 0);
-                    $('#type').val(res.data.type);
+                    $('#from_state').val(res.data.from_state);
+                    $('#to_state').val(res.data.to_state);
+                    // $('#from_city').val(res.data.from_city);
+                    // $('#to_city').val(res.data.to_city);
+                    $('#min_weight').val(res.data.min_weight);
+                    $('#max_weight').val(res.data.max_weight);
                     $('#charges').val(res.data.charges);
 
-                    let urlU = '{{ url('admin/outlet-update-bank-charges') }}';
+                    let urlU = "{{ url('admin/outlet-update-bank-charges') }}";
                     $('#heading_bank').html('Edit Bank Account Charges');
                     $('#put').html('<input type="hidden" name="key" value="' + key + '">');
                     $('form#add_bank_charges').attr('action', urlU);

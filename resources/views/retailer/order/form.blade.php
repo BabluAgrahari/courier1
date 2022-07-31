@@ -454,7 +454,7 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Case On Delivery</label>
-                                <input type="radio" name="payment_type" value="case">
+                                <input type="radio" name="payment_type" value="cod">
                             </div>
                             <span class="requride_cls" id="payment_type_msg"><strong></strong></span>
                         </div>
@@ -567,39 +567,43 @@
                             <div class="row">
                                 <div class="col-2">
                                     <label>Weight (KG)</label>
-                                    <input type="text" name="weight[]" placeholder="KG" value="0"
+                                    <input type="number" name="package_weight" placeholder="KG" value=""
                                         class="form-control form-control-sm" >
                                 </div>
                                 <div class="col-2">
                                     <label>Length (CM)</label>
-                                    <input type="text" name="length[]" placeholder="CM" value="0"
-                                        class="form-control form-control-sm" >
+                                    <input type="number" onkeypress="return /[0-9]/i.test(event.key)" id="package_length" name="package_length" placeholder="CM" value=""
+                                        class="form-control form-control-sm calculate_vol_weight" >
                                 </div>
 
                                 <div class="col-2">
                                     <label>Width (CM)</label>
-                                    <input type="text" name="width[]" placeholder="CM" value="0"
-                                        class="form-control form-control-sm" >
+                                    <input type="number" onkeypress="return /[0-9]/i.test(event.key)" id="package_breadth" name="package_breadth" placeholder="CM" value=""
+                                        class="form-control form-control-sm calculate_vol_weight" >
                                 </div>
 
                                 <div class="col-2">
                                     <label>Height (CM)</label>
-                                    <input type="text" name="height[]" placeholder="CM" value="0"
-                                        class="form-control form-control-sm" >
+                                    <input type="number" onkeypress="return /[0-9]/i.test(event.key)" id="package_height" name="package_height" placeholder="CM" value=""
+                                        class="form-control form-control-sm calculate_vol_weight" >
                                 </div>
-
                                 <div class="col-2">
-                                    <button type="button" class="remove_package btn btn-danger mt-3">Remove</button>
+                                    <label>Volumetric Weight (KG)</label>
+                                    <input type="number" id="package_volumatic_weight" name="package_volumatic_weight" placeholder="KG" class="form-control form-control-sm" value=""
+                                        readonly>
                                 </div>
+                                <!-- <div class="col-2">
+                                    <button type="button" class="remove_package btn btn-danger mt-3">Remove</button>
+                                </div> -->
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <div class="form-group mt-3">
+                <!-- <div class="form-group mt-3">
                     <button type="button" class="addPackage btn btn-success">Add More.</button>
-                </div>
+                </div> -->
 
 
 
@@ -724,21 +728,37 @@
                 }
             })
 
-            $('body').on('click', '.remove_package', function(e) {
-                e.preventDefault();
+            $('.calculate_vol_weight').keyup(function() {
+            $('#package_volumatic_weight').val('');
+            var l = $("#package_length").val();
+            var b = $("#package_breadth").val();
+            var h = $("#package_height").val();
 
-                if($('.package').length >1) {
-                    $(this).closest('.package').remove();
-                }
-            })
+            len = l.replace(/\s/g, '');
+            bre = b.replace(/\s/g, '');
+            hei = h.replace(/\s/g, '');
+
+            var sum = len * bre * hei;
+
+            var totalsum = sum / 5000;
+
+            $('#package_volumatic_weight').val(totalsum);
+        });
+            // $('body').on('click', '.remove_package', function(e) {
+            //     e.preventDefault();
+
+            //     if($('.package').length >1) {
+            //         $(this).closest('.package').remove();
+            //     }
+            // })
 
 
 
-            let addPckage = $('.packageFirst').clone().html();
-            $('body').on('click', '.addPackage', function(e) {
-                e.preventDefault();
-                $('.packageWeight').append(addPckage);
-            })
+            // let addPckage = $('.packageFirst').clone().html();
+            // $('body').on('click', '.addPackage', function(e) {
+            //     e.preventDefault();
+            //     $('.packageWeight').append(addPckage);
+            // })
 
             const calculation = () => {
                 var sub_total = 0;

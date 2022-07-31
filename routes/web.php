@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\PHPMailerController;
 use App\Http\Controllers\Admin\RegisterController;
+use App\Http\Controllers\Admin\OrderController as AdminOrders;
 use App\Http\Controllers\Retailer\OrderController;
 use App\Http\Controllers\Api\EcollectionController;
 use App\Http\Controllers\Retailer\AddressController;
@@ -101,6 +102,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
   Route::get('transport/{id}/edit',[TransportController::class,'edit'])->name('transport.edit');
   Route::put('transport/update/{id}',[TransportController::class,'update'])->name('transport.update');
   Route::get('transport/{id}/changeStatus',[TransportController::class,'changeStatus'])->name('transport.changeStatus');
+
+
+  Route::resource('orders',AdminOrders::class);
 
   Route::resource('outlets', AdminOutlet::class);
   Route::post('outlets-status', [AdminOutlet::class, 'outletStatus']);

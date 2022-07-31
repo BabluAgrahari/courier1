@@ -9,6 +9,8 @@ use App\Models\ApiList;
 use App\Models\Order;
 use App\Models\Outlet;
 use App\Models\User;
+use App\Libraries\Courier\Shiprocket;
+use App\Libraries\Courier\Xpressbees;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -46,11 +48,11 @@ class OrderController extends Controller
         $orders = Order::all();
 
 
-        $checkShiprocket = ApiList::where('name', 'Ship Rocket')->pluck('retailer_ids')->toArray()[0];
-        $checkShiprocket = !empty($checkShiprocket) ? $checkShiprocket : [];
+        $checkShiprocket = ApiList::where('name', 'Ship Rocket')->pluck('retailer_ids')->toArray();
+        $checkShiprocket = !empty($checkShiprocket) ? $checkShiprocket[0] : [];
 
-        $checkXpressbees = ApiList::where('name', 'Xpressbees')->pluck('retailer_ids')->toArray()[0];
-        $checkXpressbees = !empty($checkXpressbees) ? $checkXpressbees : [];
+        $checkXpressbees = ApiList::where('name', 'Xpressbees')->pluck('retailer_ids')->toArray();
+        $checkXpressbees = !empty($checkXpressbees) ? $checkXpressbees[0] : [];
 
         return view($this->view . '/index', compact('moduleName', 'orders', 'checkShiprocket', 'checkXpressbees'));
     }
@@ -149,20 +151,24 @@ class OrderController extends Controller
             $order->country = $request->country;
             $order->state = $request->state;
             $order->city = $request->city;
+            $order->package_weight            = (!empty($request->package_weight)) && floor($request->package_weight*1000) / 500 >= 1 ? $request->package_weight*1000 : 500;
+            $order->package_length            = $request->package_length;
+            $order->package_height            = $request->package_height;
+            $order->package_breadth           = $request->package_breadth;
+            $order->package_volumatic_weight  =  trim($request->package_volumatic_weight*1000);
+            // $packageDetail = [];
+            // foreach ($request->weight as $key => $val) {
+            //     $package = [
+            //         'weight' => $request->weight[$key],
+            //         'length' => $request->length[$key],
+            //         'width' => $request->width[$key],
+            //         'height' => $request->height[$key],
+            //     ];
 
-            $packageDetail = [];
-            foreach ($request->weight as $key => $val) {
-                $package = [
-                    'weight' => $request->weight[$key],
-                    'length' => $request->length[$key],
-                    'width' => $request->width[$key],
-                    'height' => $request->height[$key],
-                ];
-
-                array_push($packageDetail, $package);
-            }
+            //     array_push($packageDetail, $package);
+            // }
             $order->productDetails = $products;
-            $order->packageDetail = $packageDetail;
+          //  $order->packageDetail = $packageDetail;
             $order->ship_response = "";
             $order->save();
             return response(['status' => 'success', 'msg' => 'Order Created Successfully!']);
@@ -275,24 +281,28 @@ class OrderController extends Controller
                 array_push($products, $product);
             }
 
-            $order->payment_type = $request->payment_type;
-            $order->sub_total = $request->sub_total;
-            $order->pickup_address = $request->pickup_address;
-            $order->pickup_address_id = $request->pickup_address_id;
+            $order->payment_type              = $request->payment_type;
+            $order->sub_total                 = $request->sub_total;
+            $order->pickup_address            = $request->pickup_address;
+            $order->pickup_address_id         = $request->pickup_address_id;
+            $order->package_weight            = (!empty($request->package_weight)) && floor($request->package_weight*1000) / 500 >= 1 ? $request->package_weight*1000 : 500;
+            $order->package_length            = $request->package_length;
+            $order->package_height            = $request->package_height;
+            $order->package_breadth           = $request->package_breadth;
+            $order->package_volumatic_weight  =  trim($request->package_volumatic_weight*1000);
+            // $packageDetail = [];
+            // foreach ($request->weight as $key => $val) {
+            //     $package = [
+            //         'weight' => $request->weight[$key],
+            //         'length' => $request->length[$key],
+            //         'width' => $request->width[$key],
+            //         'height' => $request->height[$key],
+            //     ];
 
-            $packageDetail = [];
-            foreach ($request->weight as $key => $val) {
-                $package = [
-                    'weight' => $request->weight[$key],
-                    'length' => $request->length[$key],
-                    'width' => $request->width[$key],
-                    'height' => $request->height[$key],
-                ];
-
-                array_push($packageDetail, $package);
-            }
+            //     array_push($packageDetail, $package);
+            // }
             $order->productDetails = $products;
-            $order->packageDetail = $packageDetail;
+           // $order->packageDetail = $packageDetail;
             $order->save();
             return redirect($this->route)->with('message', 'Order Updated Successfully.');
         } catch (Exception $e) {
@@ -320,7 +330,10 @@ class OrderController extends Controller
         try {
             $res = '';
             if ($request->api == 'Shiprocket-Order') {
-                $res = shiprocket($request->id);
+                //  $res = shiprocket($request->id);
+                $data = new Shiprocket();  /// lib to push data 
+                $res =  $data->Shiprocket($request->id);
+
                 if ($res[1] === 200) {
                     $res = $res[0];
                     Order::find($request->id)->update(['ship_response' => $res]);
@@ -330,7 +343,10 @@ class OrderController extends Controller
                     return back()->with('error', $res);
                 }
             } else if ($request->api == 'Xpressbees') {
-                $res = shiprocket($request->id);
+
+                // $res = shiprocket($request->id);
+                $data = new Xpressbees();  /// lib to push data 
+                $res =  $data->Xpressbees($request->id);
                 if ($res[1] === 200) {
                     $res = $res[0];
                     Order::find($request->id)->update(['ship_response' => $res]);
@@ -345,25 +361,26 @@ class OrderController extends Controller
         }
     }
 
-    public function getDistance($id) {
+    public function getDistance($id)
+    {
 
         $order = Order::find($id);
         $fromCity = $order->city;
         $toCity = Address::find($order->pickup_address_id)->city;
 
-         $charges = getSlabRate($fromCity,$toCity,1);
+        $charges = getSlabRate($fromCity, $toCity, 1);
     }
 
-    public function getCharges(Request $request) {
+    public function getCharges(Request $request)
+    {
 
 
-        $apiId = ApiList::where('name',$request->apiId)->first()->id;
+        $apiId = ApiList::where('name', $request->apiId)->first()->id;
         $order = Order::find($request->orderId);
         $fromCity = $order->city;
+        $weight = $order->weight;
         $toCity = Address::find($order->pickup_address_id)->city;
-
-         $charges = getSlabRate('Ahmedabad','Rajkot',$apiId);
-
-         return json_encode($charges);
+        $charges = getSlabRate($fromCity, $toCity, $apiId,$weight);
+        return json_encode($charges);
     }
 }

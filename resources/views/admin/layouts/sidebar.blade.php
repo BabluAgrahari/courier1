@@ -26,9 +26,16 @@
     </li>
 
     <li class="nav-item">
-        <a href="{{ url('admin/transport') }}" class="nav-link {{ (url()->full() == url('admin/employee'))? 'active':''}}">
+        <a href="{{ url('admin/transport') }}" class="nav-link {{ (url()->full() == url('admin/transport'))? 'active':''}}">
           <i class=" nav-icon fas fa-box"></i>
           <p>Transport</p>
+        </a>
+      </li>
+      
+    <li class="nav-item">
+        <a href="{{ url('admin/orders ') }}" class="nav-link {{ (url()->full() == url('admin/orders'))? 'active':''}}">
+          <i class=" nav-icon fas fa-box"></i>
+          <p>Orders</p>
         </a>
       </li>
 

@@ -11,8 +11,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href=" {{ url('dashboard') }}"><i
-                                class="nav-icon fas fa-tachometer-alt"></i> Home</a></li>
+                    <li class="breadcrumb-item"><a href=" {{ url('dashboard') }}"><i class="nav-icon fas fa-tachometer-alt"></i> Home</a></li>
                     <li class="breadcrumb-item"><a href=" {{ url('city') }}">{{ $moduleName }}</a></li>
                     <li class="breadcrumb-item active">Add</li>
                 </ol>
@@ -30,15 +29,13 @@
             <h3 class="card-title">Create New Record</h3>
 
             <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
-                    title="Collapse">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fas fa-minus"></i></button>
             </div>
         </div>
 
         <div class="card-body">
-            <form id="form" method="post" action="{{ route('order.update',[$order->id]) }}" class="form-horizontal form-label-left"
-                autocomplete="off">
+            <form id="form" method="post" action="{{ route('order.update',[$order->id]) }}" class="form-horizontal form-label-left" autocomplete="off">
                 @method('PUT')
                 <input type="hidden" name="id" value="{{ $order->id }}">
                 @csrf
@@ -48,11 +45,9 @@
                             <label for="buyer_name">
                                 Buyer Name <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="buyer_name" class="form-control form-control-sm" id="buyer_name"
-                                placeholder="Buyer Name" value="{{ old('buyer_name',$order->buyer_name) }}" required>
+                            <input type="text" name="buyer_name" class="form-control form-control-sm" id="buyer_name" placeholder="Buyer Name" value="{{ old('buyer_name',$order->buyer_name) }}" required>
                             @if ($errors->has('buyer_name'))
-                                <span
-                                    class="requride_cls"><strong>{{ $errors->first('buyer_name') }}</strong></span>
+                            <span class="requride_cls"><strong>{{ $errors->first('buyer_name') }}</strong></span>
                             @endif
                         </div>
 
@@ -60,10 +55,9 @@
                             <label for="phone">
                                 Phone <span class="requride_cls">*</span>
                             </label>
-                            <input type="number" name="phone" class="form-control form-control-sm" id="phone" placeholder="Phone"
-                                value="{{ old('phone',$order->phone) }}" min="10" required>
+                            <input type="number" name="phone" class="form-control form-control-sm" id="phone" placeholder="Phone" value="{{ old('phone',$order->phone) }}" min="10" required>
                             @if ($errors->has('phone'))
-                                <span class="requride_cls"><strong>{{ $errors->first('phone') }}</strong></span>
+                            <span class="requride_cls"><strong>{{ $errors->first('phone') }}</strong></span>
                             @endif
                         </div>
 
@@ -71,11 +65,9 @@
                             <label for="phone_alt_alt">
                                 Alternate Phone <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="phone_alt" class="form-control form-control-sm" id="phone_alt"
-                                placeholder="Alternate Phone" value="{{ old('phone_alt') }}">
+                            <input type="text" name="phone_alt" class="form-control form-control-sm" id="phone_alt" placeholder="Alternate Phone" value="{{ old('phone_alt') }}">
                             @if ($errors->has('phone_alt',$order->phone_alt))
-                                <span
-                                    class="requride_cls"><strong>{{ $errors->first('phone_alt') }}</strong></span>
+                            <span class="requride_cls"><strong>{{ $errors->first('phone_alt') }}</strong></span>
                             @endif
                         </div>
 
@@ -83,10 +75,9 @@
                             <label for="email">
                                 E-Mail ID <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="email" class="form-control form-control-sm" id="email"
-                                placeholder="E-Mail" value="{{ old('email',$order->email) }}" required>
+                            <input type="text" name="email" class="form-control form-control-sm" id="email" placeholder="E-Mail" value="{{ old('email',$order->email) }}" required>
                             @if ($errors->has('email'))
-                                <span class="requride_cls"><strong>{{ $errors->first('email') }}</strong></span>
+                            <span class="requride_cls"><strong>{{ $errors->first('email') }}</strong></span>
                             @endif
                         </div>
                     </div>
@@ -103,12 +94,9 @@
                                 <label for="bill_address_1">
                                     Billing Address 1<span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="bill_address_1" class="form-control form-control-sm"
-                                    id="bill_address_1" placeholder="House Building No"
-                                    value="{{ old('bill_address_1',$order->bill_address_1) }}" required>
+                                <input type="text" name="bill_address_1" class="form-control form-control-sm" id="bill_address_1" placeholder="House Building No" value="{{ old('bill_address_1',$order->bill_address_1) }}" required>
                                 @if ($errors->has('bill_address_1'))
-                                    <span
-                                        class="requride_cls"><strong>{{ $errors->first('bill_address_1') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('bill_address_1') }}</strong></span>
                                 @endif
                             </div>
 
@@ -116,12 +104,9 @@
                                 <label for="bill_address_2">
                                     Billing Address 2<span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="bill_address_2" class="form-control form-control-sm"
-                                    id="bill_address_2" placeholder="Street Name" value="{{ old('bill_address_2',$order->bill_address_2) }}"
-                                    required>
+                                <input type="text" name="bill_address_2" class="form-control form-control-sm" id="bill_address_2" placeholder="Street Name" value="{{ old('bill_address_2',$order->bill_address_2) }}" required>
                                 @if ($errors->has('bill_address_2'))
-                                    <span
-                                        class="requride_cls"><strong>{{ $errors->first('bill_address_2') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('bill_address_2') }}</strong></span>
                                 @endif
                             </div>
                         </div>
@@ -133,11 +118,9 @@
                                 <label for="pincode">
                                     Pincode <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="bill_pincode" class="form-control form-control-sm" id="pincode"
-                                    placeholder="Pincode" value="{{ old('pincode',$order->bill_pincode) }}">
+                                <input type="number" name="bill_pincode" class="form-control form-control-sm" id="pincode" placeholder="Pincode" value="{{ old('pincode',$order->bill_pincode) }}">
                                 @if ($errors->has('pincode'))
-                                    <span
-                                        class="requride_cls"><strong>{{ $errors->first('pincode') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('pincode') }}</strong></span>
                                 @endif
                             </div>
 
@@ -145,10 +128,9 @@
                                 <label for="city">
                                     City <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="bill_city" class="form-control form-control-sm"
-                                    placeholder="City" value="{{ old('bill_city',$order->bill_city) }}" required>
+                                <input type="text" name="bill_city" class="form-control form-control-sm" placeholder="City" value="{{ old('bill_city',$order->bill_city) }}" required>
                                 @if ($errors->has('bill_city'))
-                                    <span class="requride_cls"><strong>{{ $errors->first('city') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('city') }}</strong></span>
                                 @endif
                             </div>
 
@@ -163,8 +145,7 @@
                                 </select>
 
                                 @if ($errors->has('bill_country'))
-                                    <span
-                                        class="requride_cls"><strong>{{ $errors->first('country') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('country') }}</strong></span>
                                 @endif
                             </div>
 
@@ -179,8 +160,7 @@
                                 </select>
 
                                 @if ($errors->has('bill_state'))
-                                    <span
-                                        class="requride_cls"><strong>{{ $errors->first('bill_state') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('bill_state') }}</strong></span>
                                 @endif
                             </div>
 
@@ -202,12 +182,9 @@
                                 <label for="ship_address_1">
                                     Shipping Address 1<span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="ship_address_1" class="form-control form-control-sm"
-                                    id="ship_address_1" placeholder="House Building No"
-                                    value="{{ old('ship_address_1',$order->ship_address_1) }}">
+                                <input type="text" name="ship_address_1" class="form-control form-control-sm" id="ship_address_1" placeholder="House Building No" value="{{ old('ship_address_1',$order->ship_address_1) }}">
                                 @if ($errors->has('ship_address_1'))
-                                    <span
-                                        class="requride_cls"><strong>{{ $errors->first('ship_address_1') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('ship_address_1') }}</strong></span>
                                 @endif
                             </div>
 
@@ -215,12 +192,9 @@
                                 <label for="ship_address_2">
                                     Shipping Address 2<span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="ship_address_2" class="form-control form-control-sm"
-                                    id="ship_address_2" placeholder="Street Name" value="{{ old('ship_address_2',$order->ship_address_2) }}"
-                                    >
+                                <input type="text" name="ship_address_2" class="form-control form-control-sm" id="ship_address_2" placeholder="Street Name" value="{{ old('ship_address_2',$order->ship_address_2) }}">
                                 @if ($errors->has('ship_address_2'))
-                                    <span
-                                        class="requride_cls"><strong>{{ $errors->first('ship_address_2') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('ship_address_2') }}</strong></span>
                                 @endif
                             </div>
                         </div>
@@ -232,11 +206,9 @@
                                 <label for="pincode">
                                     Pincode <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="ship_pincode" class="form-control form-control-sm" id="pincode"
-                                    placeholder="Pincode" value="{{ old('pincode',$order->ship_pincode) }}">
+                                <input type="number" name="ship_pincode" class="form-control form-control-sm" id="pincode" placeholder="Pincode" value="{{ old('pincode',$order->ship_pincode) }}">
                                 @if ($errors->has('pincode'))
-                                    <span
-                                        class="requride_cls"><strong>{{ $errors->first('pincode') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('pincode') }}</strong></span>
                                 @endif
                             </div>
 
@@ -244,10 +216,9 @@
                                 <label for="city">
                                     City <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="ship_city" class="form-control form-control-sm"
-                                    placeholder="City" value="{{ old('ship_city',$order->ship_city) }}" >
+                                <input type="text" name="ship_city" class="form-control form-control-sm" placeholder="City" value="{{ old('ship_city',$order->ship_city) }}">
                                 @if ($errors->has('ship_city'))
-                                    <span class="requride_cls"><strong>{{ $errors->first('city') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('city') }}</strong></span>
                                 @endif
                             </div>
 
@@ -262,8 +233,7 @@
                                 </select>
 
                                 @if ($errors->has('ship_country'))
-                                    <span
-                                        class="requride_cls"><strong>{{ $errors->first('country') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('country') }}</strong></span>
                                 @endif
                             </div>
 
@@ -278,8 +248,7 @@
                                 </select>
 
                                 @if ($errors->has('ship_state'))
-                                    <span
-                                        class="requride_cls"><strong>{{ $errors->first('ship_state') }}</strong></span>
+                                <span class="requride_cls"><strong>{{ $errors->first('ship_state') }}</strong></span>
                                 @endif
                             </div>
 
@@ -293,17 +262,15 @@
                     Hyperlocal Shipment
                 </div>
 
-                <div class="form-group hyperlocal_shipment {{($order->hyperlocal_shipment == 1) ? 'd-none' : ''}}" >
+                <div class="form-group hyperlocal_shipment {{($order->hyperlocal_shipment == 1) ? 'd-none' : ''}}">
                     <div class="row">
                         <div class="col-sm-12">
                             <label for="location">
                                 Enter Location<span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="location" class="form-control form-control-sm" id="location"
-                                placeholder="Enter a Location" value="{{ old('location',$order->location) }}">
+                            <input type="text" name="location" class="form-control form-control-sm" id="location" placeholder="Enter a Location" value="{{ old('location',$order->location) }}">
                             @if ($errors->has('location'))
-                                <span
-                                    class="requride_cls"><strong>{{ $errors->first('location') }}</strong></span>
+                            <span class="requride_cls"><strong>{{ $errors->first('location') }}</strong></span>
                             @endif
                         </div>
                     </div>
@@ -316,11 +283,9 @@
                             <label for="order_id">
                                 Order ID <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="order_id" class="form-control form-control-sm" id="order_id"
-                                placeholder="Order ID" value="{{ old('order_id',$order->order_id)}}" required>
+                            <input type="text" name="order_id" class="form-control form-control-sm" id="order_id" placeholder="Order ID" value="{{ old('order_id',$order->order_id)}}" required>
                             @if ($errors->has('order_id'))
-                                <span
-                                    class="requride_cls"><strong>{{ $errors->first('order_id') }}</strong></span>
+                            <span class="requride_cls"><strong>{{ $errors->first('order_id') }}</strong></span>
                             @endif
                         </div>
 
@@ -328,12 +293,9 @@
                             <label for="order_id">
                                 Order Date <span class="requride_cls">*</span>
                             </label>
-                            <input type="date" name="order_date" class="form-control form-control-sm" id="order_date"
-                                placeholder="Order Date" value="{{ $order->order_date}}"
-                                required>
+                            <input type="date" name="order_date" class="form-control form-control-sm" id="order_date" placeholder="Order Date" value="{{ $order->order_date}}" required>
                             @if ($errors->has('order_date'))
-                                <span
-                                    class="requride_cls"><strong>{{ $errors->first('order_date') }}</strong></span>
+                            <span class="requride_cls"><strong>{{ $errors->first('order_date') }}</strong></span>
                             @endif
                         </div>
 
@@ -347,8 +309,7 @@
                             </select>
 
                             @if ($errors->has('order_channel'))
-                                <span
-                                    class="requride_cls"><strong>{{ $errors->first('order_channel') }}</strong></span>
+                            <span class="requride_cls"><strong>{{ $errors->first('order_channel') }}</strong></span>
                             @endif
                         </div>
 
@@ -362,8 +323,7 @@
                             </select>
 
                             @if ($errors->has('order_type'))
-                                <span
-                                    class="requride_cls"><strong>{{ $errors->first('order_type') }}</strong></span>
+                            <span class="requride_cls"><strong>{{ $errors->first('order_type') }}</strong></span>
                             @endif
                         </div>
                     </div>
@@ -376,11 +336,9 @@
                             <label for="order_tag">
                                 Order Tag <span class="requride_cls">*</span>
                             </label>
-                            <input type="text" name="order_tag" class="form-control form-control-sm" id="order_tag"
-                                placeholder="Order Tag" value="{{ old('order_tag',$order->order_tag) }}" required>
+                            <input type="text" name="order_tag" class="form-control form-control-sm" id="order_tag" placeholder="Order Tag" value="{{ old('order_tag',$order->order_tag) }}" required>
                             @if ($errors->has('order_tag'))
-                                <span
-                                    class="requride_cls"><strong>{{ $errors->first('order_tag') }}</strong></span>
+                            <span class="requride_cls"><strong>{{ $errors->first('order_tag') }}</strong></span>
                             @endif
                         </div>
                     </div>
@@ -398,16 +356,14 @@
                                 <label for="product_name">
                                     Product Name <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="product_name[]" class="form-control form-control-sm" id="product_name"
-                                    placeholder="Product Name" value="{{ old('product_name',$val["product_name"]) }}" required>
+                                <input type="text" name="product_name[]" class="form-control form-control-sm" id="product_name" placeholder="Product Name" value="{{ old('product_name',$val["product_name"]) }}" required>
                             </div>
 
                             <div class="col-sm-3">
                                 <label for="sku">
                                     SKU <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="sku[]" class="form-control form-control-sm" id="sku" placeholder="SKU"
-                                    value="{{ old('sku',$val["sku"]) }}" required>
+                                <input type="text" name="sku[]" class="form-control form-control-sm" id="sku" placeholder="SKU" value="{{ old('sku',$val["sku"]) }}" required>
                             </div>
 
 
@@ -415,8 +371,7 @@
                                 <label for="qty">
                                     Quantity <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="qty[]" class="form-control form-control-sm qty calculate" id="qty"
-                                    placeholder="Quantity" value="{{ old('qty',$val["qty"]) }}" required>
+                                <input type="number" name="qty[]" class="form-control form-control-sm qty calculate" id="qty" placeholder="Quantity" value="{{ old('qty',$val["qty"]) }}" required>
                             </div>
 
 
@@ -424,48 +379,42 @@
                                 <label for="unit_price">
                                     Unit Price <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="unit_price[]" class="form-control form-control-sm unit_price calculate" id="unit_price"
-                                    placeholder="Unit Price" value="{{ old('unit_price',$val["unit_price"]) }}"  required>
+                                <input type="number" name="unit_price[]" class="form-control form-control-sm unit_price calculate" id="unit_price" placeholder="Unit Price" value="{{ old('unit_price',$val["unit_price"]) }}" required>
                             </div>
 
                             <div class="col-sm-3">
                                 <label for="tax_rate">
                                     Tax Rate<span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="tax_rate[]" class="form-control form-control-sm" id="tax_rate"
-                                    placeholder="Tax Rate" value="{{ old('tax_rate',$val["tax_rate"]) }}" required>
+                                <input type="text" name="tax_rate[]" class="form-control form-control-sm" id="tax_rate" placeholder="Tax Rate" value="{{ old('tax_rate',$val["tax_rate"]) }}" required>
                             </div>
 
                             <div class="col-sm-3">
                                 <label for="hsn">
                                     HSN <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="hsn[]" class="form-control form-control-sm" id="hsn" placeholder="HSN"
-                                    value="{{ old('hsn',$val['hsn']) }}" required>
+                                <input type="text" name="hsn[]" class="form-control form-control-sm" id="hsn" placeholder="HSN" value="{{ old('hsn',$val['hsn']) }}" required>
                             </div>
 
                             <div class="col-sm-3">
                                 <label for="discount">
                                     Discount (optional) <span class="requride_cls">*</span>
                                 </label>
-                                <input type="number" name="discount[]" class="form-control form-control-sm discount calculate" id="discount"
-                                    placeholder="Discount" value="{{ old('discount',$val["discount"]) }}" required>
+                                <input type="number" name="discount[]" class="form-control form-control-sm discount calculate" id="discount" placeholder="Discount" value="{{ old('discount',$val["discount"]) }}" required>
                             </div>
 
                             <div class="col-sm-3">
                                 <label for="category">
                                     Product Category <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="category[]" class="form-control form-control-sm" id="category"
-                                    placeholder="Product Category" value="{{ old('category',$val["category"]) }}" required>
+                                <input type="text" name="category[]" class="form-control form-control-sm" id="category" placeholder="Product Category" value="{{ old('category',$val["category"]) }}" required>
                             </div>
 
                             <div class="col-sm-3">
                                 <label for="amount">
                                     Total Amount <span class="requride_cls">*</span>
                                 </label>
-                                <input type="text" name="amount[]" class="form-control form-control-sm amount" id="amount"
-                                    placeholder="Amount" value="{{ old('amount',$val["amount"]) }}" readonly>
+                                <input type="text" name="amount[]" class="form-control form-control-sm amount" id="amount" placeholder="Amount" value="{{ old('amount',$val["amount"]) }}" readonly>
                             </div>
 
                             <div class="col-sm-3">
@@ -490,7 +439,7 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Case On Delivery</label>
-                                <input type="radio" name="payment_type" value="case" {{ ($order->payment_type == "case") ? 'checked' : ''}}>
+                                <input type="radio" name="payment_type" value="cod" {{ ($order->payment_type == "cod") ? 'checked' : ''}}>
                             </div>
                         </div>
 
@@ -517,9 +466,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Select a pickup location for the Order</label>
-                                <input type="text" name="pickup_address"
-                                    placeholder="Search by location name,address,city,state,pincode"
-                                    class="form-control" value={{ old('pickup_address',$order->pickup_address)}}>
+                                <input type="text" name="pickup_address" placeholder="Search by location name,address,city,state,pincode" class="form-control" value={{ old('pickup_address',$order->pickup_address)}}>
                             </div>
                         </div>
                     </div>
@@ -528,24 +475,23 @@
                 <div class="form-group">
                     <div class="row">
                         @foreach ($addresses as $key => $val)
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            {{ $val->pickup_location }}
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text">{{ $val->address_1 }} - {{ $val->address_2 }}</p>
-                                            <p class="card-text">{{ $val->city }} - {{ $val->pincode }}</p>
-                                            <p class="card-text">{{ $val->state }} - {{ $val->country }}</p>
-                                        </div>
-                                        <div class="card-footer text-muted">
-                                            <input type="radio" name="pickup_address_id" class="custom-control"
-                                                value="{{ $val->id }}" {{ ($val->id == $order->pickup_address_id) ? 'checked' : ''}}>
-                                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ $val->pickup_location }}
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">{{ $val->address_1 }} - {{ $val->address_2 }}</p>
+                                        <p class="card-text">{{ $val->city }} - {{ $val->pincode }}</p>
+                                        <p class="card-text">{{ $val->state }} - {{ $val->country }}</p>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <input type="radio" name="pickup_address_id" class="custom-control" value="{{ $val->id }}" {{ ($val->id == $order->pickup_address_id) ? 'checked' : ''}}>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -570,9 +516,8 @@
                             <select class="form-control select2" name="state" id="state" style="width: 100%;">
                                 <option value=""></option>
                                 @foreach (getState() as $key => $val)
-                                    <option value="{{ $val->iso2 }}"
-                                        {{ $order->state == $val->iso2 ? 'selected' : '' }}>{{ $val->name }}
-                                    </option>
+                                <option value="{{ $val->iso2 }}" {{ $order->state == $val->iso2 ? 'selected' : '' }}>{{ $val->name }}
+                                </option>
                                 @endforeach
                             </select>
                             </strong><span class="requride_cls" id="state_msg"><strong></span>
@@ -582,7 +527,7 @@
                             <label for="country">
                                 City <span class="requride_cls">*</span>
                             </label>
-                            <select class="form-control select2" name="city"  id="city" style="width: 100%;">
+                            <select class="form-control select2" name="city" id="city" style="width: 100%;">
                                 <option value=""></option>
                                 <option value="{{ $order->city }}" selected>{{ $order->city }}</option>
                             </select>
@@ -597,46 +542,44 @@
                 <div class="packageWeight">
                     <div class="form-group packageFirst">
                         <hr>
-                        @php $packageDetails = collect($order->packageDetail); @endphp
-                        @foreach ($packageDetails as $val)
+
                         <div class="package">
                             <div class="row">
                                 <div class="col-2">
                                     <label>Weight (KG)</label>
-                                    <input type="text" name="weight[]" placeholder="KG" value="{{ old('weigth',$val['weight']) }}" class="form-control form-control-sm"
-                                        required>
+                                    <input type="number" name="package_weight" placeholder="KG" value="{{ old('package_weight',$order->package_weight/1000) }}" class="form-control form-control-sm" required>
                                 </div>
                                 <div class="col-2">
                                     <label>Length (CM)</label>
-                                    <input type="text" name="length[]" placeholder="CM" value="{{ old('weigth',$val['length']) }}" class="form-control form-control-sm"
-                                        required>
+                                    <input type="number" onkeypress="return /[0-9]/i.test(event.key)" id="package_length" name="package_length" placeholder="CM" value="{{ old('package_length',$order->package_length) }}" class="form-control form-control-sm calculate_vol_weight" required>
                                 </div>
 
                                 <div class="col-2">
                                     <label>Width (CM)</label>
-                                    <input type="text" name="width[]" placeholder="CM" value="{{ old('weigth',$val['width']) }}" class="form-control form-control-sm"
-                                        required>
+                                    <input type="number" onkeypress="return /[0-9]/i.test(event.key)" id="package_breadth"  name="package_breadth" placeholder="CM" value="{{ old('package_breadth',$order->package_breadth) }}" class="form-control form-control-sm calculate_vol_weight" required>
                                 </div>
 
                                 <div class="col-2">
                                     <label>Height (CM)</label>
-                                    <input type="text" name="height[]" placeholder="CM" value="{{ old('weigth',$val['height']) }}" class="form-control form-control-sm"
-                                        required>
+                                    <input type="number" onkeypress="return /[0-9]/i.test(event.key)" id="package_height" name="package_height" placeholder="CM" value="{{ old('package_height',$order->package_height) }}" class="form-control form-control-sm calculate_vol_weight" required>
                                 </div>
-
                                 <div class="col-2">
-                                    <button type="button" class="remove_package btn btn-danger mt-3">Remove</button>
+                                    <label>Volumetric Weight (KG)</label>
+                                    <input type="number" id="package_volumatic_weight" name="package_volumatic_weight" placeholder="KG" value="{{ old('package_volumatic_weight',$order->package_volumatic_weight/1000) }}" class="form-control form-control-sm" readonly>
                                 </div>
+                                <!-- <div class="col-2">
+                                    <button type="button" class="remove_package btn btn-danger mt-3">Remove</button>
+                                </div> -->
                             </div>
                         </div>
-                        @endforeach
+
                     </div>
                 </div>
 
 
-                <div class="form-group"><br>
+                <!-- <div class="form-group"><br>
                     <button type="button" class="addPackage btn btn-success">Add More.</button>
-                </div>
+                </div> -->
 
 
         </div>
@@ -656,8 +599,8 @@
 <!-- /.content -->
 
 @push('custom-script')
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
 
         $('body').on('change', '#state', function() {
             var state = $('#state').find(':selected').val();
@@ -681,26 +624,26 @@
         })
 
 
-            $('body').on('change', '#same_both', function() {
-                if ($(this).is(':checked')) {
-                    $('.shipping_address').addClass('d-none');
-                } else {
-                    $('.shipping_address').removeClass('d-none')
-                }
-            })
+        $('body').on('change', '#same_both', function() {
+            if ($(this).is(':checked')) {
+                $('.shipping_address').addClass('d-none');
+            } else {
+                $('.shipping_address').removeClass('d-none')
+            }
+        })
 
-            $('body').on('change', '#hyperlocal_shipment', function() {
-                if ($(this).is(':checked')) {
-                    $('.hyperlocal_shipment').removeClass('d-none');
-                } else {
-                    $('.hyperlocal_shipment').addClass('d-none');
-                }
-            })
+        $('body').on('change', '#hyperlocal_shipment', function() {
+            if ($(this).is(':checked')) {
+                $('.hyperlocal_shipment').removeClass('d-none');
+            } else {
+                $('.hyperlocal_shipment').addClass('d-none');
+            }
+        })
 
-            let addMore = $('.productFirst').clone().html();
-            $('body').on('click', '.addMore', function(e) {
-                e.preventDefault();
-                $('.productFirst').append(`
+        let addMore = $('.productFirst').clone().html();
+        $('body').on('click', '.addMore', function(e) {
+            e.preventDefault();
+            $('.productFirst').append(`
                         <hr>
                         <div class="row form-group">
                             <div class="col-sm-3">
@@ -784,87 +727,106 @@
                                 <button class="remove_product btn btn-danger mt-3"> Remove </button>
                             </div>
                         </div>`);
-            })
+        })
 
-            $('body').on('click', '.remove_product', function(e) {
-                e.preventDefault();
-                if ($(this).closest('.productFirst').find('.form-group').length > 1) {
-                    $(this).closest('.form-group').remove();
-                }
-            })
-
-            $('body').on('click', '.remove_package', function(e) {
-                e.preventDefault();
-
-                if($('.package').length >1) {
-                    $(this).closest('.package').remove();
-                }
-            })
-
-            let addPckage = $('.packageFirst').clone();
-            $('body').on('click', '.addPackage', function(e) {
-                e.preventDefault();
-                $('.packageWeight').append(` <div class="form-group packageFirst">
-                        <div class="package">
-                            <hr>
-                            <div class="row">
-                                <div class="col-2">
-                                    <label>Weight (KG)</label>
-                                    <input type="text" name="weight[]" placeholder="KG" value="0"
-                                        class="form-control form-control-sm" required>
-                                </div>
-                                <div class="col-2">
-                                    <label>Length (CM)</label>
-                                    <input type="text" name="length[]" placeholder="CM" value="0"
-                                        class="form-control form-control-sm" required>
-                                </div>
-
-                                <div class="col-2">
-                                    <label>Width (CM)</label>
-                                    <input type="text" name="width[]" placeholder="CM" value="0"
-                                        class="form-control form-control-sm" required>
-                                </div>
-
-                                <div class="col-2">
-                                    <label>Height (CM)</label>
-                                    <input type="text" name="height[]" placeholder="CM" value="0"
-                                        class="form-control form-control-sm" required>
-                                </div>
-
-                                <div class="col-2">
-                                    <button type="button" class="remove_package btn btn-danger mt-3">Remove</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`);
-            })
-
-            const calculation = () => {
-                var sub_total = 0;
-                var qty = 0;
-                var unitPrice = 0;
-                var discount = 0;
-                var amount = 0;
-
-                $('.discount').each(function(){
-                    var unitPrice = $(this).closest('.form-group').find('.unit_price').val()
-                    var qty = $(this).closest('.form-group').find('.qty').val()
-                    var discount = $(this).val();
-                    var amount = (qty * unitPrice) - discount;
-                    $(this).closest('.form-group').find('.amount').val(amount.toFixed(2));
-                })
-
-                $('.amount').each(function(){
-                    sub_total += parseFloat($(this).val());
-                })
-
-                $('#sub_total').val(sub_total.toFixed(2));
+        $('body').on('click', '.remove_product', function(e) {
+            e.preventDefault();
+            if ($(this).closest('.productFirst').find('.form-group').length > 1) {
+                $(this).closest('.form-group').remove();
             }
+        })
 
-            $('body').on('keyup','.calculate',function(){
-                calculation()
-            })
+
+        $('.calculate_vol_weight').keyup(function() {
+            $('#package_volumatic_weight').val('');
+            var l = $("#package_length").val();
+            var b = $("#package_breadth").val();
+            var h = $("#package_height").val();
+
+            len = l.replace(/\s/g, '');
+            bre = b.replace(/\s/g, '');
+            hei = h.replace(/\s/g, '');
+
+            var sum = len * bre * hei;
+
+            var totalsum = sum / 5000;
+
+             $('#package_volumatic_weight').val(totalsum);
+
         });
-    </script>
+
+        // $('body').on('click', '.remove_package', function(e) {
+        //     e.preventDefault();
+
+        //     if($('.package').length >1) {
+        //         $(this).closest('.package').remove();
+        //     }
+        // })
+
+        // let addPckage = $('.packageFirst').clone();
+        // $('body').on('click', '.addPackage', function(e) {
+        //     e.preventDefault();
+        //     $('.packageWeight').append(` <div class="form-group packageFirst">
+        //             <div class="package">
+        //                 <hr>
+        //                 <div class="row">
+        //                     <div class="col-2">
+        //                         <label>Weight (KG)</label>
+        //                         <input type="text" name="weight[]" placeholder="KG" value="0"
+        //                             class="form-control form-control-sm" required>
+        //                     </div>
+        //                     <div class="col-2">
+        //                         <label>Length (CM)</label>
+        //                         <input type="text" name="length[]" placeholder="CM" value="0"
+        //                             class="form-control form-control-sm" required>
+        //                     </div>
+
+        //                     <div class="col-2">
+        //                         <label>Width (CM)</label>
+        //                         <input type="text" name="width[]" placeholder="CM" value="0"
+        //                             class="form-control form-control-sm" required>
+        //                     </div>
+
+        //                     <div class="col-2">
+        //                         <label>Height (CM)</label>
+        //                         <input type="text" name="height[]" placeholder="CM" value="0"
+        //                             class="form-control form-control-sm" required>
+        //                     </div>
+
+        //                     <div class="col-2">
+        //                         <button type="button" class="remove_package btn btn-danger mt-3">Remove</button>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>`);
+        // })
+
+        const calculation = () => {
+            var sub_total = 0;
+            var qty = 0;
+            var unitPrice = 0;
+            var discount = 0;
+            var amount = 0;
+
+            $('.discount').each(function() {
+                var unitPrice = $(this).closest('.form-group').find('.unit_price').val()
+                var qty = $(this).closest('.form-group').find('.qty').val()
+                var discount = $(this).val();
+                var amount = (qty * unitPrice) - discount;
+                $(this).closest('.form-group').find('.amount').val(amount.toFixed(2));
+            })
+
+            $('.amount').each(function() {
+                sub_total += parseFloat($(this).val());
+            })
+
+            $('#sub_total').val(sub_total.toFixed(2));
+        }
+
+        $('body').on('keyup', '.calculate', function() {
+            calculation()
+        })
+    });
+</script>
 @endpush
 @endsection
