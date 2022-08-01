@@ -139,7 +139,7 @@
                                     State <span class="requride_cls">*</span>
                                 </label>
                                 <select name="bill_state" class="form-control">
-                                    <option value="">Select Stete</option>
+                                    <option value="">Select State</option>
                                     @foreach (getState() as $key => $val)
                                     <option value="{{ $val->iso2 }}">{{ $val->name }}</option>
                                     @endforeach
@@ -227,7 +227,7 @@
                                     State <span class="requride_cls">*</span>
                                 </label>
                                 <select name="ship_state" class="form-control" required>
-                                    <option>Select Stete</option>
+                                    <option>Select State</option>
                                     @foreach (getState() as $key => $val)
                                     <option value="{{ $val->iso2 }}">{{ $val->name }}</option>
                                     @endforeach

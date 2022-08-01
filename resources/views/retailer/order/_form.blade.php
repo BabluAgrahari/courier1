@@ -155,7 +155,7 @@
                                     State <span class="requride_cls">*</span>
                                 </label>
                                 <select name="bill_state" class="form-control">
-                                    <option>Select Stete</option>
+                                    <option>Select State</option>
                                     @foreach (getState() as $key => $val)
                                 <option value="{{ $val->iso2 }}" {{ $order->state == $val->iso2 ? 'selected' : '' }}>{{ $val->name }}
                                 </option>
@@ -247,7 +247,7 @@
                                     State <span class="requride_cls">*</span>
                                 </label>
                                 <select name="ship_state" class="form-control">
-                                    <option>Select Stete</option>
+                                    <option>Select State</option>
                                     @foreach (getState() as $key => $val)
                                     <option value="{{ $val->iso2 }}" {{ $order->state == $val->iso2 ? 'selected' : '' }}>{{ $val->name }}
                                     </option>
