@@ -108,6 +108,7 @@
                             dataType: "json",
                             success: function(response) {
                                 $('body').find('#total_charges').text(response);
+                                $('body').find('.charges').val(response);
                             }
 
                         });

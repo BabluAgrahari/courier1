@@ -13,7 +13,7 @@
                 <form class="form" action="{{ route('order.shipment') }}" id="shipForm" method="POST">
                     @csrf()
                     <input type="hidden" name="id" class="ship_id">
-
+                    <input type="hidden" name="charges" class="charges">
                     <div class="form-group">
                         Total Charges <span id="total_charges" class="text-bold"> 0</span>
                     </div>

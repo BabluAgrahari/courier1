@@ -166,12 +166,12 @@
                                    <div class="form-row">\
                                         <div class="form-group col-md-6">\
                                             <label>Minimum Weight</label>\
-                                            <input type="number" name="min_weight[]" value="' + e.min_weight + '" id="min_weight" class="form-control form-control-sm" placeholder="Enter minimum weight">\
+                                            <input type="text" name="min_weight[]" value="' + e.min_weight + '" id="min_weight" class="form-control form-control-sm" placeholder="Enter minimum weight">\
                                             <span id="min_weight_msg" class="custom-text-danger"></span>\
                                         </div>\
                                         <div class="form-group col-md-6">\
                                             <label>Maximum Weight</label>\
-                                            <input type="number" name="max_weight[]"  value="' + e.max_weight + '"  id="max_weight" class="form-control form-control-sm" placeholder="Enter maximum weight">\
+                                            <input type="text" name="max_weight[]"  value="' + e.max_weight + '"  id="max_weight" class="form-control form-control-sm" placeholder="Enter maximum weight">\
                                             <span id="max_weight_msg" class="custom-text-danger"></span>\
                                         </div>\
                                     </div>\
