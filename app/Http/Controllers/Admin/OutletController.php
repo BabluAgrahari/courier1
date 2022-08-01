@@ -386,15 +386,15 @@ class OutletController extends Controller
             $bank_changes = $outlet->bank_charges;
 
             $slab = [];
-            foreach ($request->min_weight as $key => $val) {
+            foreach ($request->min_weight as $nkey => $val) {
                 
-                if (!empty($request->max_weight[$key] <= $request->min_weight[$key])) {
+                if (!empty($request->max_weight[$nkey] <= $request->min_weight[$nkey])) {
                     return response(['status' => 'error', 'msg' => 'Maximum weight can not be less then minimum weight.']);
                 }
                 $weightslab = [
-                    'min_weight'  => $request->min_weight[$key],
-                    'max_weight'  => $request->max_weight[$key],
-                    'charges'     => $request->charges[$key],
+                    'min_weight'  => $request->min_weight[$nkey],
+                    'max_weight'  => $request->max_weight[$nkey],
+                    'charges'     => $request->charges[$nkey],
                 ];
 
                 array_push($slab, $weightslab);
@@ -404,8 +404,7 @@ class OutletController extends Controller
             //     if ($charge['from_state'] == $request->from_state && $charge['to_state'] == $request->to_state)
             //         return response(['status' => 'error', 'msg' => 'This Amount Slab is already Exist.']);
             // }
-
-          
+  
             $bank_charge = array();
             if (!empty($outlet->bank_charges) && is_array($outlet->bank_charges))
                 $bank_charge = $outlet->bank_charges;
@@ -418,8 +417,7 @@ class OutletController extends Controller
             // $bank_charge[$key]['to_city']       = $request->to_city;
             // $bank_charge[$key]['from_city']     = $request->from_city;
             $bank_charge[$key]['weight_range']  = $slab;
-          
-
+    
             $outlet->bank_charges          = $bank_charge;
             $outlet->api_id                = $request->api_id;
 

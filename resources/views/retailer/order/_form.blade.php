@@ -156,7 +156,11 @@
                                 </label>
                                 <select name="bill_state" class="form-control">
                                     <option>Select Stete</option>
-                                    <option value="Gujarat" {{ ($order->bill_state == 'Gujarat') ? 'selected' : ''}}>Gujarat</option>
+                                    @foreach (getState() as $key => $val)
+                                <option value="{{ $val->iso2 }}" {{ $order->state == $val->iso2 ? 'selected' : '' }}>{{ $val->name }}
+                                </option>
+                                @endforeach
+                                    <!-- <option value="Gujarat" {{ ($order->bill_state == 'Gujarat') ? 'selected' : ''}}>Gujarat</option> -->
                                 </select>
 
                                 @if ($errors->has('bill_state'))
@@ -244,7 +248,11 @@
                                 </label>
                                 <select name="ship_state" class="form-control">
                                     <option>Select Stete</option>
-                                    <option value="Gujarat" {{ ($order->ship_country == 'Gujarat') ? 'selected' : ''}}>Gujarat</option>
+                                    @foreach (getState() as $key => $val)
+                                    <option value="{{ $val->iso2 }}" {{ $order->state == $val->iso2 ? 'selected' : '' }}>{{ $val->name }}
+                                    </option>
+                                    @endforeach
+                                    <!-- <option value="Gujarat" {{ ($order->ship_country == 'Gujarat') ? 'selected' : ''}}>Gujarat</option> -->
                                 </select>
 
                                 @if ($errors->has('ship_state'))
@@ -547,21 +555,21 @@
                             <div class="row">
                                 <div class="col-2">
                                     <label>Weight (KG)</label>
-                                    <input type="number" name="package_weight" placeholder="KG" value="{{ old('package_weight',$order->package_weight/1000) }}" class="form-control form-control-sm" required>
+                                    <input type="text" name="package_weight" placeholder="KG" value="{{ old('package_weight',$order->package_weight/1000) }}" class="form-control form-control-sm" required>
                                 </div>
                                 <div class="col-2">
                                     <label>Length (CM)</label>
-                                    <input type="number" onkeypress="return /[0-9]/i.test(event.key)" id="package_length" name="package_length" placeholder="CM" value="{{ old('package_length',$order->package_length) }}" class="form-control form-control-sm calculate_vol_weight" required>
+                                    <input type="text" onkeypress="return /[0-9]/i.test(event.key)" id="package_length" name="package_length" placeholder="CM" value="{{ old('package_length',$order->package_length) }}" class="form-control form-control-sm calculate_vol_weight" required>
                                 </div>
 
                                 <div class="col-2">
                                     <label>Width (CM)</label>
-                                    <input type="number" onkeypress="return /[0-9]/i.test(event.key)" id="package_breadth"  name="package_breadth" placeholder="CM" value="{{ old('package_breadth',$order->package_breadth) }}" class="form-control form-control-sm calculate_vol_weight" required>
+                                    <input type="text" onkeypress="return /[0-9]/i.test(event.key)" id="package_breadth" name="package_breadth" placeholder="CM" value="{{ old('package_breadth',$order->package_breadth) }}" class="form-control form-control-sm calculate_vol_weight" required>
                                 </div>
 
                                 <div class="col-2">
                                     <label>Height (CM)</label>
-                                    <input type="number" onkeypress="return /[0-9]/i.test(event.key)" id="package_height" name="package_height" placeholder="CM" value="{{ old('package_height',$order->package_height) }}" class="form-control form-control-sm calculate_vol_weight" required>
+                                    <input type="text" onkeypress="return /[0-9]/i.test(event.key)" id="package_height" name="package_height" placeholder="CM" value="{{ old('package_height',$order->package_height) }}" class="form-control form-control-sm calculate_vol_weight" required>
                                 </div>
                                 <div class="col-2">
                                     <label>Volumetric Weight (KG)</label>
@@ -751,7 +759,7 @@
 
             var totalsum = sum / 5000;
 
-             $('#package_volumatic_weight').val(totalsum);
+            $('#package_volumatic_weight').val(totalsum);
 
         });
 

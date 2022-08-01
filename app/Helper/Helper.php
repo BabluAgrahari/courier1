@@ -312,26 +312,28 @@ function getDistance($from, $to, $unit = 'km')
 function getSlabRate($from, $to, $apiId, $weight, $vol_weight)
 {
     try {
+
         $slab = Outlet::where('api_id', $apiId)->first()->bank_charges;
-        $vol_weight =$vol_weight/1000;
-        $weight =$weight/1000;
-        
-        //  $charge = collect($slab)->whereIn('from_state',$from)->whereIn('to_state',$to)->first();
-        //$charge = collect($slab)->where('from_city',$from)->where('to_city',$to)->first();
+        $vol_weight = $vol_weight / 1000;
+        $weight = $weight / 1000;
+
         foreach ($slab as $charge) {
-            foreach ($charge['weight_range'] as $data) {
-                if ($vol_weight > $weight) {
-                    if ($data['min_weight'] <= $vol_weight || $data['min_weight'] >= $vol_weight) {
-                        return $data['charges'];
+            if (in_array($from, $charge['from_state']) && in_array($to, $charge['from_state'])) {
+                foreach ($charge['weight_range'] as $data) {
+                    if ($vol_weight > $weight) {
+                        if ($data['min_weight'] <= $vol_weight && $data['max_weight'] >= $vol_weight) {
+                            return $data['charges'];
+                        }
+                    } else {
+                        if ($data['min_weight'] <= $weight && $data['max_weight'] >= $weight) {
+                            return $data['charges'];
+                        }
                     }
-                } else {
-                    if ($data['min_weight'] <= $weight || $data['min_weight'] >= $weight) {
-                        return $data['charges'];
                 }
+            } else {
+                return 'No Charges Available.';
             }
         }
-    }
-  
     } catch (Exception $e) {
         return 'No Charges Found.';
     }

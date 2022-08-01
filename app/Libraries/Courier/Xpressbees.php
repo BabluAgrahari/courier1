@@ -100,7 +100,7 @@ class Xpressbees
             "package_height" => (int)$height,
             "package_weight" => (int)$weigth,
             "request_auto_pickup" => "yes",
-            "courier_id"    => 2,
+            "courier_id"    => 1,
         );
 
 

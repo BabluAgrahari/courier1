@@ -336,7 +336,8 @@ class OrderController extends Controller
 
                 if ($res[1] === 200) {
                     $res = $res[0];
-                    Order::find($request->id)->update(['ship_response' => $res]);
+                   
+                    Order::find($request->id)->update(['ship_response' => $res,'order_status' =>'']);
                     return back()->with('message', $res);
                 } else {
                     $res = $res[0];
