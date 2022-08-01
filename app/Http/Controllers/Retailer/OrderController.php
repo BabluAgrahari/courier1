@@ -353,7 +353,9 @@ class OrderController extends Controller
 
                 if ($res[1] === 200) {
                     $res = $res[0];
-                    Order::find($request->id)->update(['ship_response' => $res]);
+                    $response1 = json_decode($res);
+                 
+                    Order::find($request->id)->update(['ship_response' => $res, 'order_status' => $response1->data->status]);
                     if (!spentTopupAmount(Auth()->user()->_id, $request->charges))
                         return response(['status' => 'error', 'msg' => 'Something went wrong!']);
                     return back()->with('message', $res);

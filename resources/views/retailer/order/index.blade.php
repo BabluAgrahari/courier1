@@ -11,8 +11,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ url('dashboard') }}"><i
-                                class="nav-icon fas fa-tachometer-alt"></i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url('dashboard') }}"><i class="nav-icon fas fa-tachometer-alt"></i> Home</a></li>
                     <li class="breadcrumb-item active">{{ $moduleName }}</li>
                 </ol>
             </div>
@@ -30,8 +29,7 @@
             <h3 class="card-title">{{ $moduleName }}</h3>
             <div class="card-tools">
                 {{-- @permission('add.penalty.type') --}}
-                <a href="{{ route('order.create') }}"><button class="btn btn-primary" style="float:right;"><i
-                            class="fa fa-plus"></i> New</button></a>
+                <a href="{{ route('order.create') }}"><button class="btn btn-primary" style="float:right;"><i class="fa fa-plus"></i> New</button></a>
                 {{-- @endpermission --}}
             </div>
         </div>
@@ -49,21 +47,24 @@
                 </thead>
                 <tbody>
                     @foreach ($orders as $key => $val)
-                        <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $val->order_id }}</td>
-                            <td>{{ $val->buyer_name }}</td>
-                            <td>{{ $val->phone }}</td>
-                            <td>{{ $val->order_date }}</td>
-                            <td>
-                                <a class="btn btn-warning btn-xs changeStatus"
-                                    href="{{ route('order.edit', [$val->id]) }}"><i class="far fa-edit"></i></a>
-                                <a type="button" class="btn btn-info btn-xs shipment" data-toggle="modal"
-                                    data-target="#exampleModalCenter" data-id={{ $val->id }}>
-                                    Ready To Ship
-                                </a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $val->order_id }}</td>
+                        <td>{{ $val->buyer_name }}</td>
+                        <td>{{ $val->phone }}</td>
+                        <td>{{ $val->order_date }}</td>
+                        <td>
+
+                            <a class="btn btn-warning btn-xs changeStatus" href="{{ route('order.edit', [$val->id]) }}"><i class="far fa-edit"></i></a>
+                            @if($val->order_status != 'booked' )
+                            <a type="button" class="btn btn-info btn-xs shipment" data-toggle="modal" data-target="#exampleModalCenter" data-id={{ $val->id }}>
+                                Ready To Ship
+                            </a>
+                            @else
+                            <button type="button" class="btn btn-success btn-xs">{{ ucwords($val->order_status) }} </button>
+                            @endif
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -83,37 +84,37 @@
 
 @include('retailer.order.model')
 @push('custom-script')
-    <script>
-        $(document).ready(function() {
-                    $('.datatable').DataTable();
+<script>
+    $(document).ready(function() {
+        $('.datatable').DataTable();
 
-                    $('body').on('click', '.shipment', function() {
-                        var orderId = $(this).data('id');
-                        $('body').find('.ship_id').val(orderId);
-                    });
+        $('body').on('click', '.shipment', function() {
+            var orderId = $(this).data('id');
+            $('body').find('.ship_id').val(orderId);
+        });
 
-                    $('body').on('change', '.api', function(e) {
-                        $('body').find('#total_charges').text('...');
-                        var apiId = $(this).val();
-                        var _token = "{{ @csrf_token() }}";
-                        var orderId = $('body').find('.ship_id').val();
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ route('order.getcharges') }}",
-                            data: {
-                                _token: _token,
-                                apiId: apiId,
-                                orderId:orderId
-                            },
-                            dataType: "json",
-                            success: function(response) {
-                                $('body').find('#total_charges').text(response);
-                                $('body').find('.charges').val(response);
-                            }
+        $('body').on('change', '.api', function(e) {
+            $('body').find('#total_charges').text('...');
+            var apiId = $(this).val();
+            var _token = "{{ @csrf_token() }}";
+            var orderId = $('body').find('.ship_id').val();
+            $.ajax({
+                type: "POST",
+                url: "{{ route('order.getcharges') }}",
+                data: {
+                    _token: _token,
+                    apiId: apiId,
+                    orderId: orderId
+                },
+                dataType: "json",
+                success: function(response) {
+                    $('body').find('#total_charges').text(response);
+                    $('body').find('.charges').val(response);
+                }
 
-                        });
-                    });
-                });
-    </script>
+            });
+        });
+    });
+</script>
 @endpush
 @endsection

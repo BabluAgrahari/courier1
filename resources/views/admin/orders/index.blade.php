@@ -60,7 +60,7 @@
                             <td>{{ $val->buyer_name }}</td>
                             <td>{{ $val->phone }}</td>
                             <td>{{ $val->order_tag }}</td>
-                            <td>{{ $val->order_status }}</td>
+                            <td>{{ ucwords($val->order_status) }}</td>
                            
                            
                         </tr>
