@@ -32,20 +32,21 @@ class LoginController extends Controller
             if (Auth::attempt($credentials)) {
 
                 if (Auth::user()->role == 'retailer') {
+                    return redirect()->intended('retailer/dashboard')
+                    ->withSuccess('Signed in');
+                    // if (!empty($_COOKIE['logged_in']) && $_COOKIE['logged_in'] == 'logged')
+                    //     return redirect()->intended('retailer/dashboard');
 
-                    if (!empty($_COOKIE['logged_in']) && $_COOKIE['logged_in'] == 'logged')
-                        return redirect()->intended('retailer/dashboard');
+                    // $otp = mt_rand(1111, 9999);
 
-                    $otp = mt_rand(1111, 9999);
-
-                    $user = User::where('_id', Auth::user()->_id)->where('mobile_number', Auth::user()->mobile_number)->first();
-                    $user->otp = $otp;
-                    if ($user->save()) {
-                        $email = $user->email;
-                        $source = $this->sendOtp($otp, $user->mobile_number, $user->full_name, $email);
-                        $data  = ['otp' => $otp, 'msg' => '<span class="text-success">Otp Sent Successfully in this ' . $source . ' !</span>'];
-                        return redirect()->intended('otp-sent')->with('message', $data);
-                    }
+                    // $user = User::where('_id', Auth::user()->_id)->where('mobile_number', Auth::user()->mobile_number)->first();
+                    // $user->otp = $otp;
+                    // if ($user->save()) {
+                    //     $email = $user->email;
+                    //     $source = $this->sendOtp($otp, $user->mobile_number, $user->full_name, $email);
+                    //     $data  = ['otp' => $otp, 'msg' => '<span class="text-success">Otp Sent Successfully in this ' . $source . ' !</span>'];
+                    //     return redirect()->intended('otp-sent')->with('message', $data);
+                    // }
                 } else if (Auth::user()->role == 'employee') {
                     return redirect()->intended('employee/dashboard')
                         ->withSuccess('Signed in');

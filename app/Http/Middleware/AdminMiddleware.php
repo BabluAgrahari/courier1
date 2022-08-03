@@ -18,8 +18,8 @@ class AdminMiddleware
             if ( Auth::user()->isRetailer() ) {
 
                 //check retialer otp verify or not
-                if(empty(Auth::user()->verify_otp) || !Auth::user()->verify_otp)
-                return redirect(url('otp-sent'));
+                // if(empty(Auth::user()->verify_otp) || !Auth::user()->verify_otp)
+                // return redirect(url('otp-sent'));
 
                 return redirect(url('retailer/dashboard'));
 
