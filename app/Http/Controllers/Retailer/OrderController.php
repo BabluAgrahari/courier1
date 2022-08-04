@@ -29,18 +29,6 @@ class OrderController extends Controller
     public function index()
     {
 
-
-        //$api = ApiList::where('name','Ship Rocket')->first();
-        //$charges = getSlabRate('Ahmedabad','Rajkot',$api->id);
-
-        // $slab = Outlet::where('api_id', $api->id)->first()->bank_charges;
-        // foreach($slab as $key => $val) {
-        //     if("13" >= $val['from_amount'] &&  "13" <= $val['to_amount']) {
-        //         return $val['charges'];
-        //     }
-        // }
-
-
         $checkShiprocket = ApiList::first();
         //return User::first();
         $moduleName = $this->moduleName;
@@ -48,12 +36,15 @@ class OrderController extends Controller
         $orders = Order::all();
 
 
-        $checkShiprocket = ApiList::where('name', 'Ship Rocket')->pluck('retailer_ids')->toArray();
-        $checkShiprocket = !empty($checkShiprocket) ? $checkShiprocket[0] : [];
+        // $checkShiprocket = ApiList::where('name', 'Ship Rocket')->pluck('retailer_ids')->toArray();
+        // $checkShiprocket = !empty($checkShiprocket) ? $checkShiprocket[0] : [];
 
         $checkXpressbees = ApiList::where('name', 'Xpressbees')->pluck('retailer_ids')->toArray();
         $checkXpressbees = !empty($checkXpressbees) ? $checkXpressbees[0] : [];
 
+        if($checkXpressbees == null){
+            $checkXpressbees =[];
+        }
         return view($this->view . '/index', compact('moduleName', 'orders', 'checkShiprocket', 'checkXpressbees'));
     }
 
@@ -69,17 +60,10 @@ class OrderController extends Controller
         return view($this->view . '/form', compact('moduleName', 'addresses'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+  
     public function store(OrderValidation $request)
     {
-        //Order::first();
-        //  dd($request->all());
-
+      
         try {
             $order = new Order();
 

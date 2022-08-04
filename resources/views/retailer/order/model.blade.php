@@ -17,14 +17,7 @@
                     <div class="form-group">
                         Total Charges <span id="total_charges" class="text-bold"> 0</span>
                     </div>
-                    @if (in_array(auth()->user()->id, $checkShiprocket))
-                        <div class="form-group">
-                            <label>
-                            <input type="radio" name="api" value="Ship Rocket" class="api" required> Shiprocket-Order
-                            </label>
-                        </div>
-                    @endif
-
+                   
                     @if (in_array(auth()->user()->id, $checkXpressbees))
                             <div class="form-group">
                                 <label>
