@@ -45,7 +45,7 @@ class OrderController extends Controller
         if($checkXpressbees == null){
             $checkXpressbees =[];
         }
-        return view($this->view . '/index', compact('moduleName', 'orders', 'checkShiprocket', 'checkXpressbees'));
+        return view($this->view . '/index', compact('moduleName', 'orders', 'checkXpressbees'));
     }
 
     /**
@@ -140,6 +140,7 @@ class OrderController extends Controller
             $order->package_height            = $request->package_height;
             $order->package_breadth           = $request->package_breadth;
             $order->package_volumatic_weight  =  trim($request->package_volumatic_weight * 1000);
+            $order->order_status              = 'new';
             // $packageDetail = [];
             // foreach ($request->weight as $key => $val) {
             //     $package = [
@@ -313,23 +314,7 @@ class OrderController extends Controller
 
         try {
             $res = '';
-            if ($request->api == 'Shiprocket-Order') {
-                //  $res = shiprocket($request->id);
-                $data = new Shiprocket();  /// lib to push data 
-                $res =  $data->Shiprocket($request->id);
-
-                if ($res[1] === 200) {
-                    $res = $res[0];
-
-                    Order::find($request->id)->update(['ship_response' => $res]);
-                    //update toupup amount here
-
-                    return back()->with('message', $res);
-                } else {
-                    $res = $res[0];
-                    return back()->with('error', $res);
-                }
-            } else if ($request->api == 'Xpressbees') {
+          if ($request->api == 'Xpressbees') {
 
                 // $res = shiprocket($request->id);
                 $data = new Xpressbees();  /// lib to push data 
@@ -340,6 +325,7 @@ class OrderController extends Controller
                     $response1 = json_decode($res);
                  
                     Order::find($request->id)->update(['ship_response' => $res, 'order_status' => $response1->data->status]);
+                  //update toupup amount here
                     if (!spentTopupAmount(Auth()->user()->_id, $request->charges))
                         return response(['status' => 'error', 'msg' => 'Something went wrong!']);
                     return back()->with('message', $res);
