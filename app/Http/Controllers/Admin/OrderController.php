@@ -9,6 +9,7 @@ use Exception;
 use App\Models\OrderShipment;
 use App\Libraries\Courier\Xpressbees;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -52,6 +53,8 @@ class OrderController extends Controller
                             $shipment = new OrderShipment();
                             $shipment->ship_status      = strtolower($response1->data->status);
                             $shipment->order_id         = $orderId;
+                            $shipment->user_id          = Auth::user()->_id;
+                            $shipment->payment_type     = $response1->data->payment_type;
                             $shipment->awb_number       = $response1->data->awb_number;
                             $shipment->courier_name     = $response1->data->courier_name;
                             $shipment->label            = $response1->data->label;

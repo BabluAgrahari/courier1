@@ -74,10 +74,10 @@
                         <td>{{ $val->order_date }}</td>
                         <td>{{ $val->order_channel }}</td>
                         <td>{{ $val->sub_total }}</td>
-                        <td>{{ $val->payment_type }}</td>
-                        <td>{{ $val->buyer_name }}</td>
+                        <td>{{ ucwords($val->payment_type) }}</td>
+                        <td>{{ ucwords($val->buyer_name) }}</td>
                         <td>{{ $val->phone }}</td>
-                        <td>{{ $val->order_tag }}</td>
+                        <td>{{ ucwords($val->order_tag) }}</td>
                         <td><button type="button" class="btn btn-success btn-xs">{{ ucwords($val->order_status) }} </button></td>
 
 

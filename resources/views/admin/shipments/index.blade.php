@@ -61,7 +61,7 @@
                         <td>{{ $key + 1 }}</td>
                         <td>{{ $val->order_id }}</td>
                         <td>{{ date('Y-m-d',$val->created) }}</td>
-                        <td>{{ $val->payment_type }}</td>
+                        <td>{{ ucwords($val->payment_type) }}</td>
                         <td>{{ !empty($val->awb_number) ? $val->awb_number: '' }}</td>
                         <td>{{ ucwords($val->ship_status) }}</td>
                     </tr>
