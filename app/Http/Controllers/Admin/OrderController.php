@@ -48,11 +48,13 @@ class OrderController extends Controller
                         $res = $res[0];
                         $response1 = json_decode($res);
 
-                        $shipment = OrderShipment::where('order_id', $orderId)->first();
+                        $order = Order::find($orderId);
+
+                        $shipment = OrderShipment::where('order_id', $order->order_id)->first();
                         if (empty($shipment)) {
                             $shipment = new OrderShipment();
                             $shipment->ship_status      = strtolower($response1->data->status);
-                            $shipment->order_id         = $orderId;
+                            $shipment->order_id         = $order->order_id;
                             $shipment->user_id          = Auth::user()->_id;
                             $shipment->payment_type     = $response1->data->payment_type;
                             $shipment->awb_number       = $response1->data->awb_number;
@@ -68,7 +70,7 @@ class OrderController extends Controller
                             $shipment->label            = $response1->data->label;
                             $shipment->manifest         = $response1->data->manifest;
                             $shipment->additional_info  = $response1->data->additional_info;
-                            $shipment->save(); 
+                            $shipment->save();
                         }
                         Order::find($orderId)->update(['order_status' => strtolower($response1->data->status)]);
                         // return back()->with('message', $res);

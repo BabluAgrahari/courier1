@@ -9,6 +9,7 @@ use App\Models\ApiList;
 use App\Models\Order;
 use App\Models\Outlet;
 use App\Models\User;
+use App\Models\OrderShipment;
 use App\Libraries\Courier\Xpressbees;
 use Exception;
 use Illuminate\Http\Request;
@@ -305,8 +306,33 @@ class OrderController extends Controller
                 if ($res[1] === 200) {
                     $res = $res[0];
                     $response1 = json_decode($res);
+                    
+                    $order = Order::find($request->id);
 
-                    Order::find($request->id)->update(['ship_response' => $res, 'order_status' => $response1->data->status]);
+                    $shipment = OrderShipment::where('order_id', $order->order_id)->first();
+                    if (empty($shipment)) {
+                        $shipment = new OrderShipment();
+                        $shipment->ship_status      = strtolower($response1->data->status);
+                        $shipment->order_id         = $order->order_id;
+                        $shipment->user_id          = Auth::user()->_id;
+                        $shipment->payment_type     = $response1->data->payment_type;
+                        $shipment->awb_number       = $response1->data->awb_number;
+                        $shipment->courier_name     = $response1->data->courier_name;
+                        $shipment->label            = $response1->data->label;
+                        $shipment->manifest         = $response1->data->manifest;
+                        $shipment->additional_info  = $response1->data->additional_info;
+                        $shipment->save();
+                    } else {
+                        $shipment->ship_status      = strtolower($response1->data->status);
+                        $shipment->awb_number       = $response1->data->awb_number;
+                        $shipment->courier_name     = $response1->data->courier_name;
+                        $shipment->label            = $response1->data->label;
+                        $shipment->manifest         = $response1->data->manifest;
+                        $shipment->additional_info  = $response1->data->additional_info;
+                        $shipment->save();
+                    }
+                    
+                    Order::find($request->id)->update(['ship_response' => $res, 'order_status' => strtolower($response1->data->status)]);
                     //update toupup amount here
                     if (!spentTopupAmount(Auth()->user()->_id, $request->charges))
                         return back()->with('error', 'Something went wrong!');
