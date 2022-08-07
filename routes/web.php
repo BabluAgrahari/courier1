@@ -8,6 +8,7 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\PHPMailerController;
 use App\Http\Controllers\Admin\RegisterController;
 use App\Http\Controllers\Admin\OrderController as AdminOrders;
+use App\Http\Controllers\Admin\ShipmentController as AdminShipments;
 use App\Http\Controllers\Retailer\OrderController;
 use App\Http\Controllers\Api\EcollectionController;
 use App\Http\Controllers\Retailer\AddressController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\Employee\ProfileController as EmployeeProfile;
 use App\Http\Controllers\Retailer\ProfileController as RetailerProfile;
 use App\Http\Controllers\Admin\EcollectionController as AdminECollection;
 use App\Http\Controllers\Admin\TransactionController as AdminTransaction;
+use App\Http\Controllers\Admin\ShipmentController as RetailerShipments;
 use App\Http\Controllers\Distributor\LoginController as DistributorLogin;
 
 //for employee panel
@@ -105,6 +107,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
 
   Route::resource('orders',AdminOrders::class);
+  Route::post('ship-bulk-action', [AdminOrders::class, 'bulkAction']);
+
+  Route::resource('shipments',AdminShipments::class);
 
   Route::resource('outlets', AdminOutlet::class);
   Route::post('outlets-status', [AdminOutlet::class, 'outletStatus']);
@@ -225,6 +230,8 @@ Route::group(['prefix' => 'retailer', 'middleware' => 'retailer'], function () {
   Route::get('passbook',  [RetailerPassbook::class, 'index']);
   Route::get('passbook-export',  [RetailerPassbook::class, 'export']);
 
+
+  Route::resource('shipments',RetailerShipments::class);
 
   Route::resource('e-collection', RetailerECollection::class);
 

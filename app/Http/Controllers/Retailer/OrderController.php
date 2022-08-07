@@ -9,10 +9,10 @@ use App\Models\ApiList;
 use App\Models\Order;
 use App\Models\Outlet;
 use App\Models\User;
-use App\Libraries\Courier\Shiprocket;
 use App\Libraries\Courier\Xpressbees;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -29,12 +29,12 @@ class OrderController extends Controller
     public function index()
     {
 
-        $checkShiprocket = ApiList::first();
+        //$checkShiprocket = ApiList::first();
         //return User::first();
         $moduleName = $this->moduleName;
         $addresses = Address::get();
         $orders = Order::all();
-
+        $retailer_id = Auth::user()->_id;
 
         // $checkShiprocket = ApiList::where('name', 'Ship Rocket')->pluck('retailer_ids')->toArray();
         // $checkShiprocket = !empty($checkShiprocket) ? $checkShiprocket[0] : [];
@@ -42,9 +42,9 @@ class OrderController extends Controller
         $checkXpressbees = ApiList::where('name', 'Xpressbees')->pluck('retailer_ids')->toArray();
         $checkXpressbees = !empty($checkXpressbees) ? $checkXpressbees[0] : [];
 
-        if($checkXpressbees == null){
-            $checkXpressbees =[];
-        }
+        if (!in_array($checkXpressbees, array($retailer_id)) && $checkXpressbees == null)
+            $checkXpressbees = [];
+
         return view($this->view . '/index', compact('moduleName', 'orders', 'checkXpressbees'));
     }
 
@@ -60,10 +60,10 @@ class OrderController extends Controller
         return view($this->view . '/form', compact('moduleName', 'addresses'));
     }
 
-  
+
     public function store(OrderValidation $request)
     {
-      
+
         try {
             $order = new Order();
 
@@ -162,23 +162,6 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //https://www.codexworld.com/distance-between-two-addresses-google-maps-api-php/
@@ -314,24 +297,24 @@ class OrderController extends Controller
 
         try {
             $res = '';
-          if ($request->api == 'Xpressbees') {
+            if ($request->api == 'Xpressbees') {
 
-                // $res = shiprocket($request->id);
                 $data = new Xpressbees();  /// lib to push data 
                 $res =  $data->Xpressbees($request->id);
 
                 if ($res[1] === 200) {
                     $res = $res[0];
                     $response1 = json_decode($res);
-                 
+
                     Order::find($request->id)->update(['ship_response' => $res, 'order_status' => $response1->data->status]);
-                  //update toupup amount here
+                    //update toupup amount here
                     if (!spentTopupAmount(Auth()->user()->_id, $request->charges))
-                        return response(['status' => 'error', 'msg' => 'Something went wrong!']);
-                    return back()->with('message', $res);
+                        return back()->with('error', 'Something went wrong!');
+                    return back()->with('success', 'Order Shipped Successfully');
                 } else {
                     $res = $res[0];
-                    return back()->with('error', $res);
+                    $response1 = json_decode($res);
+                    return back()->with('error', $response1->message);
                 }
             }
         } catch (Exception $e) {

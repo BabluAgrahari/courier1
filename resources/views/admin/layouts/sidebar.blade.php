@@ -38,6 +38,13 @@
           <p>Orders</p>
         </a>
       </li>
+      <li class="nav-item">
+        <a href="{{ url('admin/shipments ') }}" class="nav-link {{ (url()->full() == url('admin/shipments'))? 'active':''}}">
+          <i class=" nav-icon fas fa-box"></i>
+          <p>Shipments</p>
+        </a>
+      </li>
+
 
     <li class="nav-item">
       <a href="{{ url('admin/passbook') }}" class="nav-link {{ (url()->full() == url('admin/passbook'))? 'active':''}}">

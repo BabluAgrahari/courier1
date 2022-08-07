@@ -26,6 +26,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
+
             <h3 class="card-title">{{ $moduleName }}</h3>
             <div class="card-tools">
                 {{-- @permission('add.penalty.type') --}}
@@ -56,10 +57,16 @@
                         <td>
 
                             <a class="btn btn-warning btn-xs changeStatus" href="{{ route('order.edit', [$val->id]) }}"><i class="far fa-edit"></i></a>
-                            @if($val->order_status != 'booked' )
+                            @if($val->order_status == 'new' && !empty($checkXpressbees))
                             <a type="button" class="btn btn-info btn-xs shipment" data-toggle="modal" data-target="#exampleModalCenter" data-id={{ $val->id }}>
                                 Ready To Ship
                             </a>
+                            @elseif($val->order_status == 'new' && empty($checkXpressbees))
+                            <a type="button" class="btn btn-info btn-xs shipmentprocess" data-toggle="modal" data-id={{ $val->id }}>
+                                Process Shipment
+                            </a>
+                            @elseif($val->order_status == 'processing')
+                            <button type="button" class="btn btn-warning btn-xs">{{ ucwords($val->order_status) }} </button>
                             @else
                             <button type="button" class="btn btn-success btn-xs">{{ ucwords($val->order_status) }} </button>
                             @endif
@@ -113,6 +120,42 @@
                 }
 
             });
+        });
+    });
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('body').on('click', '.shipmentprocess', function() {
+        var orderId = $(this).data('id');
+        $.ajax({
+            type: "POST",
+            url: "{{ url('retailer/shipments') }}",
+            data: {
+                orderId: orderId
+            },
+            dataType: "json",
+            success: function(res) {
+
+                /*Start Status message*/
+                if (res.status == 'success' || res.status == 'error') {
+                    Swal.fire(
+                        `${res.status}!`,
+                        res.msg,
+                        `${res.status}`,
+                    )
+                }
+                /*End Status message*/
+                //for reset all field
+                if (res.status == 'success') {
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000)
+                }
+            }
+
         });
     });
 </script>
